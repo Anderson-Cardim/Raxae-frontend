@@ -5,6 +5,7 @@ import CreateGroupPage from "./features/addGroup/screens/CreateGroupPage.tsx";
 import { GroupProvider } from "./features/context/GroupContext.tsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AddExpensePage from "./features/expenses/screens/AddExpensePage.tsx";
+import EditGroupPage from "./features/editGroup/screens/EditGroupPage.tsx";
 
 import AddParticipantsPage from "./features/participants/screens/AddParticipantsPage.tsx";
 import { GroupPage } from "./features/groups/screens/GroupsPage.tsx";
@@ -24,6 +25,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/home" element={<HomePage />} />
+          <Route path="/editar-grupo" element={<EditGroupPage />} />
         </Routes>
       </GroupProvider>
     </BrowserRouter>
