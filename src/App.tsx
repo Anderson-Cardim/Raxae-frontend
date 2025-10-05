@@ -9,6 +9,7 @@ import EditGroupPage from "./features/editGroup/screens/EditGroupPage.tsx";
 import AddParticipantsPage from "./features/participants/screens/AddParticipantsPage.tsx";
 import { GroupsPage } from "./features/groups/screens/GroupsPage.tsx";
 import EditPerfil from "./features/editPerfil/screens/EditPerfil.tsx";
+import AddFriends from "./features/addFriends/screens/AddFriends.tsx";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/editar-grupo" element={<EditGroupPage />} />
           <Route path="/editar-perfil" element={<EditPerfil />} />
+          <Route path="/adicionar-amigos" element={<AddFriends />} />
         </Routes>
       </GroupProvider>
     </BrowserRouter>
