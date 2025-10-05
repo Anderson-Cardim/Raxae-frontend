@@ -8,6 +8,7 @@ import AddExpensePage from "./features/expenses/screens/AddExpensePage.tsx";
 import EditGroupPage from "./features/editGroup/screens/EditGroupPage.tsx";
 import AddParticipantsPage from "./features/participants/screens/AddParticipantsPage.tsx";
 import { GroupsPage } from "./features/groups/screens/GroupsPage.tsx";
+import EditPerfil from "./features/editPerfil/screens/EditPerfil.tsx";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/editar-grupo" element={<EditGroupPage />} />
+          <Route path="/editar-perfil" element={<EditPerfil />} />
         </Routes>
       </GroupProvider>
     </BrowserRouter>
