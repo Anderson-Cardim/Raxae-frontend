@@ -59,7 +59,7 @@ function CreateGroupPage() {
       <HeaderForm title="Criar Novo Grupo" onBack={handleGoBack} />
       <div className="flex-grow p-6 ">
         <div className="flex-grow p-0.90">
-          <FileUploadButton {...register("groupImage")} />
+          <FileUploadButton  {...register("groupImage")} />
         </div>
 
         <FormSection title="Nome do grupo">
