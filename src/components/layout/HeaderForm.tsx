@@ -1,11 +1,11 @@
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 
-interface HeaderFormProps {
+interface HeaderFormProps{
   title: string;
   onBack?: () => void;
 }
 
-function HeaderForm({ title, onBack }: HeaderFormProps) {
+function HeaderForm({ title, onBack}: HeaderFormProps) {
 
   return (
     <header className="p-4 flex items-center justify-between relative bg-white">

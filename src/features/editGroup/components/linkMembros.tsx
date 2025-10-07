@@ -25,7 +25,7 @@ export function MembersLink({ memberCount, groupId }: MembersLinkProps) {
         to={`/grupo/${groupId}/participantes`} 
         className="text-gray-500 hover:text-gray-900"
       >
-        <BsThreeDots size={28} /> 
+        <BsThreeDots size={28}/> 
       </Link>
     </div>
   );
