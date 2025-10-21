@@ -91,6 +91,7 @@ export default function EditPerfil() {
             <FormSection title="Número de Celular">
               <Input
                 placeholder="(xx) xxxx-xxxx"
+                mask="(99) 99999-9999"
                 type="text" 
                 name="phone"
                 value={userData.phone}

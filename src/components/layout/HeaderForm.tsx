@@ -1,4 +1,6 @@
-import { ChevronLeftIcon } from '@heroicons/react/24/solid';
+// import { ChevronLeftIcon } from '@heroicons/react/24/solid';
+import { FaArrowLeftLong } from "react-icons/fa6";
+
 
 interface HeaderFormProps{
   title: string;
@@ -8,12 +10,13 @@ interface HeaderFormProps{
 function HeaderForm({ title, onBack}: HeaderFormProps) {
 
   return (
-    <header className="p-4 flex items-center justify-between relative bg-white">
+    <header className="p-5.5 flex items-center justify-between relative bg-white">
       <button  onClick={onBack} className="absolute left-4">
-        <ChevronLeftIcon className="w-6 h-6 text-black" />
+        <FaArrowLeftLong className="w-6 h-6 text-black"/>
+        {/* <ChevronLeftIcon  /> */}
       </button>
 
-      <h1 className="flex-grow text-center text-lg font-bold">
+      <h1 className="flex-grow pl-20 text-2xl font-bold  ">
         {title}
       </h1>
 
