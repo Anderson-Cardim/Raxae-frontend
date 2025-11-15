@@ -5,7 +5,7 @@ import FormSection from "../../addGroup/components/FormSection";
 import Input from "../../../components/ui/Input";
 import ActionButton from "../../../components/ui/ActionButton";
 import FooterNav from "../../../components/layout/FooterNav";
-
+import PhotoUploader from "../components/PhotoUploader";
 
 interface UserData {
   name: string;
@@ -18,9 +18,9 @@ export default function EditPerfil() {
 
     const [userData, setUserData] = useState<UserData>({
         name: 'Anderson Cardim',
-        email: 'seu@email.com',
+        email: 'Anderson@email.com',
         phone: '(99) 99999-9999',
-        password: '',
+        password: '123456',
     }); 
 
     const navigate = useNavigate();
@@ -37,16 +37,15 @@ export default function EditPerfil() {
       e.preventDefault(); 
 
       console.log("Dados do Perfil para salvar:", userData);
-
-      navigate("/perfil"); 
+      navigate("/home");
     };
 
     const handleGoBack = () => {
-        navigate("/perfil");
+      console.log("Voltar para a página anterior");
+      navigate("/home");
     };
     
     const handleCancel = () => {
-      navigate("/perfil");
     };
 
     const handlePro = () => {
@@ -56,13 +55,10 @@ export default function EditPerfil() {
     return (
         <form onSubmit={handleSave} className="flex flex-col min-h-screen bg-white pb-20">
           <HeaderForm title="Editar Perfil" onBack={handleGoBack} />
-          <div className="flex-grow p-6 ">
+          <div className="flex-grow p-6 lg:ml-35 lg:mr-35 mb-10">
             
             <div className="flex justify-center mb-8">
-                <div className="w-24 h-24 rounded-full bg-teal-100 flex items-center justify-center border-2 border-gray-300 overflow-hidden">
-                    
-                </div>
-                
+                <PhotoUploader/>
             </div>
 
             <FormSection title="Nome">
@@ -72,7 +68,7 @@ export default function EditPerfil() {
                 name="name" 
                 value={userData.name}
                 onChange={handleChange} 
-                className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
+                className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
               />
             </FormSection>
 
@@ -83,8 +79,7 @@ export default function EditPerfil() {
                 name="email"
                 value={userData.email}
                 onChange={handleChange}
-                className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
-                disabled 
+                className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
               />
             </FormSection>
 
@@ -96,7 +91,7 @@ export default function EditPerfil() {
                 name="phone"
                 value={userData.phone}
                 onChange={handleChange}
-                className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
+                className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
               />
             </FormSection>
 
@@ -107,7 +102,7 @@ export default function EditPerfil() {
                 name="password"
                 value={userData.password}
                 onChange={handleChange}
-                className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
+                className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
               />
             </FormSection>
         
@@ -116,12 +111,12 @@ export default function EditPerfil() {
                 text="Cancelar" 
                 type="button" 
                 onClick={handleCancel}
-                className="py-3 px-6 text-red-500 border-2 border-red-500 bg-white hover:bg-red-50 rounded-lg text-xl font-bold transition-colors duration-300 flex-1"
+                className="py-3 px-6 text-red-500 border-2 border-red-500 bg-white hover:bg-red-50 rounded-lg text-xl font-bold transition-colors duration-300 flex-1 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
               />
               <ActionButton 
                 text="Salvar" 
                 type="submit" 
-                className="py-3 px-6 text-white bg-green-500 hover:bg-green-600 rounded-lg text-xl font-bold transition-colors duration-300 flex-1"
+                className="py-3 px-6 text-white bg-green-500 hover:bg-green-600 rounded-lg text-xl font-bold transition-colors duration-300 flex-1 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
               />
             </div>
 
@@ -130,7 +125,7 @@ export default function EditPerfil() {
                 text="Quero ser PRO" 
                 type="button" 
                 onClick={handlePro}
-                className="w-full py-3 px-10 text-white bg-orange-600 hover:bg-orange-700 rounded-lg text-xl font-bold transition-colors duration-300"
+                className="w-full py-3 px-10 text-white bg-[#F34403] hover:bg-[#e44005] rounded-lg text-xl font-bold transition-colors duration-300 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
               />
             </div>
             

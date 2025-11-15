@@ -40,7 +40,7 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ entry }) => {
   const isNotPaid = entry.status === 'NÃO PAGO';
 
   return (
-    <div className="flex items-center justify-between p-3 bg-white border-b border-gray-100 last:border-b-0">
+    <div className="flex items-center justify-between p-3 bg-white border-b border-gray-100 last:border-b-0 hover:translate-y-[1px] hover:shadow-lg">
       
       <div className="flex items-center space-x-3">
         <img 
@@ -59,7 +59,7 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ entry }) => {
 
       <div>
         {isNotPaid &&  (
-            <span title="Notificar"><TbBellPlus size="24px" /></span> 
+            <span title="Notificar"><TbBellPlus size="24px" color='#000'/></span> 
         )}
       </div>
 

@@ -36,20 +36,20 @@ const ProofAttachmentForm: React.FC<ProofAttachmentFormProps> = ({ onUpload }) =
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-xl">
+    <div className="bg-white p-4 rounded-lg shadow-xl lg:ml-30 lg:mr-30 ">
       <h3 className="text-lg font-semibold mb-3 text-gray-700">Anexar comprovante</h3>
       
-      <label className="relative block w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 transition-colors">
+      <label className="relative block w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 transition-colors ">
         
         <input 
           type="file" 
-          className="absolute inset-0 opacity-0 cursor-pointer"
+          className="absolute inset-0 opacity-0 cursor-pointer lg:pt-15 lg:pb-15"
           onChange={handleFileChange}
           accept="image/*,application/pdf" 
           disabled={isLoading}
         />
         
-        <div className="flex flex-col items-center justify-center h-full text-gray-500">
+        <div className="flex flex-col items-center justify-center h-full text-gray-500 ">
           <FaPlus size={30} className="mb-2" />
           <span className="text-sm">
             {fileToUpload 
@@ -63,7 +63,7 @@ const ProofAttachmentForm: React.FC<ProofAttachmentFormProps> = ({ onUpload }) =
           type="button"
           onClick={handleSave}
           disabled={!fileToUpload || isLoading}
-          className={`absolute bottom-2 right-2 px-3 py-1 text-white text-xs rounded-lg font-bold transition-opacity duration-300 ${
+          className={`absolute  bottom-2 right-2 px-3 py-1 text-white text-xs rounded-lg font-bold transition-opacity duration-300 ${
             !fileToUpload || isLoading 
               ? 'bg-[#14879E] cursor-not-allowed' 
               : 'bg-[#14879E] hover:bg-blue-600'

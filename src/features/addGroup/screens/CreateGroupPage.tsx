@@ -27,11 +27,7 @@ const periodicidadeOptions = [
 ];
 
 function CreateGroupPage() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CreateGroupFormInputs>();
+  const { register, handleSubmit, formState: { errors }, } = useForm<CreateGroupFormInputs>();
 
   const navigate = useNavigate();
   const context = useContext(GroupContext);
@@ -57,7 +53,7 @@ function CreateGroupPage() {
       className="flex flex-col min-h-screen bg-white pb-20"
     >
       <HeaderForm title="Criar Novo Grupo" onBack={handleGoBack} />
-      <div className="flex-grow p-6 ">
+      <div className="flex-grow p-6 lg:ml-35 lg:mr-35">
         <div className="flex-grow p-0.90">
           <FileUploadButton  {...register("groupImage")} />
         </div>
@@ -138,7 +134,7 @@ function CreateGroupPage() {
             <ActionButton
               text="ADICIONAR PARTICIPANTES"
               type="submit"
-              className="w-full py-4 text-white bg-[#F34403] hover:bg-orange-600 rounded-2xl font-bold transition-colors duration-300"
+              className="w-full py-4 text-white bg-[#F34403] hover:bg-[#e44005] rounded-2xl font-bold transition-colors duration-300 transition-colors duration-300 cursor-pointer"
             />
           </div>
         </FormSection>

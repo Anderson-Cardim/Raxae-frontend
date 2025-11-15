@@ -13,7 +13,6 @@ function HeaderForm({ title, onBack}: HeaderFormProps) {
     <header className="p-5.5 flex items-center justify-between relative bg-white">
       <button  onClick={onBack} className="absolute left-4">
         <FaArrowLeftLong className="w-6 h-6 text-black"/>
-        {/* <ChevronLeftIcon  /> */}
       </button>
 
       <h1 className="flex-grow pl-20 text-2xl font-bold  ">

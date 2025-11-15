@@ -51,7 +51,7 @@ export default function MembersManagementPage() {
   const [members, setMembers] = useState(mockMembers);
 
   const handleGoBack = () => {
-    navigate("/grupo-dashboard");
+    navigate("/home");
   };
 
   const handleRemoveMember = (memberId: string) => {
@@ -75,10 +75,10 @@ export default function MembersManagementPage() {
     <div className="flex flex-col min-h-screen bg-white pb-20">
       <HeaderForm title="Membros" onBack={handleGoBack} />
 
-      <div className="flex-grow p-4">
+      <div className="flex-grow p-4 lg:ml-10 lg:mr-10 mb-10">
         <GroupHeaderInfo groupName={group.name} imageUrl={group.imageUrl}/> 
 
-        <div className="space-y-3 mb-8">
+        <div className="flex space-y-3 mb-8 gap-5 flex-col">
           {members.map((member) => (
             <MemberItem
               key={member.id}

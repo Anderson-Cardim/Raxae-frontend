@@ -8,7 +8,7 @@ interface GroupHeaderInfoProps {
 
 const GroupHeaderInfo: React.FC<GroupHeaderInfoProps> = ({ imageUrl, groupName }) => {
     return (
-        <div className="flex items-center space-x-3 mb-6">
+        <div className="flex items-center space-x-3 mb-6 ">
             <img 
                 src={imageUrl} 
                 alt={groupName} 

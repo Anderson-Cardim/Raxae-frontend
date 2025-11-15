@@ -2,6 +2,7 @@ import logo from "../../../assets/react.svg";
 import Input from "../../../components/ui/Input.tsx";
 import { useForm } from "react-hook-form";
 import Button from "../../../components/ui/Button.tsx";
+import { Link } from "react-router-dom";
 
 type RegisterFormInputs = {
   fullName: string;
@@ -11,15 +12,12 @@ type RegisterFormInputs = {
 };
 
 function RegisterPage() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<RegisterFormInputs>();
+  const { register, handleSubmit, formState: { errors }, } = useForm<RegisterFormInputs>();
 
   const onSubmit = (data: RegisterFormInputs) => {
     console.log(data);
     alert(`Usuário registrado!\nNome: ${data.fullName}\nE-mail: ${data.email}`);
+    window.location.href = "/login";
   };
 
   return (
@@ -76,7 +74,7 @@ function RegisterPage() {
           className="w-full p-3 text-center mb-4 rounded-xl bg-white text-gray-700 placeholder-gray focus:outline-none focus:ring-2 focus:ring-white"
           {...register("phone", {
             pattern: {
-              value: /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/, // Exemplo de regex para telefone BR
+              value: /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/, 
               message: "Formato de telefone inválido",
             },
           })}
@@ -108,17 +106,14 @@ function RegisterPage() {
         <Button
           texto="Registrar"
           type="submit"
-          className="w-50 mt-6 max-w-sm bg-violet-700 hover:bg-violet-800 text-white font-bold py-3 rounded-3xl mb-4 transition duration-300 bg-gradient-to-l from-[#3F2B86] to-[#7F79D4]"
+          className="w-50 mt-6 max-w-sm bg-violet-700 hover:bg-violet-800 text-white font-bold py-3 rounded-3xl mb-4 transition duration-300 bg-gradient-to-l from-[#3F2B86] to-[#7F79D4] hover:translate-y-[1px] hover:shadow-lg"
         />
       </form>
 
       <p className="text-sm mt-2">Já tem uma conta?</p>
-
-      <p className="text-sm mt-1">
-        <a href="#" className="underline ml-1 hover:bg-sky-600">
+        <Link to="/login" className="text-sm mt-1 underline ml-1 hover:text-[#7F79D4] hover:text-gray-300">
           Login
-        </a>
-      </p>
+        </Link>
     </div>
   );
 }

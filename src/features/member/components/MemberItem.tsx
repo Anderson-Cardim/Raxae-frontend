@@ -22,7 +22,7 @@ interface Member {
 
 const MemberItem: React.FC<MemberItemProps> = ({ member, onRemove }) => {
   return (
-    <div className={`flex items-cente justify-between p-3 rounded-lg shadow-xl `}>
+    <div className={`flex items-cente justify-between p-3 rounded-lg shadow-2xl hover:translate-y-[1px] hover:shadow-lg `}>
       
       <div className="flex items-center space-x-3">
         <img 

@@ -115,7 +115,7 @@ export default function HistoryPage() {
         <FaUpload size={24} />
       </Button>
 
-      <div className="flex-grow p-4">
+      <div className="flex-grow p-4 lg:ml-10 lg:mr-10 mb-10">
 
         <GroupHeaderInfo groupName={group.name} imageUrl={group.imageUrl}/>
 

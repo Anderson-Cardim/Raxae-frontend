@@ -17,8 +17,8 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({
     
     const isActive = activeValue !== ''; 
     
-    const baseClasses = "flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 border relative";
-    const activeClasses = "bg-[#00788A] text-white border-[#00788A]"; 
+    const baseClasses = "flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 border relative hover:translate-y-[1px] hover:shadow-lg hover:bg-[#106a8c] bg-[#14879E]";
+    const activeClasses = "border-none text-white"; 
     const inactiveClasses = "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200";
 
     const handleItemClick = (value: string) => {
