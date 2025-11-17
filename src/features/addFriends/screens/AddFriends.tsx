@@ -52,7 +52,7 @@ export default function FriendsPage() {
         
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-3 text-gray-800">Novo amigo</h2>
-          <div className="flex items-center space-x">
+          <div className="flex items-center space-x gap-3">
             
             <Input
               placeholder="Email"

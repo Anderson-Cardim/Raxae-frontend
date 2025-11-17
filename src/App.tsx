@@ -10,6 +10,8 @@ import AddParticipantsPage from "./features/participants/screens/AddParticipants
 import { GroupsPage } from "./features/groups/screens/GroupsPage.tsx";
 import EditPerfil from "./features/editPerfil/screens/EditPerfil.tsx";
 import AddFriends from "./features/addFriends/screens/AddFriends.tsx";
+import MembersManagementPage from "./features/member/screens/MembersManagementPage.tsx";
+import HistoryPage from "./features/history/screens/HistoryPage.tsx";
 
 function App() {
   return (
@@ -19,16 +21,15 @@ function App() {
           <Route path="/grupo" element={<GroupsPage/>} />
           <Route path="/adicionar-despesas" element={<AddExpensePage />} />
           <Route path="/criar-novo-grupo" element={<CreateGroupPage />} />
-          <Route
-            path="/adicionar-participantes"
-            element={<AddParticipantsPage />}
-          />
+          <Route path="/adicionar-participantes" element={<AddParticipantsPage />}/>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/editar-grupo" element={<EditGroupPage />} />
           <Route path="/editar-perfil" element={<EditPerfil />} />
           <Route path="/adicionar-amigos" element={<AddFriends />} />
+          <Route path="/grupo/membro" element={<MembersManagementPage />} />
+          <Route path="/history" element={<HistoryPage />} />
         </Routes>
       </GroupProvider>
     </BrowserRouter>

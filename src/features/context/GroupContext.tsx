@@ -4,6 +4,10 @@ export type SplitType = "equally" | "custom";
 export type SplitMethod = "value" | "percentage";
 
 export type Member = {
+  canDelete: any;
+  name: ReactNode;
+  isManager: any;
+  isCurrentUser: any;
   id: number;
   nome: string;
   amount: number;

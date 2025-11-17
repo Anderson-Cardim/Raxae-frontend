@@ -25,7 +25,7 @@ interface StatCardProps {
 
 function StatCard({ label, value, type }: StatCardProps) {
   return (
-    <div className="bg-white rounded-2xl shadow-2xl p-4 flex flex-col items-start justify-between">
+    <div className="bg-white rounded-2xl shadow-2xl p-4 flex flex-col items-start justify-between hover:translate-y-[1px] hover:shadow-lg  ">
       <div className="flex items-center">
         <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2">
           {iconMap[type]}

@@ -2,6 +2,8 @@ import logo from "../../../assets/react.svg";
 import Input from "../../../components/ui/Input.tsx";
 import { useForm } from "react-hook-form";
 import Button from "../../../components/ui/Button.tsx";
+import { Link } from "react-router-dom";
+
 
 type LoginFormInputs = {
   email: string;
@@ -18,6 +20,8 @@ function LoginPage() {
   const onSubmit = (data: LoginFormInputs) => {
     console.log(data);
     alert(`E-mail: ${data.email}\nSenha: ${data.password}`);
+    window.location.href = "/home";
+
   };
   return (
     <div
@@ -72,17 +76,15 @@ function LoginPage() {
         <Button
           texto="Entrar"
           type="submit"
-          className="w-50 mt-10 max-w-sm bg-violet-700 hover:bg-violet-800 text-white font-bold py-3 rounded-3xl mb-4 transition duration-300 bg-gradient-to-l from-[#3F2B86] to-[#7F79D4]"
+          className="w-50 mt-10 max-w-sm bg-violet-700 hover:bg-violet-800 text-white font-bold py-3 rounded-3xl mb-4 transition duration-300 bg-gradient-to-l from-[#3F2B86] to-[#7F79D4] hover:translate-y-[1px] hover:shadow-lg"
         />
       </form>
 
       <p className="text-sm mt-6">Não tem uma conta ainda?</p>
 
-      <p className="text-sm mt-1">
-        <a href="#" className="underline ml-1 hover:bg-sky-600">
+        <Link to="/register" className="text-sm mt-1 underline ml-1 hover:text-gray-300">
           Registre-Se
-        </a>
-      </p>
+        </Link>
     </div>
   );
 }

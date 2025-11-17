@@ -29,18 +29,18 @@ function HomePage() {
   };
 
   return (
-    <div className="home-page-container pb-20">
+    <div className="home-page-container pb-20 flex flex-col">
       <Header userName={userData.name} profilePic={userData.profilePic} />
 
       <StatsSection stats={userData} />
 
       <MyGroups groups={groupsData} />
 
-      <div className="p-4 pt-4">
+      <div className="p-4 pt-4 lg:ml-60 lg:mr-60 lg:mb-8 md:ml-30 md:mr-30 md:mb-6">
         <ActionButton
           text="ADICIONAR GRUPO"
           onClick={handleNext}
-          className="w-full py-4 text-white bg-[#F34403] hover:bg-orange-600 rounded-2xl font-bold transition-colors duration-300"
+          className="w-full py-4 text-white bg-[#F34403] hover:bg-[#e44005] rounded-2xl font-bold transition-colors duration-300 hover:translate-y-[1px] hover:shadow-lg "
         />
       </div>
       <FooterNav />
