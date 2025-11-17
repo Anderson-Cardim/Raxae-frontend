@@ -30,6 +30,7 @@ function CreateGroupPage() {
   const { register, handleSubmit, formState: { errors }, } = useForm<CreateGroupFormInputs>();
 
   const navigate = useNavigate();
+
   const context = useContext(GroupContext);
 
   const onSubmit = (data: CreateGroupFormInputs) => {
@@ -54,9 +55,7 @@ function CreateGroupPage() {
     >
       <HeaderForm title="Criar Novo Grupo" onBack={handleGoBack} />
       <div className="flex-grow p-6 lg:ml-35 lg:mr-35">
-        <div className="flex-grow p-0.90">
-          <FileUploadButton  {...register("groupImage")} />
-        </div>
+        <FileUploadButton  {...register("groupImage")} />
 
         <FormSection title="Nome do grupo">
           <Input
@@ -134,7 +133,7 @@ function CreateGroupPage() {
             <ActionButton
               text="ADICIONAR PARTICIPANTES"
               type="submit"
-              className="w-full py-4 text-white bg-[#F34403] hover:bg-[#e44005] rounded-2xl font-bold transition-colors duration-300 transition-colors duration-300 cursor-pointer"
+              className="w-full py-4 text-white bg-[#F34403] hover:bg-[#e44005] rounded-2xl font-bold transition-colors duration-300 transition-colors duration-300 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
             />
           </div>
         </FormSection>

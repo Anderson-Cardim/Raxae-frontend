@@ -67,6 +67,7 @@ export function GroupsPage() {
 
   const handleHistory = (groupId: string) => {
     alert(`Lógica para ver o HISTÓRICO do grupo ${groupId} aqui!`);
+    navigate(`/history`);
   };
 
   return (

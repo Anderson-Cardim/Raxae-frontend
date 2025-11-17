@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 const navItems = [
   { label: 'Início', icon: HomeIcon, isActive: true, path: '/home' },
   { label: 'Grupos', icon: UsersIcon, isActive: false, path: '/grupo' },
-  { label: 'Amigos', icon: UserGroupIcon, isActive: false, path: '/grupo/membro' },
+  { label: 'Amigos', icon: UserGroupIcon, isActive: false, path: '/adicionar-amigos' },
   { label: 'Histórico', icon: ClockIcon, isActive: false, path: '/history' },
   { label: 'Perfil', icon: UserCircleIcon, isActive: false, path: '/editar-perfil' },
 ];

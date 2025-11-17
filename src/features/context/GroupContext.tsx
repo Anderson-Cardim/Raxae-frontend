@@ -4,14 +4,13 @@ export type SplitType = "equally" | "custom";
 export type SplitMethod = "value" | "percentage";
 
 export type Member = {
-  canDelete: any;
-  name: ReactNode;
-  isManager: any;
-  isCurrentUser: any;
   id: number;
-  nome: string;
+  nome: string; 
   amount: number;
   contact: string;
+  isManager: boolean;
+  isCurrentUser: boolean;
+  canDelete: boolean;
 };
 
 export type Expense = {
@@ -21,12 +20,12 @@ export type Expense = {
 };
 
 export type GroupState = {
+  groupImage?: FileList;
   groupName: string;
   description?: string;
   periodicity: string;
   dueDate: string;
   adminPix: string;
-  groupImage?: FileList;
   members?: Member[];
   expense?: Expense;
 };

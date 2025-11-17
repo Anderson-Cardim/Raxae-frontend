@@ -2,7 +2,7 @@ import LoginPage from "../features/login/screens/LoginPages.tsx";
 import RegisterPage from "../features/register/screens/RegisterPages.tsx";
 import HomePage from "../features/home/screens/HomePages.tsx";
 import CreateGroupPage from "../features/addGroup/screens/CreateGroupPage.tsx";
-// import {GroupProvider}  from "../features/context/GroupContext.tsx";
+import {GroupProvider}  from "../features/context/GroupContext.tsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AddExpensePage from "../features/expenses/screens/AddExpensePage.tsx";
 import EditGroupPage from "../features/editGroup/screens/EditGroupPage.tsx";
@@ -18,35 +18,35 @@ import { Navigate } from "react-router-dom";
 export const AppRouter = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-       {/* <ProtectedRoute /> */}
-        <Route >
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/editar-perfil" element={<EditPerfil />} />
-          <Route path="/adicionar-amigos" element={<AddFriends />} />
-          <Route path="/history" element={<HistoryPage />} />
+      <GroupProvider>
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        {/* <ProtectedRoute /> */}
+          <Route >
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/editar-perfil" element={<EditPerfil />} />
+            <Route path="/adicionar-amigos" element={<AddFriends />} />
+            <Route path="/history" element={<HistoryPage />} />
 
-          {/* element={<GroupProvider children={undefined} />} */}
+            <Route>
+              <Route path="/grupo" element={<GroupsPage />} />
+              <Route path="/criar-novo-grupo" element={<CreateGroupPage />} />
+              <Route path="/editar-grupo" element={<EditGroupPage />} />
 
-          <Route>
-            <Route path="/grupo" element={<GroupsPage />} />
-            <Route path="/criar-novo-grupo" element={<CreateGroupPage />} />
-            <Route path="/editar-grupo" element={<EditGroupPage />} />
-
-            <Route path="/grupo/membro" element={<MembersManagementPage />} />
-            <Route
-              path="/adicionar-participantes"
-              element={<AddParticipantsPage />}
-            />
-            <Route path="/adicionar-despesas" element={<AddExpensePage />} />
+              <Route path="/grupo/membro" element={<MembersManagementPage />} />
+              <Route
+                path="/adicionar-participantes"
+                element={<AddParticipantsPage />}
+              />
+              <Route path="/adicionar-despesas" element={<AddExpensePage />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* <Route path="*" element={<NotFoundPage />} /> */}
-      </Routes>
+          {/* <Route path="*" element={<NotFoundPage />} /> */}
+        </Routes>
+      </GroupProvider>
     </BrowserRouter>
   );
 };

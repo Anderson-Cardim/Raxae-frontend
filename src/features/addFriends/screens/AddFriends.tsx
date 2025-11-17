@@ -48,7 +48,7 @@ export default function FriendsPage() {
       
       <HeaderForm title="Amigos" onBack={handleGoBack} />
       
-      <div className="flex-grow p-4">
+      <div className="flex-grow p-4 lg:ml-50 lg:mr-50 md:ml-40 lg:mb-10 md:mr-40">
         
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-3 text-gray-800">Novo amigo</h2>
@@ -59,12 +59,12 @@ export default function FriendsPage() {
               type="email"
               value={newFriendEmail}
               onChange={(e) => setNewFriendEmail(e.target.value)}
-              className="flex-grow py-3 px-4 border border-gray-300 rounded-lg text-gray-700 placeholder-gray-400 focus:outline-none focus:border-blue-500" 
+              className="flex-grow py-3 px-4 border border-gray-300 rounded-lg text-gray-700 placeholder-gray-400 focus:outline-none hover:translate-y-[1px] hover:shadow-lg" 
             />
             
             <button
               onClick={handleAddFriend}
-              className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition-colors duration-200"
+              className="hover:bg-[#106a8c] bg-[#14879E] text-white p-3 rounded-lg transition-colors duration-200 hover:translate-y-[1px] hover:shadow-lg"
               aria-label="Adicionar novo amigo"
             >
               <FaPlus size={20} />

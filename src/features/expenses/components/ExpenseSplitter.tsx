@@ -32,7 +32,7 @@ export function ExpenseSplitter({
   const { register, formState } = useFormContext<AddExpenseFormInputs>();
 
   return (
-    <div className="flex-grow p-4">
+    <div className="flex-grow p-4 lg:ml-40 lg:mr-40 lg:mb-10">
       <ExpenseForm register={register} errors={formState.errors} />
 
       <div className="space-y-2 pt-10">
@@ -98,7 +98,7 @@ export function ExpenseSplitter({
       <div className="pt-10">
         <ActionButton
           text="Salvar Divisão"
-          className="w-full py-3 text-white bg-[#F34403] hover:bg-orange-600 rounded-xl font-bold transition-colors duration-300"
+          className="w-full py-3 text-white  bg-[#F34403] hover:bg-[#e44005] rounded-xl font-bold transition-colors duration-300 hover:translate-y-[1px] hover:shadow-lg"
           type="button"
           onClick={onClickSalvarDespesa}
         />

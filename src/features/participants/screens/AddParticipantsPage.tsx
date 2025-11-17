@@ -26,13 +26,15 @@ function AddParticipantsPage() {
 
   const context = useContext(GroupContext);
 
-  const [members, setMembers] = useState<Member[]>([]);
+  const { group, setGroup } = context;
 
+  const [members, setMembers] = useState<Member[]>([]);
+  
   if (!context || !context.group || !context.setGroup) {
+    console.error("dados:", context.group);
     return <div>Carregando...</div>;
   }
-
-  const { group, setGroup } = context;
+  
 
   const groupImageUrl =
     group.groupImage && group.groupImage.length > 0
@@ -75,9 +77,9 @@ function AddParticipantsPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white pb-20">
+    <div className="flex flex-col min-h-screen bg-white pb-20 ">
       <HeaderForm title="Adicionar Participantes" onBack={handleGoBack} />
-      <div className="flex-grow p-4 ">
+      <div className="flex-grow p-4 lg:ml-50 lg:mr-50 md:ml-40 lg:mb-10 md:mr-40 ">
         <GroupInfoCard
           className={"flex items-center mt-9 mb-15"}
           groupName={group.groupName}
@@ -90,7 +92,7 @@ function AddParticipantsPage() {
             placeholder="Nome Completo"
             {...register("nome")}
             type="text"
-            className="w-full flex-grow py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
+            className="w-full flex-grow py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
           />
           {errors.nome && (
             <p className="text-red-500 text-sm mt-1">{errors.nome.message}</p>
@@ -101,7 +103,7 @@ function AddParticipantsPage() {
               placeholder="E-mail"
               {...register("groupEmail")}
               type="email"
-              className="flex-grow py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
+              className="flex-grow py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
             />
             {errors.groupEmail && (
               <p className="text-red-500 text-sm mt-1">
@@ -112,7 +114,7 @@ function AddParticipantsPage() {
             <ActionButton
               text="Adicionar"
               type="submit"
-              className="w-full py-3 text-white bg-[#F34403] hover:bg-orange-600 rounded-xl font-bold transition-colors duration-300"
+              className="w-full py-3 text-white  bg-[#F34403] hover:bg-[#e44005] rounded-xl font-bold transition-colors duration-300 hover:translate-y-[1px] hover:shadow-lg"
             />
           </div>
         </form>
@@ -135,7 +137,7 @@ function AddParticipantsPage() {
             text="Próximo"
             type="submit"
             onClick={handleNext}
-            className="w-full py-3 text-white bg-[#F34403] hover:bg-orange-600 rounded-xl font-bold transition-colors duration-300"
+            className="w-full py-3 text-white  bg-[#F34403] hover:bg-[#e44005] rounded-xl font-bold transition-colors duration-300 hover:translate-y-[1px] hover:shadow-lg"
           />
         </form>
       </div>

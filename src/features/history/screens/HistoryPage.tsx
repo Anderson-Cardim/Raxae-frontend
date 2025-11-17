@@ -1,12 +1,11 @@
-import { FaUpload } from "react-icons/fa";
 import HeaderForm from "../../../components/layout/HeaderForm";
 import FooterNav from "../../../components/layout/FooterNav";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HistoryItem, { type HistoryEntry } from "../components/HistoryItem";
-import Button from "../../../components/ui/Button";
 import DropdownFilter from "../components/DropdownFilter";
 import GroupHeaderInfo from "../../member/components/GroupHeaderInfo";
+import { LuUpload } from "react-icons/lu";
 
 
 const mockHistory: HistoryEntry[] = [
@@ -98,22 +97,13 @@ export default function HistoryPage() {
     }, {} as Record<string, HistoryEntry[]>);
   }, [history]);
 
-  const handleUpload = () => {
-    alert("Exportar histórico acionado!");
-  };
-
   return (
     <div className="flex flex-col min-h-screen bg-white pb-20">
       <HeaderForm title="Histórico" onBack={handleGoBack} />
 
-      <Button
-        onClick={handleUpload}
-        texto={""}
-        type={"button"}
-        className="text-blue-500 hover:text-blue-700 p-2"
-      >
-        <FaUpload size={24} />
-      </Button>
+      <button className="flex justify-end mr-15 ">
+        <LuUpload  size={35} color="#FFF" className="bg-[#14879E] hover:bg-[#106a8c] p-1 rounded-lg"/>
+      </button>
 
       <div className="flex-grow p-4 lg:ml-10 lg:mr-10 mb-10">
 

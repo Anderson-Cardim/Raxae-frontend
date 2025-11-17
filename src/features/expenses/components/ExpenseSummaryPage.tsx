@@ -3,10 +3,13 @@ import { GroupContext } from '../../context/GroupContext';
 import ActionButton from '../../../components/ui/ActionButton';
 import {SummaryMemberItem} from '../../expenses/components/SummaryMemberItem'; 
 import SummaryInfoCard from './SummaryInfoCard';
+import { useNavigate } from 'react-router-dom';
 
 export function ExpenseSummaryPage() {
     
     const context = useContext(GroupContext);
+
+    const navigate = useNavigate();
 
     const { group } = context;
 
@@ -17,8 +20,12 @@ export function ExpenseSummaryPage() {
       ? URL.createObjectURL(group.groupImage[0])
       : undefined;
 
+      const handleNext = () => {
+        navigate("/grupo");
+    };
+
     return (
-        <div className="flex-grow p-4">
+        <div className="flex-grow p-4 lg:ml-40 lg:mr-40 lg:mb-10">
 
             <div className="flex-grow p-6">
 
@@ -49,7 +56,8 @@ export function ExpenseSummaryPage() {
             <div className='pt-10'>
                 <ActionButton
                     text="Pronto"
-                    className="w-full py-3 text-white bg-[#F34403] hover:bg-orange-600 rounded-xl font-bold transition-colors duration-300"
+                    onClick={handleNext}
+                    className="w-full py-3 text-white bg-[#F34403] hover:bg-[#e44005]rounded-xl font-bold transition-colors duration-300 hover:translate-y-[1px] hover:shadow-lg rounded-xl"
                 />
             </div>
         </div>
