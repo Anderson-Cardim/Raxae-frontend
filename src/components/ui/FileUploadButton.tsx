@@ -19,18 +19,24 @@ const FileUploadButton = forwardRef<HTMLInputElement, React.InputHTMLAttributes<
   };
 
   return (
-    <div className=" bg-white border-2 border-gray-400 rounded-xl h-40 flex items-center justify-center mb-6 cursor-pointer relative overflow-hidden">
+    <div className="w-full bg-white border-2 border-gray-400 rounded-xl h-40 flex items-center justify-center mb-6 cursor-pointer relative overflow-hidden">
         
       <label
         htmlFor="file-upload">
         {previewUrl ? (
-          <img src={previewUrl} alt="Pré-visualização do grupo" className="h-full w-full object-cover" />
+          <img src={previewUrl} alt="Pré-visualização do grupo" className="w-full h-full object-cover" />
         ) : (
           <PlusIcon className="h-16 w-16 text-gray-400" />
         )}
       </label>
       
-      <input id="file-upload" type="file" accept="image/*" ref={ref}  onChange={handleFileChange} className="hidden"
+      <input 
+        id="file-upload" 
+        type="file" 
+        accept="image/*" 
+        ref={ref}  
+        onChange={handleFileChange} 
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
         {...props} 
       />
     </div>

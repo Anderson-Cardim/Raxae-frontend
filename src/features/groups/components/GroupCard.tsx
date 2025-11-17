@@ -50,15 +50,15 @@ export function GroupCard({
 
         <div className="flex items-center gap-2 mt-6">
           <button onClick={() => onHistory(id)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-            <BsClockHistory size={20} className="text-gray-600" />
+            <BsClockHistory size={20} className="text-gray-600 cursor-pointer" />
           </button>
           <button onClick={() => onDelete(id)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-            <BsTrash size={20} className="text-red-500" />
+            <BsTrash size={20} className="text-red-500 cursor-pointer" />
           </button>
 
           <button 
             onClick={() => onEdit(id)}
-            className="flex-grow flex justify-center items-center gap-2 bg-[#14879E] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#106a8c] transition-colors"
+            className="flex-grow flex justify-center items-center gap-2 bg-[#14879E] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#106a8c] transition-colors cursor-pointer"
           >
             <BsPencilSquare size={16} />
             Editar grupo
