@@ -49,7 +49,7 @@ function EditGroupPage() {
   };
 
   const handleGoBack = () => {
-    navigate("/home");
+    navigate("/grupo");
   };
 
   return (
@@ -58,7 +58,7 @@ function EditGroupPage() {
       className="flex flex-col min-h-screen bg-white pb-20"
     >
       <HeaderForm title="Editar Grupo" onBack={handleGoBack} />
-      <div className="flex-grow p-6 ">
+      <div className="flex-grow p-6 lg:ml-35 lg:mr-35 mb-10">
         <div className="flex-grow p-0.90">
           <FileUploadButton {...register("groupImage")} />
         </div>
@@ -70,7 +70,7 @@ function EditGroupPage() {
               required: "Nome do grupo é obrigatório",
             })}
             type="text"
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
+            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
           />
           {errors.groupName && (
             <p className="text-red-500 text-sm mt-1">
@@ -84,7 +84,7 @@ function EditGroupPage() {
             placeholder="Opcional"
             type="text"
             {...register("description")}
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
+            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
           />
         </FormSection>
 
@@ -92,7 +92,7 @@ function EditGroupPage() {
           <SelectInput
             options={periodicidadeOptions}
             className="w-full py-3 px-4 border-2 border-gray-300 bg-white rounded-xl text-gray-700 appearance-none
-                        focus:outline-none focus:border-gray-500"
+                        focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
             {...register("periodicity", {
               required: "Periodicidade é obrigatória",
             })}
@@ -106,7 +106,7 @@ function EditGroupPage() {
 
         <FormSection title="Data de vencimento">
           <DateInput
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
+            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
             {...register("dueDate", {
               required: "Data de vencimento é obrigatória",
             })}
@@ -125,7 +125,7 @@ function EditGroupPage() {
             {...register("adminPix", {
               required: "Pix do administrador é obrigatório",
             })}
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
+            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
           />
           {errors.adminPix && (
             <p className="text-red-500 text-sm mt-1">
@@ -141,7 +141,7 @@ function EditGroupPage() {
               <ActionButton
                 text="SALVAR"
                 type="submit"
-                className="py-3 px-10 text-white bg-[#14879E] hover:bg-[#106a8c] rounded-lg text-xl font-bold transition-colors duration-300"
+                className="py-3 px-10 text-white bg-[#14879E] hover:bg-[#106a8c] rounded-lg text-xl font-bold transition-colors duration-300 shadow-2xl hover:translate-y-[1px] hover:shadow-lg"
               />
             </div>
         </FormSection>

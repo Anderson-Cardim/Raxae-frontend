@@ -57,8 +57,8 @@ const mockGroups = [
 export function GroupsPage() {
   const navigate = useNavigate();
 
-  const handleEdit = (groupId: string) => {
-    navigate(`/editar-grupo/${groupId}`);
+  const handleEdit = () => {
+    navigate(`/editar-grupo`);
   };
 
   const handleDelete = (groupId: string) => {
