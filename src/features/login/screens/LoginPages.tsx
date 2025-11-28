@@ -26,7 +26,7 @@ function LoginPage() {
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center p-8 text-white text-center"
-      style={{ backgroundColor: "#14879E" }}
+      style={{ backgroundColor: "#00334e" }}
     >
       <img src={logo} alt="Logo Raxae" className="mb-8 h-24" />
 
