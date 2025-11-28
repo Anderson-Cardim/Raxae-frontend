@@ -134,7 +134,7 @@ function EditGroupPage() {
           )}
         </FormSection>
 
-        <MembersLink memberCount={6} groupId="123-abc-xyz" />
+        <MembersLink memberCount={6} groupId="" />
 
         <FormSection title="">
             <div className="mt-8 flex justify-end">

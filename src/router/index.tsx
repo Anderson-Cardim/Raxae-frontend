@@ -12,6 +12,7 @@ import EditPerfil from "../features/editPerfil/screens/EditPerfil.tsx";
 import AddFriends from "../features/addFriends/screens/AddFriends.tsx";
 import MembersManagementPage from "../features/member/screens/MembersManagementPage.tsx";
 import HistoryPage from "../features/history/screens/HistoryPage.tsx";
+import MemberAdmin from "../features/memberAdmin/screens/MemberAdmin.tsx";
 // import { ProtectedRoute } from "../components/auth/index.tsx";
 import { Navigate } from "react-router-dom";
 
@@ -36,6 +37,7 @@ export const AppRouter = () => {
               <Route path="/editar-grupo" element={<EditGroupPage />} />
 
               <Route path="/grupo/membro" element={<MembersManagementPage />} />
+              <Route path="/grupo/membro/admin" element={<MemberAdmin />} />
               <Route
                 path="/adicionar-participantes"
                 element={<AddParticipantsPage />}

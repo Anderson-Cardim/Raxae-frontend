@@ -22,7 +22,7 @@ export function MembersLink({ memberCount, groupId }: MembersLinkProps) {
       </p>
       
       <Link 
-        to={`/grupo/${groupId}/participantes`} 
+        to={`/grupo/membro/admin`} 
         className="text-gray-500 hover:text-gray-900"
       >
         <BsThreeDots size={28}/> 

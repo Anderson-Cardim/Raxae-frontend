@@ -1,4 +1,4 @@
-import logo from "../../../assets/react.svg";
+import logo from "../../../assets/logo.png";
 import Input from "../../../components/ui/Input.tsx";
 import { useForm } from "react-hook-form";
 import Button from "../../../components/ui/Button.tsx";

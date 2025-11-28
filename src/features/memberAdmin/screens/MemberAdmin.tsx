@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import FooterNav from "../../../components/layout/FooterNav";
 import MemberItem from "../components/MemberItem";
 import HeaderForm from "../../../components/layout/HeaderForm";
-import ProofAttachmentForm from "../components/ProofAttachmentForm";
+import { FaPlus } from "react-icons/fa6";
 import GroupHeaderInfo from "../components/GroupHeaderInfo";
 
 interface Group {
@@ -34,7 +34,7 @@ const mockMembers: Member[] = [
     isCurrentUser: false,
     isManager: true,
     canDelete: false,
-    imageUrl: "/ImagemDisney.svg"
+    imageUrl: "/liz.png"
   },
   {
     id: "2",
@@ -42,16 +42,16 @@ const mockMembers: Member[] = [
     isCurrentUser: true,
     isManager: false,
     canDelete: true,
-    imageUrl: "/ImagemDisney.svg"
+    imageUrl: "/pedro.png"
   },
 ];
-export default function MembersManagementPage() {
+export default function MemberAdmin() {
   const navigate = useNavigate();
   const [group] = useState(mockGroup);
   const [members, setMembers] = useState(mockMembers);
 
   const handleGoBack = () => {
-    navigate("/grupo");
+    navigate("/home");
   };
 
   const handleRemoveMember = (memberId: string) => {
@@ -89,7 +89,10 @@ export default function MembersManagementPage() {
           ))}
         </div>
 
-        <ProofAttachmentForm onUpload={handleProofUpload} />
+        <button className="w-full flex justify-center items-center p-8 border-2 border-gray-300 rounded-xl cursor-pointer hover:bg-gray-100 hover:shadow-lg transition duration-200" >
+          <FaPlus />
+        </button>
+
       </div>
 
       <FooterNav />
