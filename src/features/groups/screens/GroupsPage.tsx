@@ -1,6 +1,7 @@
+import { TbRulerMeasure } from "react-icons/tb";
 import FooterNav from "../../../components/layout/FooterNav";
 import { GroupCard } from '../components/GroupCard';
-import { useNavigate } from 'react-router-dom'; // Para a navegação
+import { useNavigate } from 'react-router-dom'; 
 
 const mockGroups = [
   {
@@ -9,7 +10,8 @@ const mockGroups = [
     memberCount: 6,
     value: 'R$43,90',
     dueDate: 27,
-    imageUrl: '/ImagemDisney.svg' 
+    imageUrl: '/ImagemDisney.svg',
+    admin: true,
   },
   {
     id: 'aluguel456',
@@ -18,6 +20,7 @@ const mockGroups = [
     value: 'R$800',
     dueDate: 5,
     imageUrl: '/ImagemAluguel.svg', 
+    admin: false,
   },
   {
     id: 'netflix456',
@@ -26,6 +29,7 @@ const mockGroups = [
     value: 'R$800',
     dueDate: 3,
     imageUrl: '/ImagemAluguel.svg', 
+    admin: false,
   },
   {
     id: 'netflix456',
@@ -34,6 +38,7 @@ const mockGroups = [
     value: 'R$800',
     dueDate: 3,
     imageUrl: '/ImagemAluguel.svg', 
+    admin: true,
   },
   {
     id: 'netflix456',
@@ -42,6 +47,8 @@ const mockGroups = [
     value: 'R$800',
     dueDate: 3,
     imageUrl: '/ImagemAluguel.svg', 
+    admin: true,
+
   },
   {
     id: 'netflix456',
@@ -50,6 +57,7 @@ const mockGroups = [
     value: 'R$800',
     dueDate: 3,
     imageUrl: '/ImagemAluguel.svg', 
+    admin: false,
   },
   
 ];
@@ -57,8 +65,13 @@ const mockGroups = [
 export function GroupsPage() {
   const navigate = useNavigate();
 
-  const handleEdit = (groupId: string) => {
-    navigate(`/editar-grupo/${groupId}`);
+  const handleEdit = ( isAdmin: boolean) => {
+    if (isAdmin) {
+      navigate(`/editar-grupo`);
+    } else {
+
+      navigate(`/grupo/membro`);
+    }
   };
 
   const handleDelete = (groupId: string) => {
@@ -85,7 +98,7 @@ export function GroupsPage() {
               value={group.value}
               dueDate={group.dueDate}
               imageUrl={group.imageUrl}
-              onEdit={handleEdit}
+              onEdit={() => handleEdit(group.admin)}
               onDelete={handleDelete}
               onHistory={handleHistory}
             />

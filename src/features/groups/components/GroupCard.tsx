@@ -7,7 +7,6 @@ export interface GroupCardProps {
     value: string;
     dueDate: number;
     imageUrl: string;
-    
     onEdit: (groupId: string) => void; 
     onDelete: (groupId: string) => void;
     onHistory: (groupId: string) => void;

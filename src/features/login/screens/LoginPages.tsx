@@ -1,4 +1,4 @@
-import logo from "../../../assets/react.svg";
+import logo from "../../../assets/logo.png";
 import Input from "../../../components/ui/Input.tsx";
 import { useForm } from "react-hook-form";
 import Button from "../../../components/ui/Button.tsx";
@@ -76,7 +76,7 @@ function LoginPage() {
         <Button
           texto="Entrar"
           type="submit"
-          className="w-50 mt-10 max-w-sm bg-violet-700 hover:bg-violet-800 text-white font-bold py-3 rounded-3xl mb-4 transition duration-300 bg-gradient-to-l from-[#3F2B86] to-[#7F79D4] hover:translate-y-[1px] hover:shadow-lg"
+          className="w-50 mt-10 max-w-sm bg-violet-700 hover:bg-violet-800 text-white font-bold py-3 rounded-3xl mb-4 transition duration-300 bg-gradient-to-l from-[#3F2B86] to-[#7F79D4] hover:translate-y-[1px] hover:shadow-lg cursor-pointer"
         />
       </form>
 

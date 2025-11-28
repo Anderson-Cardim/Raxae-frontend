@@ -16,6 +16,8 @@ interface UserData {
 
 export default function EditPerfil() {
 
+  const [isProModalOpen, setIsProModalOpen] = useState(false);
+
     const [userData, setUserData] = useState<UserData>({
         name: 'Anderson Cardim',
         email: 'Anderson@email.com',
@@ -49,9 +51,15 @@ export default function EditPerfil() {
     };
 
     const handlePro = () => {
-      console.log("Navegar para a página PRO");
-    };
+      console.log("Abrindo Modal PRO");
+      setIsProModalOpen(true);
+    }
     
+    const handleConfirmPro = () => {
+        setIsProModalOpen(false); 
+        console.log("Usuário fechou/confirmou. Nenhuma navegação será feita por enquanto.");
+    }
+
     return (
         <form onSubmit={handleSave} className="flex flex-col min-h-screen bg-white pb-20">
           <HeaderForm title="Editar Perfil" onBack={handleGoBack} />
