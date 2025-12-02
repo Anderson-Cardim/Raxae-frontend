@@ -2,7 +2,7 @@ import HeaderForm from "../../../components/layout/HeaderForm";
 import GroupInfoCard from "../components/GroupInfoCard";
 import FooterNav from "../../../components/layout/FooterNav";
 import { GroupContext, type Member } from "../../context/GroupContext";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../../components/ui/Input";
 import { useForm } from "react-hook-form";
@@ -26,15 +26,13 @@ function AddParticipantsPage() {
 
   const context = useContext(GroupContext);
 
-  const { group, setGroup } = context;
-
   const [members, setMembers] = useState<Member[]>([]);
-  
+
   if (!context || !context.group || !context.setGroup) {
-    console.error("dados:", context.group);
     return <div>Carregando...</div>;
   }
-  
+
+  const { group, setGroup } = context;
 
   const groupImageUrl =
     group.groupImage && group.groupImage.length > 0
@@ -52,6 +50,9 @@ function AddParticipantsPage() {
         contact: data.groupEmail,
         nome: data.nome,
         amount: 0,
+        isManager: false,
+        isCurrentUser: false,
+        canDelete: true
       };
 
       console.log("Dados do formulário:", data);
@@ -132,14 +133,14 @@ function AddParticipantsPage() {
           />
         ))}
 
-        <form className="pt-4" onSubmit={handleSubmit(handleNext)}>
+        <div className="pt-4">
           <ActionButton
             text="Próximo"
-            type="submit"
+            type="button"
             onClick={handleNext}
             className="w-full py-3 text-white  bg-[#F34403] hover:bg-[#e44005] rounded-xl font-bold transition-colors duration-300 hover:translate-y-[1px] hover:shadow-lg"
           />
-        </form>
+        </div>
       </div>
       <FooterNav />
     </div>

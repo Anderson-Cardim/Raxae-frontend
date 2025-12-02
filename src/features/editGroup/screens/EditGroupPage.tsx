@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useEffect, useState } from "react";
 import HeaderForm from "../../../components/layout/HeaderForm";
 import FormSection from "../components/FormSection";
 import { MembersLink } from '../components/linkMembros';
@@ -9,8 +9,8 @@ import DateInput from "../../../components/ui/DateInput";
 import ActionButton from "../../../components/ui/ActionButton";
 import FileUploadButton from "../../../components/ui/FileUploadButton";
 import { useForm } from "react-hook-form";
-import { GroupContext } from "../../context/GroupContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { groupService, type GrupoRequest } from "../../../services/groupService";
 
 type CreateGroupFormInputs = {
   groupImage: FileList;
@@ -31,26 +31,67 @@ function EditGroupPage() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<CreateGroupFormInputs>();
 
   const navigate = useNavigate();
-  const context = useContext(GroupContext);
+  const { groupId } = useParams<{ groupId: string }>();
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = (data: CreateGroupFormInputs) => {
-    if (context) {
-      console.log("Dados do formulário:", data);
-      context.setGroup(data);
+  useEffect(() => {
+    if (groupId) {
+      setLoading(true);
+      groupService.obterGrupo(groupId)
+        .then(group => {
+          setValue("groupName", group.nomeGrupo);
+          setValue("description", group.descricao);
+          setValue("adminPix", "");
+        })
+        .catch(err => console.error("Failed to load group:", err))
+        .finally(() => setLoading(false));
+    }
+  }, [groupId, setValue]);
 
-      navigate("/adicionar-participantes");
-    } else {
-      console.error("GroupContext não está disponível.");
+  const onSubmit = async (data: CreateGroupFormInputs) => {
+    if (!groupId) return;
+
+    setLoading(true);
+    try {
+      const currentGroup = await groupService.obterGrupo(groupId);
+
+      const updateData: GrupoRequest = {
+        nome: data.groupName,
+        descricao: data.description,
+        icone: "",
+        membros: currentGroup.membros.map(m => ({
+          email: "",
+          nome: m.nomeUsuario,
+          funcao: "MEMBRO"
+        })),
+        configuracao: {
+          juros: 0,
+          multa: 0
+        },
+        chavePix: data.adminPix
+      };
+
+      await groupService.editarGrupo(groupId, updateData);
+      alert("Grupo atualizado com sucesso!");
+      navigate("/home");
+    } catch (error) {
+      console.error("Failed to update group:", error);
+      alert("Erro ao atualizar grupo.");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoBack = () => {
-    navigate("/grupo");
+    navigate("/home");
   };
+
+  if (loading) return <div>Carregando...</div>;
 
   return (
     <form
@@ -134,16 +175,16 @@ function EditGroupPage() {
           )}
         </FormSection>
 
-        <MembersLink memberCount={6} groupId="" />
+        {groupId && <MembersLink memberCount={0} groupId={groupId} />}
 
         <FormSection title="">
-            <div className="mt-8 flex justify-end">
-              <ActionButton
-                text="SALVAR"
-                type="submit"
-                className="py-3 px-10 text-white bg-[#14879E] hover:bg-[#106a8c] rounded-lg text-xl font-bold transition-colors duration-300 shadow-2xl hover:translate-y-[1px] hover:shadow-lg"
-              />
-            </div>
+          <div className="mt-8 flex justify-end">
+            <ActionButton
+              text="SALVAR"
+              type="submit"
+              className="py-3 px-10 text-white bg-[#14879E] hover:bg-[#106a8c] rounded-lg text-xl font-bold transition-colors duration-300 shadow-2xl hover:translate-y-[1px] hover:shadow-lg"
+            />
+          </div>
         </FormSection>
       </div>
       <FooterNav />

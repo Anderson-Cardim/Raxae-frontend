@@ -1,108 +1,86 @@
-import { TbRulerMeasure } from "react-icons/tb";
+import { useEffect, useState } from "react";
 import FooterNav from "../../../components/layout/FooterNav";
 import { GroupCard } from '../components/GroupCard';
-import { useNavigate } from 'react-router-dom'; 
-
-const mockGroups = [
-  {
-    id: 'disney123',
-    name: 'Disney',
-    memberCount: 6,
-    value: 'R$43,90',
-    dueDate: 27,
-    imageUrl: '/ImagemDisney.svg',
-    admin: true,
-  },
-  {
-    id: 'aluguel456',
-    name: 'Aluguel Mi Casita',
-    memberCount: 2,
-    value: 'R$800',
-    dueDate: 5,
-    imageUrl: '/ImagemAluguel.svg', 
-    admin: false,
-  },
-  {
-    id: 'netflix456',
-    name: 'Aluguel Mi Casita',
-    memberCount: 2,
-    value: 'R$800',
-    dueDate: 3,
-    imageUrl: '/ImagemAluguel.svg', 
-    admin: false,
-  },
-  {
-    id: 'netflix456',
-    name: 'Aluguel Mi Casita',
-    memberCount: 2,
-    value: 'R$800',
-    dueDate: 3,
-    imageUrl: '/ImagemAluguel.svg', 
-    admin: true,
-  },
-  {
-    id: 'netflix456',
-    name: 'Aluguel Mi Casita',
-    memberCount: 2,
-    value: 'R$800',
-    dueDate: 3,
-    imageUrl: '/ImagemAluguel.svg', 
-    admin: true,
-
-  },
-  {
-    id: 'netflix456',
-    name: 'Aluguel Mi Casita',
-    memberCount: 2,
-    value: 'R$800',
-    dueDate: 3,
-    imageUrl: '/ImagemAluguel.svg', 
-    admin: false,
-  },
-  
-];
+import { useNavigate } from 'react-router-dom';
+import { groupService } from "../../../services/groupService";
+import type { GrupoResponse } from "../../../services/groupService";
 
 export function GroupsPage() {
   const navigate = useNavigate();
+  const [groups, setGroups] = useState<GrupoResponse[]>([]);
+  const [loading, setLoading] = useState(true);
+  const currentUserId = localStorage.getItem('usuarioId');
 
-  const handleEdit = ( isAdmin: boolean) => {
-    if (isAdmin) {
-      navigate(`/editar-grupo`);
-    } else {
+  useEffect(() => {
+    loadGroups();
+  }, []);
 
-      navigate(`/grupo/membro`);
+  const loadGroups = async () => {
+    try {
+      setLoading(true);
+      const data = await groupService.listarMeusGrupos();
+      setGroups(data);
+    } catch (error) {
+      console.error("Failed to load groups", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleDelete = (groupId: string) => {
-    alert(`Lógica para DELETAR o grupo ${groupId} aqui!`);
+  const handleEdit = (groupId: string, isAdmin: boolean) => {
+    if (isAdmin) {
+      navigate(`/editar-grupo/${groupId}`);
+    } else {
+      navigate(`/grupo/${groupId}/membro`);
+    }
+  };
+
+  const handleDelete = async (groupId: string) => {
+    if (window.confirm("Tem certeza que deseja excluir este grupo?")) {
+      try {
+        await groupService.deletarGrupo(groupId);
+        loadGroups(); // Reload list
+      } catch (error) {
+        console.error("Failed to delete group", error);
+        alert("Erro ao excluir grupo");
+      }
+    }
   };
 
   const handleHistory = (groupId: string) => {
-    alert(`Lógica para ver o HISTÓRICO do grupo ${groupId} aqui!`);
-    navigate(`/history`);
+    navigate(`/grupo/${groupId}/historico`);
   };
+
+  if (loading) {
+    return <div className="p-4 text-center">Carregando grupos...</div>;
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <div className="p-4 pb-24 lg:ml-5 lg:mr-5 md:ml-5 md:mr-5"> 
+      <div className="p-4 pb-24 lg:ml-5 lg:mr-5 md:ml-5 md:mr-5">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Grupos</h1>
 
         <div className=" grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-cols-1 justify-center gap-8 mb-5">
-          {mockGroups.map((group) => (
-            <GroupCard
-              key={group.id}
-              id={group.id}
-              name={group.name}
-              memberCount={group.memberCount}
-              value={group.value}
-              dueDate={group.dueDate}
-              imageUrl={group.imageUrl}
-              onEdit={() => handleEdit(group.admin)}
-              onDelete={handleDelete}
-              onHistory={handleHistory}
-            />
-          ))}
+          {groups.map((group) => {
+            const isAdmin = group.adminId === currentUserId;
+            return (
+              <GroupCard
+                key={group.id}
+                id={group.id}
+                name={group.nomeGrupo}
+                memberCount={group.membros.length}
+                value={'R$ 0,00'} // Placeholder as API doesn't return total value yet
+                dueDate={10} // Placeholder
+                imageUrl={group.icone || '/ImagemDisney.svg'}
+                onEdit={() => handleEdit(group.id, isAdmin)}
+                onDelete={() => handleDelete(group.id)}
+                onHistory={() => handleHistory(group.id)}
+              />
+            );
+          })}
+          {groups.length === 0 && (
+            <p className="text-gray-500 col-span-full text-center">Nenhum grupo encontrado.</p>
+          )}
         </div>
       </div>
 
@@ -110,3 +88,4 @@ export function GroupsPage() {
     </div>
   );
 }
+
