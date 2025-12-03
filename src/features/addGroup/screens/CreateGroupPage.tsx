@@ -3,44 +3,44 @@ import HeaderForm from "../../../components/layout/HeaderForm";
 import FormSection from "../components/FormSection";
 import Input from "../../../components/ui/Input";
 import FooterNav from "../../../components/layout/FooterNav";
-import SelectInput from "../../../components/ui/SelectInput";
-import DateInput from "../../../components/ui/DateInput";
+
 import ActionButton from "../../../components/ui/ActionButton";
 import FileUploadButton from "../../../components/ui/FileUploadButton";
 import { useForm } from "react-hook-form";
-import { GroupContext } from "../../context/GroupContext";
+
+import { groupService, type GrupoRequest } from "../../../services/groupService";
 import { useNavigate } from "react-router-dom";
 
 type CreateGroupFormInputs = {
   groupImage: FileList;
   groupName: string;
   description: string;
-  periodicity: string;
-  dueDate: string;
-  adminPix: string;
+
 };
 
-const periodicidadeOptions = [
-  { value: "mensal", label: "Mensal" },
-  { value: "quinzenal", label: "Quinzenal" },
-  { value: "semanal", label: "Semanal" },
-];
+
 
 function CreateGroupPage() {
   const { register, handleSubmit, formState: { errors }, } = useForm<CreateGroupFormInputs>();
 
   const navigate = useNavigate();
 
-  const context = useContext(GroupContext);
 
-  const onSubmit = (data: CreateGroupFormInputs) => {
-    if (context) {
-      console.log("Dados do formulário:", data);
-      context.setGroup(data);
 
-      navigate("/adicionar-participantes");
-    } else {
-      console.error("GroupContext não está disponível.");
+  const onSubmit = async (data: CreateGroupFormInputs) => {
+    try {
+      const grupoRequest: GrupoRequest = {
+        nomeGrupo: data.groupName,
+        descricao: data.description || "",
+        icone: "default-icon",
+      };
+
+      await groupService.criarGrupo(grupoRequest);
+      alert("Grupo criado com sucesso!");
+      navigate("/home");
+    } catch (error) {
+      console.error("Erro ao criar grupo:", error);
+      alert("Erro ao criar grupo.");
     }
   };
 
@@ -82,56 +82,12 @@ function CreateGroupPage() {
           />
         </FormSection>
 
-        <FormSection title="Periodicidade">
-          <SelectInput
-            options={periodicidadeOptions}
-            className="w-full py-3 px-4 border-2 border-gray-300 bg-white rounded-xl text-gray-700 appearance-none
-                        focus:outline-none focus:border-gray-500"
-            {...register("periodicity", {
-              required: "Periodicidade é obrigatória",
-            })}
-          />
-          {errors.periodicity && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.periodicity.message}
-            </p>
-          )}
-        </FormSection>
 
-        <FormSection title="Data de vencimento">
-          <DateInput
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
-            {...register("dueDate", {
-              required: "Data de vencimento é obrigatória",
-            })}
-          />
-          {errors.dueDate && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.dueDate.message}
-            </p>
-          )}
-        </FormSection>
-
-        <FormSection title="Pix do administrador">
-          <Input
-            placeholder=""
-            type="text"
-            {...register("adminPix", {
-              required: "Pix do administrador é obrigatório",
-            })}
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
-          />
-          {errors.adminPix && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.adminPix.message}
-            </p>
-          )}
-        </FormSection>
 
         <FormSection title="">
           <div className="p-0.90 pt-4">
             <ActionButton
-              text="ADICIONAR PARTICIPANTES"
+              text="CRIAR GRUPO"
               type="submit"
               className="w-full py-4 text-white bg-[#F34403] hover:bg-[#e44005] rounded-2xl font-bold transition-colors duration-300 transition-colors duration-300 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
             />

@@ -29,12 +29,9 @@ export interface ConfiguracaoGrupo {
 }
 
 export interface GrupoRequest {
-    nome: string; // API uses 'nome', not 'nomeGrupo' for request
+    nomeGrupo: string;
     descricao: string;
     icone: string;
-    membros: MembroRequest[];
-    configuracao: ConfiguracaoGrupo;
-    chavePix: string;
 }
 
 export interface MembroSimples {

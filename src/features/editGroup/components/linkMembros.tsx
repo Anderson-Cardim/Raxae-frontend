@@ -6,7 +6,7 @@ interface MembersLinkProps {
   groupId: string;
 }
 
-export function MembersLink({ memberCount }: MembersLinkProps) {
+export function MembersLink({ memberCount, groupId }: MembersLinkProps) {
   return (
     <div
       className="
@@ -21,7 +21,7 @@ export function MembersLink({ memberCount }: MembersLinkProps) {
       </p>
 
       <Link
-        to={`/grupo/membro/admin`}
+        to={`/grupo/membro/admin/${groupId}`}
         className="text-gray-500 hover:text-gray-900"
       >
         <BsThreeDots size={28} />

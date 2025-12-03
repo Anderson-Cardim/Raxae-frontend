@@ -4,40 +4,40 @@ import FormSection from "../components/FormSection";
 import { MembersLink } from '../components/linkMembros';
 import Input from "../../../components/ui/Input";
 import FooterNav from "../../../components/layout/FooterNav";
-import SelectInput from "../../../components/ui/SelectInput";
-import DateInput from "../../../components/ui/DateInput";
 import ActionButton from "../../../components/ui/ActionButton";
 import FileUploadButton from "../../../components/ui/FileUploadButton";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { groupService, type GrupoRequest } from "../../../services/groupService";
+import { expenseService } from "../../../services/expenseService";
+
+// ... (existing code)
+
+
 
 type CreateGroupFormInputs = {
   groupImage: FileList;
   groupName: string;
   description: string;
-  periodicity: string;
-  dueDate: string;
-  adminPix: string;
+
+
 };
 
-const periodicidadeOptions = [
-  { value: "mensal", label: "Mensal" },
-  { value: "quinzenal", label: "Quinzenal" },
-  { value: "semanal", label: "Semanal" },
-];
+
 
 function EditGroupPage() {
   const {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<CreateGroupFormInputs>();
 
   const navigate = useNavigate();
   const { groupId } = useParams<{ groupId: string }>();
   const [loading, setLoading] = useState(false);
+  const [memberCount, setMemberCount] = useState(0);
 
   useEffect(() => {
     if (groupId) {
@@ -46,34 +46,34 @@ function EditGroupPage() {
         .then(group => {
           setValue("groupName", group.nomeGrupo);
           setValue("description", group.descricao);
-          setValue("adminPix", "");
+
+          setMemberCount(group.membros?.length || 0);
         })
         .catch(err => console.error("Failed to load group:", err))
         .finally(() => setLoading(false));
     }
   }, [groupId, setValue]);
 
+  const handleGenerateExpense = async () => {
+    if (!groupId) return;
+
+    if (memberCount <= 1) {
+      alert("Necessário ter mais de 1 membro para gerar despesa.");
+      return;
+    }
+
+    navigate(`/grupo/${groupId}/despesas/nova`);
+  };
+
   const onSubmit = async (data: CreateGroupFormInputs) => {
     if (!groupId) return;
 
     setLoading(true);
     try {
-      const currentGroup = await groupService.obterGrupo(groupId);
-
       const updateData: GrupoRequest = {
-        nome: data.groupName,
+        nomeGrupo: data.groupName,
         descricao: data.description,
-        icone: "",
-        membros: currentGroup.membros.map(m => ({
-          email: "",
-          nome: m.nomeUsuario,
-          funcao: "MEMBRO"
-        })),
-        configuracao: {
-          juros: 0,
-          multa: 0
-        },
-        chavePix: data.adminPix
+        icone: "default-icon", // Keeping the mock icon as requested
       };
 
       await groupService.editarGrupo(groupId, updateData);
@@ -129,56 +129,26 @@ function EditGroupPage() {
           />
         </FormSection>
 
-        <FormSection title="Periodicidade">
-          <SelectInput
-            options={periodicidadeOptions}
-            className="w-full py-3 px-4 border-2 border-gray-300 bg-white rounded-xl text-gray-700 appearance-none
-                        focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
-            {...register("periodicity", {
-              required: "Periodicidade é obrigatória",
-            })}
-          />
-          {errors.periodicity && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.periodicity.message}
-            </p>
-          )}
-        </FormSection>
 
-        <FormSection title="Data de vencimento">
-          <DateInput
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
-            {...register("dueDate", {
-              required: "Data de vencimento é obrigatória",
-            })}
-          />
-          {errors.dueDate && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.dueDate.message}
-            </p>
-          )}
-        </FormSection>
 
-        <FormSection title="Pix do administrador">
-          <Input
-            placeholder=""
-            type="text"
-            {...register("adminPix", {
-              required: "Pix do administrador é obrigatório",
-            })}
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
-          />
-          {errors.adminPix && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.adminPix.message}
-            </p>
-          )}
-        </FormSection>
 
-        {groupId && <MembersLink memberCount={0} groupId={groupId} />}
+
+        {groupId && <MembersLink memberCount={memberCount} groupId={groupId} />}
 
         <FormSection title="">
-          <div className="mt-8 flex justify-end">
+          <div className="mt-8 flex justify-end gap-4 flex-wrap">
+            <ActionButton
+              text="ADICIONAR PARTICIPANTES"
+              type="button"
+              onClick={() => navigate(`/grupo/${groupId}/participantes`)}
+              className="py-3 px-6 text-white bg-blue-600 hover:bg-blue-700 rounded-lg text-xl font-bold transition-colors duration-300 shadow-2xl hover:translate-y-[1px] hover:shadow-lg"
+            />
+            <ActionButton
+              text="GERAR DESPESA"
+              type="button"
+              onClick={handleGenerateExpense}
+              className="py-3 px-6 text-white bg-green-600 hover:bg-green-700 rounded-lg text-xl font-bold transition-colors duration-300 shadow-2xl hover:translate-y-[1px] hover:shadow-lg"
+            />
             <ActionButton
               text="SALVAR"
               type="submit"

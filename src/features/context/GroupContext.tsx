@@ -5,6 +5,8 @@ export type SplitMethod = "value" | "percentage";
 
 export type Member = {
   id: number;
+  userId?: string;
+  memberId?: string;
   nome: string;
   amount: number;
   contact: string;

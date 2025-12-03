@@ -4,8 +4,8 @@ import ActionButton from '../../../components/ui/ActionButton';
 import { SummaryMemberItem } from '../../expenses/components/SummaryMemberItem';
 import SummaryInfoCard from './SummaryInfoCard';
 import { useNavigate } from 'react-router-dom';
-import { groupService, type GrupoRequest, type MembroRequest } from '../../../services/groupService';
-import { expenseService } from '../../../services/expenseService';
+import { groupService, type GrupoRequest } from '../../../services/groupService';
+
 
 export function ExpenseSummaryPage() {
 
@@ -27,61 +27,29 @@ export function ExpenseSummaryPage() {
 
         try {
             // 1. Create Group
-            const membrosRequest: MembroRequest[] = (group.members || []).map(m => ({
-                email: m.contact,
-                nome: m.nome,
-                funcao: "MEMBRO"
-            }));
-
             const grupoRequest: GrupoRequest = {
-                nome: group.groupName,
+                nomeGrupo: group.groupName,
                 descricao: group.description || "",
-                icone: "",
-                membros: membrosRequest,
-                configuracao: {
-                    juros: 0,
-                    multa: 0
-                },
-                chavePix: group.adminPix || ""
+                icone: "default-icon",
             };
 
             const createdGroup = await groupService.criarGrupo(grupoRequest);
             console.log("Grupo criado:", createdGroup);
 
-            // 2. Register Expense (if exists)
-            if (group.expense) {
-                const divisoesEspecificas: Record<string, number> = {};
-
-                group.expense.members.forEach(expenseMember => {
-                    const createdMember = createdGroup.membros.find(m =>
-                        m.nomeUsuario === expenseMember.nome
-                    );
-
-                    if (createdMember) {
-                        divisoesEspecificas[createdMember.idUsuario] = expenseMember.amount;
-                    }
-                });
-
-                if (Object.keys(divisoesEspecificas).length > 0) {
-                    await expenseService.registrarDespesa(createdGroup.id, {
-                        nome: group.expense.description,
-                        valor: group.expense.totalValue,
-                        tipoRecorrencia: "UNICA",
-                        tipoDivisao: "POR_VALOR",
-                        diaVencimento: new Date().getDate(),
-                        divisoesEspecificas: divisoesEspecificas,
-                        dataVencimentoAvulsa: new Date().toISOString().split('T')[0]
-                    });
-                    console.log("Despesa registrada");
-                }
+            // 2. Generate Invite Link
+            try {
+                const inviteLink = await groupService.gerarConvite(createdGroup.id);
+                console.log("Link de convite:", inviteLink);
+                alert(`Grupo criado! Link de convite: ${inviteLink}`);
+            } catch (inviteError) {
+                console.error("Erro ao gerar convite:", inviteError);
             }
 
-            alert("Grupo e despesas criados com sucesso!");
             navigate("/home");
 
         } catch (error) {
             console.error("Erro ao finalizar criação:", error);
-            alert("Erro ao criar grupo ou despesa. Tente novamente.");
+            alert("Erro ao criar grupo. Tente novamente.");
         } finally {
             setLoading(false);
         }
