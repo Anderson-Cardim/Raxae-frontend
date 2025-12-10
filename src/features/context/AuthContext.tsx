@@ -1,10 +1,13 @@
-
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
+import { authService } from '../../services/authService';
+import type { LoginRequest, CadastroRequest } from '../../services/authService';
 
 interface AuthContextType {
   isAuthenticated: boolean;
   user: { id: string; name: string } | null;
-  login: (credentials: any) => Promise<void>;
+  login: (credentials: LoginRequest) => Promise<void>;
+  registerUser: (data: CadastroRequest) => Promise<void>;
   logout: () => void;
 }
 
@@ -19,36 +22,40 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<{ id: string; name: string } | null>(null);
 
-  const login = async (credentials: any) => {
-    await new Promise(resolve => setTimeout(resolve, 1000)); 
-    setIsAuthenticated(true);
-    setUser({ id: 'u1', name: 'User Name' }); 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const usuarioId = localStorage.getItem('usuarioId');
+    if (token && usuarioId) {
+      setIsAuthenticated(true);
+      setUser({ id: usuarioId, name: 'Usuário' });
+    }
+  }, []);
+
+  const login = async (credentials: LoginRequest) => {
+    try {
+      const response = await authService.login(credentials);
+      setIsAuthenticated(true);
+      setUser({ id: response.usuarioId, name: 'Usuário' });
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error;
+    }
   };
 
-  const registerUser = async (data: any) => {
-    console.log("Tentativa de registro:", data);
-    await new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (data.email === "erro@email.com") { 
-                reject(new Error("E-mail já cadastrado."));
-            } else {
-                resolve({ 
-                    token: "mock-token-123", 
-                    userId: "u" + Math.random(), 
-                    userName: data.fullName 
-                });
-            }
-        }, 1500);
-    });
-
-    setIsAuthenticated(true);
-    setUser({ id: "u" + Math.random(), name: data.fullName });
+  const registerUser = async (data: CadastroRequest) => {
+    try {
+      await authService.cadastrar(data);
+    } catch (error) {
+      console.error("Registration error:", error);
+      throw error;
+    }
   };
 
   const logout = () => {
+    authService.logout();
     setIsAuthenticated(false);
     setUser(null);
   };

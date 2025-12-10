@@ -2,8 +2,9 @@ import logo from "../../../assets/logo.png";
 import Input from "../../../components/ui/Input.tsx";
 import { useForm } from "react-hook-form";
 import Button from "../../../components/ui/Button.tsx";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { useState } from "react";
 
 type LoginFormInputs = {
   email: string;
@@ -17,12 +18,21 @@ function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormInputs>();
 
-  const onSubmit = (data: LoginFormInputs) => {
-    console.log(data);
-    alert(`E-mail: ${data.email}\nSenha: ${data.password}`);
-    window.location.href = "/home";
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [loginError, setLoginError] = useState<string | null>(null);
 
+  const onSubmit = async (data: LoginFormInputs) => {
+    setLoginError(null);
+    try {
+      await login({ email: data.email, senha: data.password });
+      navigate("/home");
+    } catch (error) {
+      console.error("Login failed:", error);
+      setLoginError("Falha no login. Verifique suas credenciais.");
+    }
   };
+
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center p-8 text-white text-center"
@@ -37,6 +47,12 @@ function LoginPage() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm">
+        {loginError && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span className="block sm:inline">{loginError}</span>
+          </div>
+        )}
+
         <Input
           placeholder="E-mail"
           type="email"
@@ -82,9 +98,9 @@ function LoginPage() {
 
       <p className="text-sm mt-6">Não tem uma conta ainda?</p>
 
-        <Link to="/register" className="text-sm mt-1 underline ml-1 hover:text-gray-300">
-          Registre-Se
-        </Link>
+      <Link to="/register" className="text-sm mt-1 underline ml-1 hover:text-gray-300">
+        Registre-Se
+      </Link>
     </div>
   );
 }

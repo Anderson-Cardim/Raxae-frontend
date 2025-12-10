@@ -1,11 +1,13 @@
-import React, { createContext, useState, type ReactNode } from "react";
+import { createContext, useState, type ReactNode } from "react";
 
 export type SplitType = "equally" | "custom";
 export type SplitMethod = "value" | "percentage";
 
 export type Member = {
   id: number;
-  nome: string; 
+  userId?: string;
+  memberId?: string;
+  nome: string;
   amount: number;
   contact: string;
   isManager: boolean;
@@ -42,9 +44,9 @@ export type GroupContextType = {
 
 const defaultGroupContextValue: GroupContextType = {
   group: null,
-  setGroup: () => {},
-  setSplitMethod: () => {},
-  setSplitType: () => {},
+  setGroup: () => { },
+  setSplitMethod: () => { },
+  setSplitType: () => { },
   splitMethod: "value",
   splitType: "equally",
 };
