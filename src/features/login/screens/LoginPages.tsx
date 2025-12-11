@@ -21,7 +21,6 @@ function LoginPage() {
     console.log(data);
     alert(`E-mail: ${data.email}\nSenha: ${data.password}`);
     window.location.href = "/home";
-
   };
   return (
     <div

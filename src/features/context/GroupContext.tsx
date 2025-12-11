@@ -38,6 +38,9 @@ export type GroupContextType = {
   setSplitType: (type: SplitType) => void;
   splitMethod: SplitMethod;
   setSplitMethod: (method: SplitMethod) => void;
+  isModalOpen: boolean;
+  closeModalConvite: () => void;
+  openModalConvite: () => void;
 };
 
 const defaultGroupContextValue: GroupContextType = {
@@ -47,6 +50,9 @@ const defaultGroupContextValue: GroupContextType = {
   setSplitType: () => {},
   splitMethod: "value",
   splitType: "equally",
+  isModalOpen: false, 
+  closeModalConvite: () => {},
+  openModalConvite: () => {},
 };
 
 export const GroupContext = createContext<GroupContextType>(
@@ -57,6 +63,15 @@ export const GroupProvider = ({ children }: { children: ReactNode }) => {
   const [group, setGroup] = useState<GroupState | null>(null);
   const [splitType, setSplitType] = useState<SplitType>("equally");
   const [splitMethod, setSplitMethod] = useState<SplitMethod>("value");
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  
+  const closeModalConvite = () => {
+    setIsModalOpen(false);
+  };
+
+  const openModalConvite = () => {
+    setIsModalOpen(true);
+  };
 
   return (
     <GroupContext.Provider
@@ -67,6 +82,9 @@ export const GroupProvider = ({ children }: { children: ReactNode }) => {
         setSplitType,
         splitMethod,
         setSplitMethod,
+        isModalOpen, 
+        closeModalConvite,
+        openModalConvite,
       }}
     >
       {children}
