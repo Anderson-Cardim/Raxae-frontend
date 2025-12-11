@@ -28,9 +28,36 @@ export default function FriendsPage() {
   const { isModalOpen, closeModalConvite, openModalConvite } = context;
   
   const navigate = useNavigate();
+  const currentUserId = localStorage.getItem('usuarioId');
+
+  useEffect(() => {
+    loadFriendsFromGroups();
+  }, []);
+
+  const loadFriendsFromGroups = async () => {
+    try {
+      const groups = await groupService.listarMeusGrupos();
+      const uniqueFriends = new Map<string, Friend>();
+
+      groups.forEach(group => {
+        group.membros.forEach(member => {
+          if (member.idUsuario !== currentUserId) {
+            uniqueFriends.set(member.idUsuario, {
+              id: member.idUsuario,
+              name: member.nomeUsuario
+            });
+          }
+        });
+      });
+
+      setFriends(Array.from(uniqueFriends.values()));
+    } catch (error) {
+      console.error("Failed to load friends from groups", error);
+    }
+  };
 
   const handleGoBack = () => {
-    navigate("/home"); 
+    navigate("/home");
   };
 
   const handleSearchGroup = async () => {
@@ -83,7 +110,7 @@ export default function FriendsPage() {
       <HeaderForm title="Convite" onBack={handleGoBack} />
       
       <div className="flex-grow p-4 lg:ml-50 lg:mr-50 md:ml-40 lg:mb-10 md:mr-40">
-        
+
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-3 text-gray-800">Buscar Grupo</h2>
           <form onSubmit={handleSubmit} className="flex items-center space-x-3">
@@ -120,7 +147,7 @@ export default function FriendsPage() {
             )}
         
       </div>
-      
+
       <FooterNav />
     </div>
   );

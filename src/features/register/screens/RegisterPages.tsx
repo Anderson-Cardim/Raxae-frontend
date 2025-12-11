@@ -2,7 +2,9 @@ import logo from "../../../assets/logo.png";
 import Input from "../../../components/ui/Input.tsx";
 import { useForm } from "react-hook-form";
 import Button from "../../../components/ui/Button.tsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { useState } from "react";
 
 type RegisterFormInputs = {
   fullName: string;
@@ -13,11 +15,25 @@ type RegisterFormInputs = {
 
 function RegisterPage() {
   const { register, handleSubmit, formState: { errors }, } = useForm<RegisterFormInputs>();
+  const { registerUser } = useAuth();
+  const navigate = useNavigate();
+  const [registerError, setRegisterError] = useState<string | null>(null);
 
-  const onSubmit = (data: RegisterFormInputs) => {
-    console.log(data);
-    alert(`Usuário registrado!\nNome: ${data.fullName}\nE-mail: ${data.email}`);
-    window.location.href = "/login";
+  const onSubmit = async (data: RegisterFormInputs) => {
+    setRegisterError(null);
+    try {
+      await registerUser({
+        nomeCompleto: data.fullName,
+        email: data.email,
+        whatsapp: data.phone || "",
+        senha: data.password
+      });
+      alert("Usuário registrado com sucesso! Faça login para continuar.");
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration failed:", error);
+      setRegisterError("Falha no registro. Tente novamente.");
+    }
   };
 
   return (
@@ -32,6 +48,12 @@ function RegisterPage() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm">
+        {registerError && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span className="block sm:inline">{registerError}</span>
+          </div>
+        )}
+
         <Input
           placeholder="Nome Completo"
           type="text"
@@ -74,7 +96,7 @@ function RegisterPage() {
           className="w-full p-3 text-center mb-4 rounded-xl bg-white text-gray-700 placeholder-gray focus:outline-none focus:ring-2 focus:ring-white"
           {...register("phone", {
             pattern: {
-              value: /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/, 
+              value: /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/,
               message: "Formato de telefone inválido",
             },
           })}
@@ -111,9 +133,9 @@ function RegisterPage() {
       </form>
 
       <p className="text-sm mt-2">Já tem uma conta?</p>
-        <Link to="/login" className="text-sm mt-1 underline ml-1 hover:text-[#7F79D4] hover:text-gray-300">
-          Login
-        </Link>
+      <Link to="/login" className="text-sm mt-1 underline ml-1 hover:text-[#7F79D4] hover:text-gray-300">
+        Login
+      </Link>
     </div>
   );
 }
