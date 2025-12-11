@@ -18,25 +18,16 @@ function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormInputs>();
 
-  const { login } = useAuth();
-  const navigate = useNavigate();
-  const [loginError, setLoginError] = useState<string | null>(null);
-
-  const onSubmit = async (data: LoginFormInputs) => {
-    setLoginError(null);
-    try {
-      await login({ email: data.email, senha: data.password });
-      navigate("/home");
-    } catch (error) {
-      console.error("Login failed:", error);
-      setLoginError("Falha no login. Verifique suas credenciais.");
-    }
+  const onSubmit = (data: LoginFormInputs) => {
+    console.log(data);
+    alert(`E-mail: ${data.email}\nSenha: ${data.password}`);
+    window.location.href = "/home";
   };
 
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center p-8 text-white text-center"
-      style={{ backgroundColor: "#14879E" }}
+      style={{ backgroundColor: "#00334e" }}
     >
       <img src={logo} alt="Logo Raxae" className="mb-8 h-24" />
 
