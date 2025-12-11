@@ -117,6 +117,7 @@ export default function MemberAdmin() {
             <MemberItem
               key={member.id}
               member={member}
+              groupId={groupId!}
               onChat={handleChat}
               onRemove={handleRemoveMember}
             />
