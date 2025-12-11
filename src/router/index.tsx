@@ -13,6 +13,7 @@ import EditPerfil from "../features/editPerfil/screens/EditPerfil.tsx";
 import AddFriends from "../features/addFriends/screens/AddFriends.tsx";
 import MembersManagementPage from "../features/member/screens/MembersManagementPage.tsx";
 import HistoryPage from "../features/history/screens/HistoryPage.tsx";
+import MemberHistoryPage from "../features/history/screens/MemberHistoryPage.tsx";
 import MemberAdmin from "../features/memberAdmin/screens/MemberAdmin.tsx";
 import { ExpenseSummaryPage } from "../features/expenses/components/ExpenseSummaryPage.tsx";
 // import { ProtectedRoute } from "../components/auth/index.tsx";
@@ -42,6 +43,7 @@ export const AppRouter = () => {
 
                 <Route path="/grupo/membro" element={<MembersManagementPage />} />
                 <Route path="/grupo/membro/admin/:groupId" element={<MemberAdmin />} />
+                <Route path="/grupo/:groupId/historico/:memberId" element={<MemberHistoryPage />} />
                 <Route
                   path="/adicionar-participantes"
                   element={<AddParticipantsPage />}
