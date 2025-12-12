@@ -2,8 +2,19 @@
 import React, { useState, forwardRef } from 'react';
 import { PlusIcon } from '@heroicons/react/24/solid';
 
-const FileUploadButton = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>((props, ref) => {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+interface FileUploadButtonProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  initialPreviewUrl?: string;
+}
+
+const FileUploadButton = forwardRef<HTMLInputElement, FileUploadButtonProps>(({ initialPreviewUrl, ...props }, ref) => {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(initialPreviewUrl || null);
+
+  React.useEffect(() => {
+    if (initialPreviewUrl && !previewUrl) {
+      setPreviewUrl(initialPreviewUrl);
+    }
+  }, [initialPreviewUrl]);
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (props.onChange) {
@@ -20,24 +31,26 @@ const FileUploadButton = forwardRef<HTMLInputElement, React.InputHTMLAttributes<
 
   return (
     <div className="w-full bg-white border-2 border-gray-400 rounded-xl h-40 flex items-center justify-center mb-6 cursor-pointer relative overflow-hidden">
-        
+
       <label
-        htmlFor="file-upload">
+        htmlFor="file-upload"
+        className="w-full h-full flex items-center justify-center"
+      >
         {previewUrl ? (
           <img src={previewUrl} alt="Pré-visualização do grupo" className="w-full h-full object-cover" />
         ) : (
           <PlusIcon className="h-16 w-16 text-gray-400" />
         )}
       </label>
-      
-      <input 
-        id="file-upload" 
-        type="file" 
-        accept="image/*" 
-        ref={ref}  
-        onChange={handleFileChange} 
+
+      <input
+        id="file-upload"
+        type="file"
+        accept="image/*"
+        ref={ref}
+        onChange={handleFileChange}
         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
-        {...props} 
+        {...props}
       />
     </div>
   );

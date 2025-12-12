@@ -12,11 +12,10 @@ import { GroupsPage } from "../features/groups/screens/GroupsPage.tsx";
 import EditPerfil from "../features/editPerfil/screens/EditPerfil.tsx";
 import AddFriends from "../features/addFriends/screens/AddFriends.tsx";
 import MembersManagementPage from "../features/member/screens/MembersManagementPage.tsx";
-import HistoryPage from "../features/history/screens/HistoryPage.tsx";
 import MemberHistoryPage from "../features/history/screens/MemberHistoryPage.tsx";
 import MemberAdmin from "../features/memberAdmin/screens/MemberAdmin.tsx";
 import { ExpenseSummaryPage } from "../features/expenses/components/ExpenseSummaryPage.tsx";
-// import { ProtectedRoute } from "../components/auth/index.tsx";
+import { ProtectedRoute } from "../components/auth/index.tsx";
 import { Navigate } from "react-router-dom";
 
 export const AppRouter = () => {
@@ -28,12 +27,11 @@ export const AppRouter = () => {
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            {/* <ProtectedRoute /> */}
-            <Route >
+
+            <Route element={<ProtectedRoute />}>
               <Route path="/home" element={<HomePage />} />
               <Route path="/editar-perfil" element={<EditPerfil />} />
               <Route path="/adicionar-amigos" element={<AddFriends />} />
-              <Route path="/history" element={<HistoryPage />} />
 
               <Route>
                 <Route path="/grupo" element={<GroupsPage />} />

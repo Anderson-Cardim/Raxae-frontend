@@ -75,6 +75,7 @@ export function GroupsPage() {
                 onEdit={() => handleEdit(group.id, isAdmin)}
                 onDelete={() => handleDelete(group.id)}
                 onHistory={() => handleHistory(group.id)}
+                isAdmin={isAdmin}
               />
             );
           })}
