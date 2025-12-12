@@ -5,6 +5,7 @@ import type { LoginRequest, CadastroRequest } from '../../services/authService';
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  isLoading: boolean; // Add isLoading to interface
   user: { id: string; name: string } | null;
   login: (credentials: LoginRequest) => Promise<void>;
   registerUser: (data: CadastroRequest) => Promise<void>;
@@ -23,6 +24,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Initialize loading as true
   const [user, setUser] = useState<{ id: string; name: string } | null>(null);
 
   useEffect(() => {
@@ -32,6 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(true);
       setUser({ id: usuarioId, name: 'Usuário' });
     }
+    setIsLoading(false); // Set loading to false after check
   }, []);
 
   const login = async (credentials: LoginRequest) => {
@@ -61,7 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, registerUser }}>
+    <AuthContext.Provider value={{ isAuthenticated, isLoading, user, login, logout, registerUser }}>
       {children}
     </AuthContext.Provider>
   );

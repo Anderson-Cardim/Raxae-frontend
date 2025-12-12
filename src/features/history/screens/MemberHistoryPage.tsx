@@ -4,12 +4,14 @@ import HeaderForm from "../../../components/layout/HeaderForm";
 import FooterNav from "../../../components/layout/FooterNav";
 import { groupService, type HistoricoMembroResponse, type HistoricoItem } from "../../../services/groupService";
 import { FaArrowUp, FaArrowDown, FaMoneyBillWave, FaUser } from "react-icons/fa";
+import groupIcon from "../../../assets/group_icon.png";
 
 export default function MemberHistoryPage() {
     const { groupId, memberId } = useParams<{ groupId: string; memberId: string }>();
     const navigate = useNavigate();
     const [historyData, setHistoryData] = useState<HistoricoMembroResponse | null>(null);
     const [memberName, setMemberName] = useState<string>("");
+    const [groupName, setGroupName] = useState<string>("");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -28,6 +30,7 @@ export default function MemberHistoryPage() {
             ]);
 
             setHistoryData(history);
+            setGroupName(group.nomeGrupo);
 
             const member = group.membros.find(m => m.idMembro === memberId);
             if (member) {
@@ -77,6 +80,18 @@ export default function MemberHistoryPage() {
             <HeaderForm title="Histórico do Membro" onBack={handleGoBack} />
 
             <div className="flex-grow p-4 lg:ml-10 lg:mr-10 mb-10 space-y-6">
+
+                <div className="flex flex-col items-center mb-6">
+                    <div className="w-20 h-20 rounded-full flex items-center justify-center mb-2 overflow-hidden border border-gray-200">
+                        <img
+                            src={groupIcon}
+                            alt={groupName}
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                    <h2 className="text-xl font-bold text-gray-800">{groupName}</h2>
+                    <p className="text-gray-500">Histórico de {memberName}</p>
+                </div>
 
                 {/* Member Info */}
                 <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200">
