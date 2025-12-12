@@ -1,38 +1,29 @@
-import { useContext } from "react";
 import HeaderForm from "../../../components/layout/HeaderForm";
 import FormSection from "../components/FormSection";
 import Input from "../../../components/ui/Input";
 import FooterNav from "../../../components/layout/FooterNav";
-
 import ActionButton from "../../../components/ui/ActionButton";
 import FileUploadButton from "../../../components/ui/FileUploadButton";
-import { useForm } from "react-hook-form";
-
+import { useForm, useWatch } from "react-hook-form";
 import { groupService, type GrupoRequest } from "../../../services/groupService";
 import { useNavigate } from "react-router-dom";
 
-type CreateGroupFormInputs = {
-  groupImage: FileList;
-  groupName: string;
-  description: string;
-
-};
-
-
-
 function CreateGroupPage() {
-  const { register, handleSubmit, formState: { errors }, } = useForm<CreateGroupFormInputs>();
+  const { register, handleSubmit, setValue, control, formState: { errors }, } = useForm<GrupoRequest>();
 
   const navigate = useNavigate();
 
+  const iconeValue = useWatch({ control, name: 'icone', defaultValue: '' });
 
-
-  const onSubmit = async (data: CreateGroupFormInputs) => {
+  const onSubmit = async (data: GrupoRequest) => {
     try {
+
+      const iconeParaEnvio = data.icone || "abc";
+
       const grupoRequest: GrupoRequest = {
-        nomeGrupo: data.groupName,
-        descricao: data.description || "",
-        icone: "default-icon",
+        nomeGrupo: data.nomeGrupo,
+        descricao: data.descricao || "",
+        icone: iconeParaEnvio,
       };
 
       await groupService.criarGrupo(grupoRequest);
@@ -55,20 +46,25 @@ function CreateGroupPage() {
     >
       <HeaderForm title="Criar Novo Grupo" onBack={handleGoBack} />
       <div className="flex-grow p-6 lg:ml-35 lg:mr-35">
-        <FileUploadButton  {...register("groupImage")} />
+
+        <FileUploadButton 
+          name="icone" 
+          value={iconeValue as string} 
+          onChange={(e) => setValue("icone", e.target.value as string)}
+        />
 
         <FormSection title="Nome do grupo">
           <Input
             placeholder="Ex: Netflix Família, Aluguel do AP..."
-            {...register("groupName", {
+            {...register("nomeGrupo", {
               required: "Nome do grupo é obrigatório",
             })}
             type="text"
             className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
           />
-          {errors.groupName && (
+          {errors.nomeGrupo && (
             <p className="text-red-500 text-sm mt-1">
-              {errors.groupName.message}
+              {errors.nomeGrupo.message}
             </p>
           )}
         </FormSection>
@@ -77,12 +73,10 @@ function CreateGroupPage() {
           <Input
             placeholder="Opcional"
             type="text"
-            {...register("description")}
+            {...register("descricao")}
             className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
           />
         </FormSection>
-
-
 
         <FormSection title="">
           <div className="p-0.90 pt-4">

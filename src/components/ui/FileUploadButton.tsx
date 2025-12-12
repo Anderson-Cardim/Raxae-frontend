@@ -16,18 +16,32 @@ const FileUploadButton = forwardRef<HTMLInputElement, FileUploadButtonProps>(({ 
   }, [initialPreviewUrl]);
 
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (props.onChange) {
-      props.onChange(event);
-    }
-    const file = event.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-    } else {
-      setPreviewUrl(null);
-    }
-  };
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = () => {
+          const base64String = reader.result as string;
+          const formatedBase64 = base64String.split(",")[1];
+
+          if (onChange && name) {
+            onChange({
+              target: {
+                name: name,
+                value: formatedBase64,
+              },
+            });
+          }
+        };
+      } else {
+        if (onChange && name) {
+          onChange({ target: { name: name, value: null } });
+        }
+      }
+    };
 
   return (
     <div className="w-full bg-white border-2 border-gray-400 rounded-xl h-40 flex items-center justify-center mb-6 cursor-pointer relative overflow-hidden">
@@ -57,5 +71,3 @@ const FileUploadButton = forwardRef<HTMLInputElement, FileUploadButtonProps>(({ 
 });
 
 export default FileUploadButton;
-
-
