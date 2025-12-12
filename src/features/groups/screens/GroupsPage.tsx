@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import FooterNav from "../../../components/layout/FooterNav";
 import { GroupCard } from '../components/GroupCard';
 import { useNavigate } from 'react-router-dom';
 import { groupService } from "../../../services/groupService";
 import type { GrupoResponse } from "../../../services/groupService";
+import { useAuth } from "../../context/AuthContext";
 
 export function GroupsPage() {
   const navigate = useNavigate();
   const [groups, setGroups] = useState<GrupoResponse[]>([]);
   const [loading, setLoading] = useState(true);
-  const currentUserId = localStorage.getItem('usuarioId');
 
+  const { user } = useAuth();
+
+  const currentUserId = user?.id;
+  
   useEffect(() => {
     loadGroups();
   }, []);
@@ -39,10 +43,10 @@ export function GroupsPage() {
     if (window.confirm("Tem certeza que deseja excluir este grupo?")) {
       try {
         await groupService.deletarGrupo(groupId);
-        loadGroups(); // Reload list
+        loadGroups(); 
       } catch (error) {
         console.error("Failed to delete group", error);
-        alert("Erro ao excluir grupo");
+        alert("Apenas o admin pode excluir grupo");
       }
     }
   };
@@ -69,9 +73,11 @@ export function GroupsPage() {
                 id={group.id}
                 name={group.nomeGrupo}
                 memberCount={group.membros.length}
-                value={'R$ 0,00'} // Placeholder as API doesn't return total value yet
-                dueDate={10} // Placeholder
+                value={'R$ 0,00'} 
+                dueDate={10}
                 imageUrl={group.icone || '/ImagemDisney.svg'}
+                adminId={group.adminId}
+                currentUserId={currentUserId || ''}
                 onEdit={() => handleEdit(group.id, isAdmin)}
                 onDelete={() => handleDelete(group.id)}
                 onHistory={() => handleHistory(group.id)}
