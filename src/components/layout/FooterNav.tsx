@@ -1,5 +1,6 @@
 import { HomeIcon, UserGroupIcon, UsersIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import { Link, useLocation } from 'react-router-dom';
+import { ClockIcon } from '@heroicons/react/24/outline';
 
 const navItems = [
   { label: 'Início', icon: HomeIcon, isActive: true, path: '/home' },
