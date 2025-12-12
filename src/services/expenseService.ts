@@ -27,11 +27,12 @@ export interface DespesaResponse {
 
 export const expenseService = {
     registrarDespesa: async (grupoId: string, data: DespesaRequest): Promise<DespesaResponse> => {
-        const response = await api.post<DespesaResponse>(`/v1/grupos/${grupoId}/despesas`, data);
+        
+        const token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUEkgUmF4YWUiLCJzdWIiOiJyaWNrbGVlQGdtYWlsLmNvbSIsIm5vbWVDb21wbGV0byI6IlJpY2sgTGVlIiwiaWF0IjoxNzY1NDc5ODYxLCJleHAiOjE3NjU1MjMwNjF9.R4lyj5SeWJ58NNZirFgBYJBtQkSO78caEK5F_AuxuUk"; 
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const response = await api.post<DespesaResponse>(`/v1/grupos/${grupoId}/despesas`, data, config);
         return response.data;
     },
-
-    excluirDespesa: async (grupoId: string, despesaId: string): Promise<void> => {
-        await api.delete(`/v1/grupos/${grupoId}/despesas/${despesaId}`);
-    }
-};
+}

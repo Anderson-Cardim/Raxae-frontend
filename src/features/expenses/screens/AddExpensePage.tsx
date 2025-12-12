@@ -5,7 +5,7 @@ import FooterNav from "../../../components/layout/FooterNav";
 import { FormProvider, useForm } from "react-hook-form";
 import { GroupContext, type Member, type SplitMethod, type SplitType } from "../../context/GroupContext";
 import { ExpenseSplitter } from "../components/ExpenseSplitter";
-import { expenseService } from "../../../services/expenseService";
+import { expenseService, type DespesaRequest } from "../../../services/expenseService";
 import { groupService } from "../../../services/groupService";
 import DateInput from "../../../components/ui/DateInput";
 import Input from "../../../components/ui/Input";
@@ -91,9 +91,9 @@ function AddExpensePage() {
   const onClickSalvarDespesa = async () => {
     if (groupId) {
       const data = methods.getValues();
+      
       try {
         const divisoesEspecificas: Record<string, number> = {};
-
         if (splitType !== "equally") {
           members.forEach(m => {
             const key = m.memberId || m.userId || m.id.toString();
@@ -101,40 +101,33 @@ function AddExpensePage() {
           });
         }
 
-        // Parse day from dueDate (YYYY-MM-DD)
+
         const diaVencimento = data.dueDate ? parseInt(data.dueDate.split('-')[2]) : new Date().getDate();
 
-        await expenseService.registrarDespesa(groupId, {
+        const payload: DespesaRequest = {
           nome: data.description,
-          valor: data.value,
-          tipoRecorrencia: recurrence,
-          tipoDivisao: splitType === "equally" ? "IGUALITARIA" : "POR_VALOR",
+          valor: parseFloat(data.value.toString()),
+          tipoRecorrencia: recurrence as "UNICA" | "MENSAL",
+          tipoDivisao: (splitType === "equally" ? "IGUALITARIA" : "POR_VALOR") as "IGUALITARIA" | "POR_VALOR",
           diaVencimento: diaVencimento,
           divisoesEspecificas: divisoesEspecificas,
           dataVencimentoAvulsa: recurrence === "UNICA" ? data.dueDate : undefined,
           pixBeneficiado: data.adminPix
-        });
-        alert("Despesa salva com sucesso!");
+        };
+
+        console.log("Enviando:", payload);
+
+        await expenseService.registrarDespesa(groupId, payload);
+
+        alert("Despesa registrada com sucesso!");
         navigate(`/editar-grupo/${groupId}`);
-      } catch (error) {
-        console.error("Erro ao salvar despesa:", error);
-        alert("Erro ao salvar despesa.");
+
+      } catch (error: any) {
+        console.error("Erro:", error);
+        const msg = error.response?.data || "Erro ao salvar.";
+        alert(`Erro do servidor: ${JSON.stringify(msg)}`);
       }
-    } else if (context?.group) {
-      // Legacy flow
-      const data = methods.getValues();
-      const updatedGroup = {
-        ...context.group,
-        expense: {
-          description: data.description,
-          totalValue: data.value,
-          members: members,
-        },
-      };
-      context.setGroup(updatedGroup);
-      console.log("Grupo atualizado com despesa:", updatedGroup);
-      navigate("/resumo-despesa");
-    }
+    } 
   };
 
   const onSubmit = () => {
