@@ -1,6 +1,7 @@
 import { BsClockHistory, BsTrash, BsPencilSquare } from 'react-icons/bs';
 import { CopyToClipboardButton } from './CopyToClipboardButton';
 
+
 export interface GroupCardProps {
     id: string;
     name: string;
@@ -8,6 +9,8 @@ export interface GroupCardProps {
     value: string;
     dueDate: number;
     imageUrl: string;
+    adminId: string;
+    currentUserId: string;
     onEdit: (groupId: string) => void; 
     onDelete: (groupId: string) => void;
     onHistory: (groupId: string) => void;
@@ -20,10 +23,15 @@ export function GroupCard({
   value,
   dueDate,
   imageUrl,
+  adminId,
+  currentUserId,
   onEdit,
   onDelete,
   onHistory,
 }: GroupCardProps) {
+
+  const isCurrentUserAdmin = currentUserId === adminId;
+
   return (
     <div className="bg-white rounded-2xl shadow-md overflow-hidden">
       <img src={imageUrl} alt={name} className="w-full h-40 object-cover" />
@@ -52,11 +60,15 @@ export function GroupCard({
           <button onClick={() => onHistory(id)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
             <BsClockHistory size={20} className="text-gray-600 cursor-pointer" />
           </button>
-          <button onClick={() => onDelete(id)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-            <BsTrash size={20} className="text-red-500 cursor-pointer" />
-          </button>
+          {isCurrentUserAdmin && (
+              <button onClick={() => onDelete(id)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                <BsTrash size={20} className="text-red-500 cursor-pointer" />
+              </button>
+          )}
 
-          <CopyToClipboardButton textToCopy={id} />
+          {isCurrentUserAdmin && (
+               <CopyToClipboardButton textToCopy={id} />
+          )}
 
           <button 
             onClick={() => onEdit(id)}
