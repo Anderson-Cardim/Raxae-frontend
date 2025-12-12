@@ -11,14 +11,13 @@ import { useForm } from "react-hook-form";
 import { groupService, type GrupoRequest } from "../../../services/groupService";
 import { useNavigate } from "react-router-dom";
 
+
 type CreateGroupFormInputs = {
   groupImage: FileList;
   groupName: string;
   description: string;
 
 };
-
-
 
 function CreateGroupPage() {
   const { register, handleSubmit, formState: { errors }, } = useForm<CreateGroupFormInputs>();

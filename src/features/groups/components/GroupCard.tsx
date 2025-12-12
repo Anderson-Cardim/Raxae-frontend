@@ -1,4 +1,5 @@
 import { BsClockHistory, BsTrash, BsPencilSquare } from 'react-icons/bs';
+import { CopyToClipboardButton } from './CopyToClipboardButton';
 
 export interface GroupCardProps {
   id: string;
@@ -59,7 +60,7 @@ export function GroupCard({
               <BsTrash size={20} className="text-red-500 cursor-pointer" />
             </button>
           )}
-
+          <CopyToClipboardButton textToCopy={id} />
           <button
             onClick={() => onEdit(id)}
             className="flex-grow flex justify-center items-center gap-2 bg-[#14879E] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#106a8c] transition-colors cursor-pointer"

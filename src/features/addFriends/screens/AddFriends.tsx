@@ -1,120 +1,127 @@
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import FooterNav from "../../../components/layout/FooterNav";
+import HeaderForm from "../../../components/layout/HeaderForm";
+import Input from "../../../components/ui/Input";
+import ActionButton from "../../../components/ui/ActionButton";
+import GroupInviteModal from "../components/GroupInviteModal";
+import { GroupContext } from "../../context/GroupContext";
+import { groupService } from "../../../services/groupService";
+import type { GrupoResponse } from "../../../services/groupService";
 
-// src/pages/FriendsPage.tsx (ou AmigosPage.tsx)
-
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaPlus } from 'react-icons/fa';
-import FooterNav from '../../../components/layout/FooterNav';
-import HeaderForm from '../../../components/layout/HeaderForm';
-import Input from '../../../components/ui/Input';
-import type { Friend } from '../components/FriendListItem';
-import FriendListItem from '../components/FriendListItem';
-import { groupService } from '../../../services/groupService';
 
 export default function FriendsPage() {
-  const [friends, setFriends] = useState<Friend[]>([]);
-  const [newFriendEmail, setNewFriendEmail] = useState('');
+  const [groupCode, setGroupCode] = useState("");
+  const [foundGroup, setFoundGroup] = useState<GrupoResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchError, setSearchError] = useState("");
+
+  const context = useContext(GroupContext);
+
+  const { isModalOpen, closeModalConvite, openModalConvite } = context;
+
   const navigate = useNavigate();
-  const currentUserId = localStorage.getItem('usuarioId');
-
-  useEffect(() => {
-    loadFriendsFromGroups();
-  }, []);
-
-  const loadFriendsFromGroups = async () => {
-    try {
-      const groups = await groupService.listarMeusGrupos();
-      const uniqueFriends = new Map<string, Friend>();
-
-      groups.forEach(group => {
-        group.membros.forEach(member => {
-          if (member.idUsuario !== currentUserId) {
-            uniqueFriends.set(member.idUsuario, {
-              id: member.idUsuario,
-              name: member.nomeUsuario
-            });
-          }
-        });
-      });
-
-      setFriends(Array.from(uniqueFriends.values()));
-    } catch (error) {
-      console.error("Failed to load friends from groups", error);
-    }
-  };
-
   const handleGoBack = () => {
     navigate("/home");
   };
 
-  const handleAddFriend = () => {
-    if (newFriendEmail.trim() === '') return;
+  const handleSearchGroup = async () => {
+    if (groupCode.trim() === "") {
+      setSearchError("O código do grupo não pode ser vazio.");
+      return;
+    }
 
-    // API doesn't support adding friends directly yet, so we just add locally for now
-    // or we could implement an invite system here if the API supported it.
-    const newFriend: Friend = {
-      id: Date.now().toString(),
-      name: newFriendEmail,
-    };
+    setIsLoading(true);
+    setSearchError("");
 
-    setFriends([...friends, newFriend]);
-    setNewFriendEmail('');
-    alert("Amigo adicionado localmente. Para convidar para um grupo, vá na tela do grupo.");
+    try {
+      const groupDetails = await groupService.obterGrupo(
+        groupCode.trim()
+      );
+
+      setFoundGroup(groupDetails);
+      openModalConvite();
+      setGroupCode(""); 
+    } catch (error: any) {
+      console.error("Erro ao buscar grupo:", error);
+      const errorMessage =
+        error.response?.data?.message ||
+        "Grupo não encontrado ou código inválido.";
+      setSearchError(errorMessage);
+      setFoundGroup(null);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleDeleteFriend = (id: string) => {
-    setFriends(friends.filter(f => f.id !== id));
+  const handleJoinGroup = async () => {
+    if (!foundGroup) return;
+
+    const codigoConvite = foundGroup.id;
+
+    setIsLoading(true);
+    closeModalConvite();
+
+    try {
+      await groupService.entrarNoGrupo(codigoConvite);
+
+      alert(`Você entrou no grupo: ${foundGroup.nomeGrupo}!`);
+
+      navigate(`/grupo`);
+    } catch (error) {
+      console.error("Erro ao entrar no grupo:", error);
+      alert("Não foi possível completar a adesão ao grupo. Tente novamente.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); 
+    handleSearchGroup(); 
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-white pb-20">
-
-      <HeaderForm title="Amigos" onBack={handleGoBack} />
+      <HeaderForm title="Convite" onBack={handleGoBack} />
 
       <div className="flex-grow p-4 lg:ml-50 lg:mr-50 md:ml-40 lg:mb-10 md:mr-40">
-
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-3 text-gray-800">Novo amigo</h2>
-          <div className="flex items-center space-x gap-3">
-
+          <h2 className="text-xl font-semibold mb-3 text-gray-800">
+            Buscar Grupo
+          </h2>
+          <form onSubmit={handleSubmit} className="flex items-center space-x-3">
             <Input
-              placeholder="Email ou Nome"
+              placeholder="Inserir código do grupo"
               type="text"
-              value={newFriendEmail}
-              onChange={(e) => setNewFriendEmail(e.target.value)}
+              value={groupCode}
+              onChange={(e) => setGroupCode(e.target.value)}
               className="flex-grow py-3 px-4 border border-gray-300 rounded-lg text-gray-700 placeholder-gray-400 focus:outline-none hover:translate-y-[1px] hover:shadow-lg"
             />
 
-            <button
-              onClick={handleAddFriend}
+            <ActionButton
+              type="submit"
+              text={isLoading ? "Buscando..." : "Buscar"}
+              disabled={isLoading}
               className="hover:bg-[#106a8c] bg-[#14879E] text-white p-3 rounded-lg transition-colors duration-200 hover:translate-y-[1px] hover:shadow-lg"
-              aria-label="Adicionar novo amigo"
             >
-              <FaPlus size={20} />
-            </button>
-          </div>
+              Buscar
+            </ActionButton>
+          </form>
+          {searchError && (
+            <p className="text-red-500 text-sm mt-2">{searchError}</p>
+          )}
         </div>
 
-        <div>
-          <h2 className="text-lg font-medium mb-1 text-gray-800">Seus amigos</h2>
-          <p className="text-sm text-gray-500 mb-4">
-            Pessoas que dividem grupos com você
-          </p>
-
-          <div className="space-y-1">
-            {friends.length === 0 && <p className="text-gray-400">Nenhum amigo encontrado.</p>}
-            {friends.map((friend) => (
-              <FriendListItem
-                key={friend.id}
-                friend={friend}
-                onDelete={handleDeleteFriend}
-              />
-            ))}
-          </div>
-        </div>
-
+        {isModalOpen && foundGroup && (
+          <GroupInviteModal
+            isOpen={isModalOpen}
+            group={foundGroup}
+            onClose={closeModalConvite}
+            onConfirm={handleJoinGroup}
+          />
+        )}
       </div>
-
       <FooterNav />
     </div>
   );
