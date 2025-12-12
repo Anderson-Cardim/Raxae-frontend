@@ -1,7 +1,8 @@
 import Header from "../components/Header";
 import StatsSection from "../components/StatsSection";
 import MyGroups from "../components/MyGroup";
-import Disney from "../../../assets/ImagemDisney.svg";
+
+import groupIcon from "../../../assets/group_icon.png";
 import ActionButton from "../../../components/ui/ActionButton";
 import FooterNav from "../../../components/layout/FooterNav";
 import { useNavigate } from "react-router-dom";
@@ -48,7 +49,7 @@ function HomePage() {
   const groupsData = groups.map(g => ({
     name: g.nomeGrupo,
     value: 0,
-    icon: g.icone || Disney
+    icon: (g.icone && g.icone !== 'default-icon') ? g.icone : groupIcon
   }));
 
   const handleNext = () => {

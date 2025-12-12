@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import groupIcon from "../../../assets/group_icon.png";
 import HeaderForm from "../../../components/layout/HeaderForm";
 import FormSection from "../components/FormSection";
 import { MembersLink } from '../components/linkMembros';
@@ -9,28 +10,18 @@ import FileUploadButton from "../../../components/ui/FileUploadButton";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { groupService, type GrupoRequest } from "../../../services/groupService";
-import { expenseService } from "../../../services/expenseService";
-
-// ... (existing code)
-
-
 
 type CreateGroupFormInputs = {
   groupImage: FileList;
   groupName: string;
   description: string;
-
-
 };
-
-
 
 function EditGroupPage() {
   const {
     register,
     handleSubmit,
     setValue,
-    getValues,
     formState: { errors },
   } = useForm<CreateGroupFormInputs>();
 
@@ -38,6 +29,7 @@ function EditGroupPage() {
   const { groupId } = useParams<{ groupId: string }>();
   const [loading, setLoading] = useState(false);
   const [memberCount, setMemberCount] = useState(0);
+  const [mockImageUrl, setMockImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (groupId) {
@@ -48,6 +40,7 @@ function EditGroupPage() {
           setValue("description", group.descricao);
 
           setMemberCount(group.membros?.length || 0);
+          setMockImageUrl(groupIcon);
         })
         .catch(err => console.error("Failed to load group:", err))
         .finally(() => setLoading(false));
@@ -101,7 +94,7 @@ function EditGroupPage() {
       <HeaderForm title="Editar Grupo" onBack={handleGoBack} />
       <div className="flex-grow p-6 lg:ml-35 lg:mr-35 mb-10">
         <div className="flex-grow p-0.90">
-          <FileUploadButton {...register("groupImage")} />
+          <FileUploadButton initialPreviewUrl={mockImageUrl || undefined} {...register("groupImage")} />
         </div>
 
         <FormSection title="Nome do grupo">

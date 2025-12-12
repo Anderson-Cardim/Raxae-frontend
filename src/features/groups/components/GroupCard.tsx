@@ -1,15 +1,16 @@
 import { BsClockHistory, BsTrash, BsPencilSquare } from 'react-icons/bs';
 
 export interface GroupCardProps {
-    id: string;
-    name: string;
-    memberCount: number;
-    value: string;
-    dueDate: number;
-    imageUrl: string;
-    onEdit: (groupId: string) => void; 
-    onDelete: (groupId: string) => void;
-    onHistory: (groupId: string) => void;
+  id: string;
+  name: string;
+  memberCount: number;
+  value: string;
+  dueDate: number;
+  imageUrl: string;
+  onEdit: (groupId: string) => void;
+  onDelete: (groupId: string) => void;
+  onHistory: (groupId: string) => void;
+  isAdmin?: boolean;
 }
 
 export function GroupCard({
@@ -22,6 +23,7 @@ export function GroupCard({
   onEdit,
   onDelete,
   onHistory,
+  isAdmin = false,
 }: GroupCardProps) {
   return (
     <div className="bg-white rounded-2xl shadow-md overflow-hidden">
@@ -51,11 +53,14 @@ export function GroupCard({
           <button onClick={() => onHistory(id)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
             <BsClockHistory size={20} className="text-gray-600 cursor-pointer" />
           </button>
-          <button onClick={() => onDelete(id)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-            <BsTrash size={20} className="text-red-500 cursor-pointer" />
-          </button>
 
-          <button 
+          {isAdmin && (
+            <button onClick={() => onDelete(id)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+              <BsTrash size={20} className="text-red-500 cursor-pointer" />
+            </button>
+          )}
+
+          <button
             onClick={() => onEdit(id)}
             className="flex-grow flex justify-center items-center gap-2 bg-[#14879E] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#106a8c] transition-colors cursor-pointer"
           >
