@@ -4,12 +4,15 @@ import { GroupCard } from '../components/GroupCard';
 import { useNavigate } from 'react-router-dom';
 import { groupService } from "../../../services/groupService";
 import type { GrupoResponse } from "../../../services/groupService";
+import { useToast } from "../../../contexts/ToastContext";
+import groupIcon from "../../../assets/group_icon.png";
 
 export function GroupsPage() {
   const navigate = useNavigate();
   const [groups, setGroups] = useState<GrupoResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const currentUserId = localStorage.getItem('usuarioId');
+  const toast = useToast();
 
   useEffect(() => {
     loadGroups();
@@ -39,10 +42,11 @@ export function GroupsPage() {
     if (window.confirm("Tem certeza que deseja excluir este grupo?")) {
       try {
         await groupService.deletarGrupo(groupId);
+        toast.success("Grupo excluído com sucesso!");
         loadGroups(); // Reload list
       } catch (error) {
         console.error("Failed to delete group", error);
-        alert("Erro ao excluir grupo");
+        toast.error("Erro ao excluir grupo");
       }
     }
   };
@@ -56,9 +60,9 @@ export function GroupsPage() {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-[#18181b] min-h-screen transition-colors duration-300">
       <div className="p-4 pb-24 lg:ml-5 lg:mr-5 md:ml-5 md:mr-5">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Grupos</h1>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">Grupos</h1>
 
         <div className=" grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-cols-1 justify-center gap-8 mb-5">
           {groups.map((group) => {
@@ -71,7 +75,7 @@ export function GroupsPage() {
                 memberCount={group.membros.length}
                 value={'R$ 0,00'} // Placeholder as API doesn't return total value yet
                 dueDate={10} // Placeholder
-                imageUrl={group.icone || '/ImagemDisney.svg'}
+                imageUrl={(!group.icone || group.icone === "default-icon") ? groupIcon : group.icone}
                 onEdit={() => handleEdit(group.id, isAdmin)}
                 onDelete={() => handleDelete(group.id)}
                 onHistory={() => handleHistory(group.id)}

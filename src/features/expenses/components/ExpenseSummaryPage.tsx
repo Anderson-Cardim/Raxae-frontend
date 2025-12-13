@@ -5,6 +5,7 @@ import { SummaryMemberItem } from '../../expenses/components/SummaryMemberItem';
 import SummaryInfoCard from './SummaryInfoCard';
 import { useNavigate } from 'react-router-dom';
 import { groupService, type GrupoRequest } from '../../../services/groupService';
+import { useToast } from "../../../contexts/ToastContext";
 
 
 export function ExpenseSummaryPage() {
@@ -13,6 +14,7 @@ export function ExpenseSummaryPage() {
     const navigate = useNavigate();
     const { group } = context;
     const [loading, setLoading] = useState(false);
+    const toast = useToast();
 
     const membersList = group?.members || [];
 
@@ -40,7 +42,8 @@ export function ExpenseSummaryPage() {
             try {
                 const inviteLink = await groupService.gerarConvite(createdGroup.id);
                 console.log("Link de convite:", inviteLink);
-                alert(`Grupo criado! Link de convite: ${inviteLink}`);
+                navigator.clipboard.writeText(inviteLink);
+                toast.success(`Grupo criado! Link copiado.`);
             } catch (inviteError) {
                 console.error("Erro ao gerar convite:", inviteError);
             }
@@ -49,7 +52,7 @@ export function ExpenseSummaryPage() {
 
         } catch (error) {
             console.error("Erro ao finalizar criação:", error);
-            alert("Erro ao criar grupo. Tente novamente.");
+            toast.error("Erro ao criar grupo. Tente novamente.");
         } finally {
             setLoading(false);
         }

@@ -13,7 +13,7 @@ function MyGroups({ groups }: MyGroupsProps) {
 
   const navigate = useNavigate();
 
-   const handleNext = () => {
+  const handleNext = () => {
     navigate("/grupo");
   };
 

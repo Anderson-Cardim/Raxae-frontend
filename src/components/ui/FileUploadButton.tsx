@@ -4,9 +4,10 @@ import { PlusIcon } from '@heroicons/react/24/solid';
 
 interface FileUploadButtonProps extends React.InputHTMLAttributes<HTMLInputElement> {
   initialPreviewUrl?: string;
+  className?: string;
 }
 
-const FileUploadButton = forwardRef<HTMLInputElement, FileUploadButtonProps>(({ initialPreviewUrl, ...props }, ref) => {
+const FileUploadButton = forwardRef<HTMLInputElement, FileUploadButtonProps>(({ initialPreviewUrl, className, ...props }, ref) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(initialPreviewUrl || null);
 
   React.useEffect(() => {
@@ -30,7 +31,7 @@ const FileUploadButton = forwardRef<HTMLInputElement, FileUploadButtonProps>(({ 
   };
 
   return (
-    <div className="w-full bg-white border-2 border-gray-400 rounded-xl h-40 flex items-center justify-center mb-6 cursor-pointer relative overflow-hidden">
+    <div className={`flex items-center justify-center cursor-pointer relative overflow-hidden ${className || "w-full bg-white border-2 border-gray-400 rounded-xl h-40 mb-6"}`}>
 
       <label
         htmlFor="file-upload"

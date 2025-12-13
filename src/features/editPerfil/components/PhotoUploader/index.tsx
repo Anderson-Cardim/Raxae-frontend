@@ -1,9 +1,11 @@
 import React, { useState, type ChangeEvent } from 'react';
 import { FaCamera } from 'react-icons/fa';
+import { useToast } from "../../../../contexts/ToastContext";
 
 const PhotoUploader: React.FC = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const toast = useToast();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -27,9 +29,9 @@ const PhotoUploader: React.FC = () => {
   const handleUpload = () => {
     if (selectedFile) {
       console.log('Arquivo pronto para upload:', selectedFile.name);
-      alert('Upload simulado! Verifique o console.');
+      toast.info('Upload simulado! Verifique o console.');
     } else {
-      alert('Selecione uma foto primeiro.');
+      toast.warning('Selecione uma foto primeiro.');
     }
   };
 

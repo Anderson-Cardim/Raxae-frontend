@@ -4,12 +4,14 @@ import HeaderForm from "../../../components/layout/HeaderForm";
 import FooterNav from "../../../components/layout/FooterNav";
 import { expenseService, type CobrancaResponse } from "../../../services/expenseService";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import { useToast } from "../../../contexts/ToastContext";
 
 export default function GroupPaymentsPage() {
     const { groupId } = useParams<{ groupId: string }>();
     const navigate = useNavigate();
     const [charges, setCharges] = useState<CobrancaResponse[]>([]);
     const [loading, setLoading] = useState(true);
+    const toast = useToast();
 
     // Proof Modal State
     const [selectedProofUrl, setSelectedProofUrl] = useState<string | null>(null);
@@ -49,7 +51,7 @@ export default function GroupPaymentsPage() {
             setSelectedProofUrl(url);
         } catch (error) {
             console.error("Failed to load proof", error);
-            alert("Erro ao carregar comprovante. Pode não haver comprovante enviado.");
+            toast.error("Erro ao carregar comprovante. Pode não haver comprovante enviado.");
             setProofingCobranca(null);
         }
     };
@@ -69,28 +71,28 @@ export default function GroupPaymentsPage() {
     if (loading) return <div className="p-4 text-center">Carregando pagamentos...</div>;
 
     return (
-        <div className="flex flex-col min-h-screen bg-white pb-20">
+        <div className="flex flex-col min-h-screen bg-white dark:bg-[#18181b] pb-20 transition-colors duration-300">
             <HeaderForm title="Pagamentos do Grupo" onBack={handleGoBack} />
 
             <div className="flex-grow p-4 lg:ml-35 lg:mr-35 mb-10">
                 <div className="space-y-4">
                     {charges.length === 0 ? (
-                        <p className="text-gray-500 text-center mt-10">Nenhuma cobrança encontrada.</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-center mt-10">Nenhuma cobrança encontrada.</p>
                     ) : (
                         charges.map(charge => (
-                            <div key={charge.id} className="bg-white border text-left border-gray-200 rounded-xl p-4 shadow-sm">
+                            <div key={charge.id} className="bg-white dark:bg-[#27272a] border text-left border-gray-200 dark:border-gray-800 rounded-xl p-4 shadow-sm hover:shadow-md transition-all">
                                 <div className="flex justify-between items-start mb-2">
                                     <div>
-                                        <h3 className="font-bold text-gray-800">{charge.despesaNome}</h3>
-                                        <p className="text-sm text-gray-500">
+                                        <h3 className="font-bold text-gray-800 dark:text-gray-100">{charge.despesaNome}</h3>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">
                                             Vencimento: {new Date(charge.dataVencimento).toLocaleDateString('pt-BR')}
                                         </p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="font-bold text-blue-600">R$ {charge.valor.toFixed(2).replace('.', ',')}</p>
-                                        <span className={`text-xs px-2 py-1 rounded-full ${charge.status === 'PAGA' ? 'bg-green-100 text-green-700' :
-                                            charge.status === 'VENCIDA' ? 'bg-red-100 text-red-700' :
-                                                'bg-yellow-100 text-yellow-700'
+                                        <p className="font-bold text-blue-600 dark:text-blue-400">R$ {charge.valor.toFixed(2).replace('.', ',')}</p>
+                                        <span className={`text-xs px-2 py-1 rounded-full ${charge.status === 'PAGA' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' :
+                                            charge.status === 'VENCIDA' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' :
+                                                'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300'
                                             }`}>
                                             {charge.status}
                                         </span>
@@ -99,11 +101,11 @@ export default function GroupPaymentsPage() {
 
                                 {/* Action for Paid Charges */}
                                 {charge.status === 'PAGA' && (
-                                    <div className="mt-3 pt-3 border-t border-gray-100 flex justify-end">
+                                    <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 flex justify-end">
                                         <button
                                             onClick={() => handleViewProof(charge.id)}
                                             disabled={proofingCobranca === charge.id}
-                                            className="text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 px-3 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                                            className="text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
                                         >
                                             {proofingCobranca === charge.id ? 'Carregando...' : 'Ver Comprovante'}
                                         </button>

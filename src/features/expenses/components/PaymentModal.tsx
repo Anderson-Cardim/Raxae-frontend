@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import ActionButton from "../../../components/ui/ActionButton";
+import { useToast } from "../../../contexts/ToastContext";
 
 interface PaymentModalProps {
     isOpen: boolean;
@@ -14,6 +15,7 @@ export default function PaymentModal({ isOpen, onClose, expenseName, expenseValu
     const [file, setFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const toast = useToast();
 
     if (!isOpen) return null;
 
@@ -24,7 +26,7 @@ export default function PaymentModal({ isOpen, onClose, expenseName, expenseValu
             // Validate file type
             const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
             if (!validTypes.includes(selectedFile.type)) {
-                alert("Formato inválido. Apenas imagens (JPEG, PNG, GIF) são aceitas.");
+                toast.error("Formato inválido. Apenas imagens (JPEG, PNG, GIF) são aceitas.");
                 return;
             }
 
@@ -35,24 +37,25 @@ export default function PaymentModal({ isOpen, onClose, expenseName, expenseValu
 
     const handleSubmit = async () => {
         if (!file) {
-            alert("Por favor, anexe o comprovante.");
+            toast.warning("Por favor, anexe o comprovante.");
             return;
         }
 
         try {
             setLoading(true);
             await onConfirm(file);
+            toast.success("Comprovante enviado com sucesso!");
             onClose(); // Close on success
         } catch (error) {
             console.error("Payment failed", error);
-            alert("Erro ao enviar pagamento.");
+            toast.error("Erro ao enviar pagamento.");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
             <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl animate-fade-in-up">
 
                 {/* Header */}

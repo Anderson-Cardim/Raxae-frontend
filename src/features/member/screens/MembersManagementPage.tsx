@@ -6,6 +6,7 @@ import HeaderForm from "../../../components/layout/HeaderForm";
 import ProofAttachmentForm from "../components/ProofAttachmentForm";
 import GroupHeaderInfo from "../components/GroupHeaderInfo";
 import { groupService } from "../../../services/groupService";
+import { useToast } from "../../../contexts/ToastContext";
 
 interface Group {
   name: string;
@@ -29,6 +30,7 @@ export default function MembersManagementPage() {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const currentUserId = localStorage.getItem('usuarioId');
+  const toast = useToast();
 
   useEffect(() => {
     if (groupId) {
@@ -60,7 +62,7 @@ export default function MembersManagementPage() {
       setMembers(mappedMembers);
     } catch (error) {
       console.error("Failed to load group data", error);
-      alert("Erro ao carregar dados do grupo");
+      toast.error("Erro ao carregar dados do grupo");
       navigate("/home");
     } finally {
       setLoading(false);
@@ -77,10 +79,11 @@ export default function MembersManagementPage() {
       try {
         await groupService.removerMembro(groupId, memberId);
         setMembers(members.filter((m) => m.id !== memberId));
+        toast.success("Membro removido com sucesso");
         console.log(`Membro ${memberId} removido.`);
       } catch (error) {
         console.error("Failed to remove member", error);
-        alert("Erro ao remover membro");
+        toast.error("Erro ao remover membro");
       }
     }
   };
@@ -92,7 +95,7 @@ export default function MembersManagementPage() {
   const handleProofUpload = async (file: File) => {
     // This requires an expense ID which is not available in this context
     console.log(`[TODO] Implement payment for file ${file.name}. Requires expense ID.`);
-    alert("Funcionalidade de pagamento requer seleção de despesa.");
+    toast.warning("Funcionalidade de pagamento requer seleção de despesa.");
   };
 
   if (loading) {

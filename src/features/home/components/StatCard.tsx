@@ -25,16 +25,16 @@ interface StatCardProps {
 
 function StatCard({ label, value, type }: StatCardProps) {
   return (
-    <div className="bg-white rounded-2xl shadow-2xl p-4 flex flex-col items-start justify-between hover:translate-y-[1px] hover:shadow-lg  ">
+    <div className="bg-white dark:bg-[#27272a] rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-4 flex flex-col items-start justify-between hover:translate-y-[1px] hover:shadow-md transition-all">
       <div className="flex items-center">
-        <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2">
+        <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2 bg-gray-50 dark:bg-gray-800">
           {iconMap[type]}
         </div>
-        <p className="text-gray-500 text-xs font-semibold uppercase">{label}</p>
+        <p className="text-gray-500 dark:text-gray-400 text-xs font-semibold uppercase">{label}</p>
       </div>
 
       <div>
-        <p className="text-black text-3xl font-bold">{value}</p>
+        <p className="text-black dark:text-white text-3xl font-bold">{value}</p>
       </div>
     </div>
   );

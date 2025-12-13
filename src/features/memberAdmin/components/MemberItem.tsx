@@ -22,16 +22,16 @@ interface Member {
 
 const MemberItem: React.FC<MemberItemProps> = ({ member, groupId, onRemove }) => {
   return (
-    <div className={`flex items-cente justify-between p-3 rounded-lg shadow-2xl hover:translate-y-[1px] hover:shadow-lg `}>
+    <div className={`flex items-cente justify-between p-3 rounded-lg shadow-2xl hover:translate-y-[1px] hover:shadow-lg bg-white dark:bg-[#27272a] border border-transparent dark:border-gray-700 transition-colors duration-200`}>
 
       <div className="flex items-center space-x-3">
         <img
           src={member.imageUrl}
           alt={member.name}
-          className="w-12 h-12 rounded-full object-cover border border-gray-200"
+          className="w-12 h-12 rounded-full object-cover border border-gray-200 dark:border-gray-600"
         />
 
-        <div className="font-bold text-gray-800 flex items-center space-x-2">
+        <div className="font-bold text-gray-800 dark:text-gray-100 flex items-center space-x-2">
           <span>{member.name}</span>
         </div>
       </div>

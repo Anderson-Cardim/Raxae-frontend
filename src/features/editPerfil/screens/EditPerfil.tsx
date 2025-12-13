@@ -91,7 +91,7 @@ export default function EditPerfil() {
   }
 
   return (
-    <form onSubmit={handleSave} className="flex flex-col min-h-screen bg-white pb-20">
+    <form onSubmit={handleSave} className="flex flex-col min-h-screen bg-white dark:bg-[#18181b] pb-20 transition-colors duration-300">
       <HeaderForm title="Editar Perfil" onBack={handleGoBack} />
       <div className="flex-grow p-6 lg:ml-35 lg:mr-35 mb-10">
 
@@ -106,7 +106,7 @@ export default function EditPerfil() {
             name="name"
             value={userData.name}
             onChange={handleChange}
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
+            className="w-full py-3 px-4 border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#27272a] rounded-xl text-gray-700 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-gray-500 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
           />
         </FormSection>
 
@@ -118,7 +118,7 @@ export default function EditPerfil() {
             value={userData.email}
             onChange={handleChange}
             readOnly // Often email is not editable, but keeping it editable if API allows updates.
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
+            className="w-full py-3 px-4 border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#27272a] rounded-xl text-gray-700 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-gray-500 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
           />
         </FormSection>
 
@@ -129,7 +129,7 @@ export default function EditPerfil() {
             name="phone"
             value={userData.phone}
             onChange={handleChange}
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
+            className="w-full py-3 px-4 border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#27272a] rounded-xl text-gray-700 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-gray-500 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
           />
         </FormSection>
 
@@ -140,7 +140,7 @@ export default function EditPerfil() {
             name="password"
             value={userData.password}
             onChange={handleChange}
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
+            className="w-full py-3 px-4 border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#27272a] rounded-xl text-gray-700 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-gray-500 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
           />
         </FormSection>
 
@@ -149,7 +149,7 @@ export default function EditPerfil() {
             text="Cancelar"
             type="button"
             onClick={handleCancel}
-            className="py-3 px-6 text-red-500 border-2 border-red-500 bg-white hover:bg-red-50 rounded-lg text-xl font-bold transition-colors duration-300 flex-1 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
+            className="py-3 px-6 text-red-500 border-2 border-red-500 bg-white dark:bg-[#27272a] hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-xl font-bold transition-colors duration-300 flex-1 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
           />
           <ActionButton
             text="Salvar"
@@ -169,7 +169,7 @@ export default function EditPerfil() {
             text="Sair da Conta"
             type="button"
             onClick={handleLogout}
-            className="w-full py-3 px-10 text-red-500 border-2 border-red-500 bg-white hover:bg-red-50 rounded-lg text-xl font-bold transition-colors duration-300 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
+            className="w-full py-3 px-10 text-red-500 border-2 border-red-500 bg-white dark:bg-[#27272a] hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-xl font-bold transition-colors duration-300 cursor-pointer hover:translate-y-[1px] hover:shadow-lg"
           />
         </div>
 

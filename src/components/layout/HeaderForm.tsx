@@ -2,20 +2,20 @@
 import { FaArrowLeftLong } from "react-icons/fa6";
 
 
-interface HeaderFormProps{
+interface HeaderFormProps {
   title: string;
   onBack?: () => void;
 }
 
-function HeaderForm({ title, onBack}: HeaderFormProps) {
+function HeaderForm({ title, onBack }: HeaderFormProps) {
 
   return (
-    <header className="p-5.5 flex items-center justify-between relative bg-white">
-      <button  onClick={onBack} className="absolute left-4">
-        <FaArrowLeftLong className="w-6 h-6 text-black"/>
+    <header className="p-5.5 flex items-center justify-between relative bg-white dark:bg-[#18181b] transition-colors duration-300">
+      <button onClick={onBack} className="absolute left-4">
+        <FaArrowLeftLong className="w-6 h-6 text-black dark:text-white" />
       </button>
 
-      <h1 className="flex-grow pl-20 text-2xl font-bold  ">
+      <h1 className="flex-grow pl-20 text-2xl font-bold dark:text-white">
         {title}
       </h1>
 

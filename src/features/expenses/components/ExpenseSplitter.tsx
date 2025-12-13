@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 import ActionButton from "../../../components/ui/ActionButton";
 import { RadioOption } from "../../../components/ui/RadioOption";
 import ExpenseForm from "./ExpenseForm";
-import ExpenseMemberItem from "./ExpenseMemberItemProps ";
+import ExpenseMemberItem from "./ExpenseMemberItem";
 import type { AddExpenseFormInputs } from "../screens/AddExpensePage";
 import type {
   Member,
@@ -36,7 +36,7 @@ export function ExpenseSplitter({
       <ExpenseForm register={register} errors={formState.errors} />
 
       <div className="space-y-2 pt-10">
-        <h3 className="text-lg font-semibold text-gray-700 mb-2">
+        <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
           Dividir despesas:
         </h3>
         <RadioOption
@@ -57,7 +57,7 @@ export function ExpenseSplitter({
 
       {splitType === "custom" && (
         <div className="mt-6">
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
             Dividir por:
           </h3>
           <div className="space-y-2">
@@ -89,7 +89,7 @@ export function ExpenseSplitter({
                 splitMethod={splitMethod}
                 onAmountChange={(value) => handleAmountChange(member.id, value)}
               />
-              
+
             ))}
           </div>
         </div>
