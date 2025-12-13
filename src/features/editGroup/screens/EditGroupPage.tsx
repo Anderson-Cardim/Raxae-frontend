@@ -40,17 +40,25 @@ function EditGroupPage() {
     if (groupId) {
       setLoading(true);
       groupService.obterGrupo(groupId)
-        .then(group => {
-          setValue("groupName", group.nomeGrupo);
-          setValue("description", group.descricao);
+        .then(groupData => {
+          setValue("groupName", groupData.nomeGrupo);
+          setValue("description", groupData.descricao || "");
 
-          setMemberCount(group.membros?.length || 0);
+          // Security check: Redirect non-admins to view page
+          const currentUserId = localStorage.getItem('usuarioId');
+          if (groupData.adminId !== currentUserId) {
+            toast.error("Você não tem permissão para editar este grupo.");
+            navigate(`/ver-grupo/${groupId}`);
+            return;
+          }
+
+          setMemberCount(groupData.membros?.length || 0);
           setMockImageUrl(groupIcon);
         })
         .catch(err => console.error("Failed to load group:", err))
         .finally(() => setLoading(false));
     }
-  }, [groupId, setValue]);
+  }, [groupId, setValue, navigate, toast]);
 
   const handleGenerateExpense = async () => {
     if (!groupId) return;
@@ -142,6 +150,12 @@ function EditGroupPage() {
 
         <FormSection title="">
           <div className="mt-8 flex flex-col md:flex-row justify-end gap-4">
+            <ActionButton
+              text="GERENCIAR DESPESAS"
+              type="button"
+              onClick={() => navigate(`/grupo/${groupId}/despesas`)}
+              className="py-3 px-6 w-full md:w-auto text-white bg-[#eab308] hover:bg-[#ca8a04] rounded-lg text-xl font-bold transition-colors duration-300 shadow-2xl hover:translate-y-[1px] hover:shadow-lg"
+            />
             <ActionButton
               text="ADICIONAR PARTICIPANTES"
               type="button"

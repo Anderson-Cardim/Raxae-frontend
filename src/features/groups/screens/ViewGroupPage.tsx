@@ -80,48 +80,48 @@ export default function ViewGroupPage() {
     if (!group) return <div className="p-4 text-center">Grupo não encontrado</div>;
 
     return (
-        <div className="flex flex-col min-h-screen bg-white pb-20">
-            <HeaderForm title="Detalhes do Grupo" onBack={handleGoBack} />
+        <div className="flex flex-col min-h-screen bg-white dark:bg-[#18181b] pb-20 transition-colors duration-300">
+            <HeaderForm title="Informações do grupo" onBack={handleGoBack} />
 
             <div className="flex-grow p-6 lg:ml-35 lg:mr-35 mb-10">
-
-                {/* Header with Icon and Name */}
-                <div className="flex flex-col items-center mb-6">
+                <div className="flex flex-col items-center justify-center bg-gray-50 dark:bg-[#27272a] rounded-2xl p-6 mb-8 shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-300">
                     <img
-                        src={group.icone === 'default-icon' ? groupIcon : (group.icone || groupIcon)}
+                        src={(!group.icone || group.icone === 'default-icon') ? groupIcon : group.icone}
                         alt="Grupo"
-                        className="w-32 h-32 rounded-full object-cover shadow-lg border-4 border-white mb-4"
+                        className="w-32 h-32 rounded-full border-4 border-white dark:border-gray-600 shadow-lg bg-gray-200 dark:bg-gray-800 mb-4 object-cover"
                     />
-                    <h2 className="text-2xl font-bold text-gray-800">{group.nomeGrupo}</h2>
-                    <p className="text-gray-500">{group.membros.length} membros</p>
+                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white text-center">
+                        {group.nomeGrupo}
+                    </h2>
+                    <p className="text-gray-500 dark:text-gray-400 mt-2">{group.membros.length} membros</p>
                 </div>
 
                 <FormSection title="Descrição do grupo">
-                    <p className="w-full py-3 px-4 border-2 border-gray-100 bg-gray-50 rounded-xl text-gray-700">
+                    <div className="w-full py-3 px-4 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-[#27272a] rounded-xl text-gray-700 dark:text-gray-200">
                         {group.descricao || "Sem descrição"}
-                    </p>
+                    </div>
                 </FormSection>
 
                 {/* Real Charges Section */}
                 <div className="mt-8">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 px-1">Minhas Cobranças</h3>
+                    <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-4 px-1">Minhas Cobranças</h3>
                     <div className="space-y-3">
                         {charges.length === 0 ? (
-                            <p className="text-gray-500 text-sm p-2">Nenhuma cobrança encontrada para este grupo.</p>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm p-2">Nenhuma cobrança encontrada para este grupo.</p>
                         ) : (
                             charges.map(charge => (
-                                <div key={charge.id} className="bg-white border text-left border-gray-200 rounded-xl p-4 shadow-sm flex justify-between items-center">
+                                <div key={charge.id} className="bg-white dark:bg-[#27272a] border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm flex justify-between items-center transition-colors duration-300">
                                     <div>
-                                        <p className="font-bold text-gray-800">{charge.despesaNome}</p>
-                                        <p className="text-sm text-gray-500">
+                                        <p className="font-bold text-gray-800 dark:text-gray-100">{charge.despesaNome}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">
                                             Vence em: {new Date(charge.dataVencimento).toLocaleDateString('pt-BR')}
                                         </p>
                                     </div>
                                     <div className="text-right flex flex-col items-end gap-1">
-                                        <p className="font-bold text-blue-600">
+                                        <p className="font-bold text-blue-600 dark:text-blue-400">
                                             R$ {charge.valor.toFixed(2).replace('.', ',')}
                                         </p>
-                                        <span className={`text-xs px-2 py-1 rounded-full ${charge.status === 'PAGA' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                                        <span className={`text-xs px-2 py-1 rounded-full ${charge.status === 'PAGA' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300'}`}>
                                             {charge.status}
                                         </span>
 
@@ -142,17 +142,19 @@ export default function ViewGroupPage() {
 
                 {/* Members List Read-Only */}
                 <div className="mt-8">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 px-1">Participantes</h3>
-                    <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                    <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-4 px-1">Participantes</h3>
+                    <div className="bg-gray-50 dark:bg-[#27272a] rounded-xl p-4 border border-gray-100 dark:border-gray-700">
                         <div className="grid grid-cols-1 gap-3">
                             {group.membros.map(member => (
-                                <div key={member.idMembro} className="flex items-center space-x-3 p-2 bg-white rounded-lg shadow-sm">
-                                    <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 text-xs font-bold">
+                                <div key={member.idMembro} className="flex items-center space-x-3 p-2 bg-white dark:bg-[#1f1f22] rounded-lg shadow-sm">
+                                    <div className="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-300 text-xs font-bold overflow-hidden">
+                                        {/* Use explicit image or initial */}
+                                        {/* Assuming member has no imageUrl property in this response, using initial */}
                                         {member.nomeUsuario.charAt(0).toUpperCase()}
                                     </div>
-                                    <span className="text-gray-700 font-medium">{member.nomeUsuario}</span>
+                                    <span className="text-gray-700 dark:text-gray-200 font-medium">{member.nomeUsuario}</span>
                                     {member.idUsuario === group.adminId && (
-                                        <span className="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded ml-auto">Admin</span>
+                                        <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-2 py-0.5 rounded ml-auto">Admin</span>
                                     )}
                                 </div>
                             ))}

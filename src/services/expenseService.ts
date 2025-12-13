@@ -75,5 +75,14 @@ export const expenseService = {
             responseType: 'blob'
         });
         return response.data;
+    },
+
+    listarDespesasGrupo: async (grupoId: string): Promise<DespesaResponse[]> => {
+        const response = await api.get<DespesaResponse[]>(`/v1/grupos/${grupoId}/despesas`);
+        return response.data;
+    },
+
+    deletarDespesa: async (grupoId: string, despesaId: string): Promise<void> => {
+        await api.delete(`/v1/grupos/${grupoId}/despesas/${despesaId}`);
     }
 };

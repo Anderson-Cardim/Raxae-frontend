@@ -17,6 +17,7 @@ import MembersManagementPage from "../features/member/screens/MembersManagementP
 import MemberHistoryPage from "../features/history/screens/MemberHistoryPage.tsx";
 import MemberAdmin from "../features/memberAdmin/screens/MemberAdmin.tsx";
 import GroupPaymentsPage from "../features/groups/screens/GroupPaymentsPage.tsx";
+import GroupExpensesPage from "../features/expenses/screens/GroupExpensesPage.tsx";
 import { ExpenseSummaryPage } from "../features/expenses/components/ExpenseSummaryPage.tsx";
 import { ProtectedRoute } from "../components/auth/index.tsx";
 import { Navigate } from "react-router-dom";
@@ -58,6 +59,7 @@ export const AppRouter = () => {
                     <Route path="/adicionar-despesas" element={<AddExpensePage />} />
                     <Route path="/resumo-despesa" element={<ExpenseSummaryPage />} />
                     <Route path="/grupo/:groupId/participantes" element={<AddParticipantsPage />} />
+                    <Route path="/grupo/:groupId/despesas" element={<GroupExpensesPage />} />
                     <Route path="/grupo/:groupId/despesas/nova" element={<AddExpensePage />} />
                   </Route>
                 </Route>
