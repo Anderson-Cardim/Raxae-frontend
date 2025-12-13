@@ -126,6 +126,7 @@ export default function MemberAdmin() {
               groupId={groupId!}
               onChat={handleChat}
               onRemove={handleRemoveMember}
+              viewerIsAdmin={group.adminId === currentUserId}
             />
           ))}
         </div>

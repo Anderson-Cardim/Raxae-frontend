@@ -31,6 +31,7 @@ export function GroupsPage() {
   };
 
   const handleEdit = (groupId: string, isAdmin: boolean) => {
+    console.log(`Navigating group ${groupId} as admin: ${isAdmin}`);
     if (isAdmin) {
       navigate(`/editar-grupo/${groupId}`);
     } else {
@@ -66,7 +67,7 @@ export function GroupsPage() {
 
         <div className=" grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-cols-1 justify-center gap-8 mb-5">
           {groups.map((group) => {
-            const isAdmin = group.adminId === currentUserId;
+            const isAdmin = String(group.adminId) === String(currentUserId);
             return (
               <GroupCard
                 key={group.id}

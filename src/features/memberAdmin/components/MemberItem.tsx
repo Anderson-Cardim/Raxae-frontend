@@ -9,6 +9,7 @@ interface MemberItemProps {
   groupId: string;
   onChat: (memberId: string) => void;
   onRemove: (memberId: string) => void;
+  viewerIsAdmin?: boolean;
 }
 
 interface Member {
@@ -20,7 +21,7 @@ interface Member {
   imageUrl: string;
 }
 
-const MemberItem: React.FC<MemberItemProps> = ({ member, groupId, onRemove }) => {
+const MemberItem: React.FC<MemberItemProps> = ({ member, groupId, onRemove, viewerIsAdmin = false }) => {
   return (
     <div className={`flex items-cente justify-between p-3 rounded-lg shadow-2xl hover:translate-y-[1px] hover:shadow-lg bg-white dark:bg-[#27272a] border border-transparent dark:border-gray-700 transition-colors duration-200`}>
 
@@ -48,9 +49,11 @@ const MemberItem: React.FC<MemberItemProps> = ({ member, groupId, onRemove }) =>
 
         <BsClockFill size={20} color='#14879E' />
 
-        <Link to={`/grupo/${groupId}/historico/${member.id}`} title="Ver Histórico">
-          <BsJournalText size={20} color='#14879E' />
-        </Link>
+        {viewerIsAdmin && (
+          <Link to={`/grupo/${groupId}/historico/${member.id}`} title="Ver Histórico">
+            <BsJournalText size={20} color='#14879E' />
+          </Link>
+        )}
 
         {member.canDelete && (
           <button onClick={() => onRemove(member.id)}>
