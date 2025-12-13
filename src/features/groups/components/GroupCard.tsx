@@ -1,4 +1,5 @@
-import { BsClockHistory, BsTrash, BsPencilSquare } from 'react-icons/bs';
+import { BsClockHistory, BsTrash, BsPencilSquare, BsEye, BsWallet2 } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
 
 export interface GroupCardProps {
   id: string;
@@ -25,6 +26,8 @@ export function GroupCard({
   onHistory,
   isAdmin = false,
 }: GroupCardProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="bg-white rounded-2xl shadow-md overflow-hidden">
       <img src={imageUrl} alt={name} className="w-full h-40 object-cover" />
@@ -55,17 +58,26 @@ export function GroupCard({
           </button>
 
           {isAdmin && (
-            <button onClick={() => onDelete(id)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-              <BsTrash size={20} className="text-red-500 cursor-pointer" />
-            </button>
+            <>
+              <button
+                onClick={() => navigate(`/grupo/${id}/pagamentos`)}
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                title="Pagamentos"
+              >
+                <BsWallet2 size={20} className="text-green-600 cursor-pointer" />
+              </button>
+              <button onClick={() => onDelete(id)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                <BsTrash size={20} className="text-red-500 cursor-pointer" />
+              </button>
+            </>
           )}
 
           <button
             onClick={() => onEdit(id)}
-            className="flex-grow flex justify-center items-center gap-2 bg-[#14879E] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#106a8c] transition-colors cursor-pointer"
+            className={`flex-grow flex justify-center items-center gap-2 ${isAdmin ? 'bg-[#14879E] hover:bg-[#106a8c]' : 'bg-gray-600 hover:bg-gray-700'} text-white font-bold py-2 px-4 rounded-lg transition-colors cursor-pointer`}
           >
-            <BsPencilSquare size={16} />
-            Editar grupo
+            {isAdmin ? <BsPencilSquare size={16} /> : <BsEye size={16} />}
+            {isAdmin ? 'Editar grupo' : 'Ver grupo'}
           </button>
         </div>
       </div>

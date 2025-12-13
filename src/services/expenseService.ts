@@ -25,6 +25,20 @@ export interface DespesaResponse {
     adminId: string;
 }
 
+export interface CobrancaResponse {
+    id: string;
+    despesaId: string;
+    despesaNome: string;
+    grupoId: string;
+    grupoNome: string;
+    valor: number;
+    status: 'PENDENTE' | 'PAGA' | 'VENCIDA' | 'CANCELADA';
+    dataVencimento: string;
+    dataPagamento: string | null;
+    momentoCriacao: string;
+    mesReferencia: string;
+}
+
 export const expenseService = {
     registrarDespesa: async (grupoId: string, data: DespesaRequest): Promise<DespesaResponse> => {
         const response = await api.post<DespesaResponse>(`/v1/grupos/${grupoId}/despesas`, data);
@@ -33,5 +47,33 @@ export const expenseService = {
 
     excluirDespesa: async (grupoId: string, despesaId: string): Promise<void> => {
         await api.delete(`/v1/grupos/${grupoId}/despesas/${despesaId}`);
+    },
+
+    pagarDespesa: async (despesaId: string, comprovante: File): Promise<void> => {
+        const formData = new FormData();
+        formData.append('comprovante', comprovante);
+
+        await api.post(`/v1/expenses/${despesaId}/pay`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+    },
+
+    listarMinhasCobrancas: async (): Promise<CobrancaResponse[]> => {
+        const response = await api.get<CobrancaResponse[]>('/cobrancas/minhas-cobrancas');
+        return response.data;
+    },
+
+    listarCobrancasDoGrupo: async (grupoId: string): Promise<CobrancaResponse[]> => {
+        const response = await api.get<CobrancaResponse[]>(`/cobrancas/grupo/${grupoId}`);
+        return response.data;
+    },
+
+    obterComprovante: async (cobrancaId: string): Promise<Blob> => {
+        const response = await api.get(`/v1/expenses/${cobrancaId}/comprovante`, {
+            responseType: 'blob'
+        });
+        return response.data;
     }
 };

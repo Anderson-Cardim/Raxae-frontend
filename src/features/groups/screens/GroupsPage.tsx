@@ -31,7 +31,7 @@ export function GroupsPage() {
     if (isAdmin) {
       navigate(`/editar-grupo/${groupId}`);
     } else {
-      navigate(`/grupo/${groupId}/membro`);
+      navigate(`/ver-grupo/${groupId}`);
     }
   };
 
