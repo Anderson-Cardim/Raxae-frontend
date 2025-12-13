@@ -10,12 +10,14 @@ import Input from '../../../components/ui/Input';
 import type { Friend } from '../components/FriendListItem';
 import FriendListItem from '../components/FriendListItem';
 import { groupService } from '../../../services/groupService';
+import { useToast } from '../../../contexts/ToastContext';
 
 export default function FriendsPage() {
   const [friends, setFriends] = useState<Friend[]>([]);
   const [newFriendEmail, setNewFriendEmail] = useState('');
   const navigate = useNavigate();
   const currentUserId = localStorage.getItem('usuarioId');
+  const toast = useToast();
 
   useEffect(() => {
     loadFriendsFromGroups();
@@ -59,7 +61,7 @@ export default function FriendsPage() {
 
     setFriends([...friends, newFriend]);
     setNewFriendEmail('');
-    alert("Amigo adicionado localmente. Para convidar para um grupo, vá na tela do grupo.");
+    toast.info("Amigo adicionado localmente. Para convidar para um grupo, vá na tela do grupo.");
   };
 
   const handleDeleteFriend = (id: string) => {
@@ -67,14 +69,14 @@ export default function FriendsPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white pb-20">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-[#18181b] pb-20 transition-colors duration-300">
 
       <HeaderForm title="Amigos" onBack={handleGoBack} />
 
       <div className="flex-grow p-4 lg:ml-50 lg:mr-50 md:ml-40 lg:mb-10 md:mr-40">
 
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-3 text-gray-800">Novo amigo</h2>
+          <h2 className="text-xl font-semibold mb-3 text-gray-800 dark:text-gray-100">Novo amigo</h2>
           <div className="flex items-center space-x gap-3">
 
             <Input
@@ -82,7 +84,7 @@ export default function FriendsPage() {
               type="text"
               value={newFriendEmail}
               onChange={(e) => setNewFriendEmail(e.target.value)}
-              className="flex-grow py-3 px-4 border border-gray-300 rounded-lg text-gray-700 placeholder-gray-400 focus:outline-none hover:translate-y-[1px] hover:shadow-lg"
+              className="flex-grow py-3 px-4 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-200 bg-white dark:bg-[#27272a] placeholder-gray-400 focus:outline-none hover:translate-y-[1px] hover:shadow-lg"
             />
 
             <button
@@ -96,8 +98,8 @@ export default function FriendsPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-medium mb-1 text-gray-800">Seus amigos</h2>
-          <p className="text-sm text-gray-500 mb-4">
+          <h2 className="text-lg font-medium mb-1 text-gray-800 dark:text-gray-200">Seus amigos</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
             Pessoas que dividem grupos com você
           </p>
 

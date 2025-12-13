@@ -3,31 +3,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import HeaderForm from "../../../components/layout/HeaderForm";
 import GroupInfoCard from "../components/GroupInfoCard";
 import FooterNav from "../../../components/layout/FooterNav";
-import { GroupContext, type Member } from "../../context/GroupContext";
-import Input from "../../../components/ui/Input";
-import { useForm } from "react-hook-form";
+import { GroupContext } from "../../context/GroupContext";
 import ActionButton from "../../../components/ui/ActionButton";
-import AddedMemberItem from "../../addGroup/components/AddedMemberItem";
 import { groupService } from "../../../services/groupService";
-
-type AddParticipantsFormInputs = {
-  groupEmail: string;
-  nome: string;
-};
+import { useToast } from "../../../contexts/ToastContext";
 
 function AddParticipantsPage() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<AddParticipantsFormInputs>();
-
   const navigate = useNavigate();
   const { groupId } = useParams<{ groupId: string }>();
   const context = useContext(GroupContext);
+  const toast = useToast();
 
-  const [members, setMembers] = useState<Member[]>([]);
   const [groupName, setGroupName] = useState("");
   const [groupDescription, setGroupDescription] = useState("");
   const [groupImage, setGroupImage] = useState<string | undefined>(undefined);
@@ -59,18 +45,19 @@ function AddParticipantsPage() {
     if (groupId) {
       try {
         const link = await groupService.gerarConvite(groupId);
-        alert(`Link de convite: ${link}`);
+        navigator.clipboard.writeText(link);
+        toast.success("Link de convite copiado para a área de transferência!");
       } catch (error) {
         console.error("Erro ao gerar convite:", error);
-        alert("Erro ao gerar convite.");
+        toast.error("Erro ao gerar convite.");
       }
     } else {
-      alert("Salve o grupo primeiro para gerar convites.");
+      toast.warning("Salve o grupo primeiro para gerar convites.");
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white pb-20 ">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-[#18181b] pb-20 transition-colors duration-300">
       <HeaderForm title="Adicionar Participantes" onBack={handleGoBack} />
       <div className="flex-grow p-4 lg:ml-50 lg:mr-50 md:ml-40 lg:mb-10 md:mr-40 ">
         <GroupInfoCard
@@ -81,7 +68,7 @@ function AddParticipantsPage() {
         />
 
         <div className="mt-6">
-          <p className="text-gray-600 mb-4 text-center">
+          <p className="text-gray-600 dark:text-gray-300 mb-4 text-center">
             Para adicionar participantes, gere um link de convite e compartilhe com eles.
           </p>
           <ActionButton

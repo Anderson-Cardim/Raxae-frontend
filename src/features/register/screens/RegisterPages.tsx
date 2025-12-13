@@ -5,6 +5,7 @@ import Button from "../../../components/ui/Button.tsx";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
+import { useToast } from "../../../contexts/ToastContext";
 
 type RegisterFormInputs = {
   fullName: string;
@@ -18,6 +19,7 @@ function RegisterPage() {
   const { registerUser } = useAuth();
   const navigate = useNavigate();
   const [registerError, setRegisterError] = useState<string | null>(null);
+  const toast = useToast();
 
   const onSubmit = async (data: RegisterFormInputs) => {
     setRegisterError(null);
@@ -28,7 +30,7 @@ function RegisterPage() {
         whatsapp: data.phone || "",
         senha: data.password
       });
-      alert("Usuário registrado com sucesso! Faça login para continuar.");
+      toast.success("Usuário registrado com sucesso! Faça login para continuar.");
       navigate("/login");
     } catch (error) {
       console.error("Registration failed:", error);

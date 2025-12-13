@@ -7,6 +7,7 @@ import { expenseService, type CobrancaResponse } from "../../../services/expense
 import FormSection from "../../editGroup/components/FormSection";
 import groupIcon from "../../../assets/group_icon.png";
 import PaymentModal from "../../expenses/components/PaymentModal";
+import { useToast } from "../../../contexts/ToastContext";
 
 export default function ViewGroupPage() {
     const { groupId } = useParams<{ groupId: string }>();
@@ -14,6 +15,7 @@ export default function ViewGroupPage() {
     const [group, setGroup] = useState<GrupoResponse | null>(null);
     const [charges, setCharges] = useState<CobrancaResponse[]>([]);
     const [loading, setLoading] = useState(true);
+    const toast = useToast();
 
     // Payment Modal State
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -64,13 +66,13 @@ export default function ViewGroupPage() {
 
         try {
             await expenseService.pagarDespesa(selectedExpense.id, file);
-            alert("Comprovante enviado com sucesso!");
+            toast.success("Comprovante enviado com sucesso!");
             setIsPaymentModalOpen(false);
             // Reload data to reflect status change if needed (API assumes status update might take time or manual approval)
             loadData();
         } catch (error) {
             console.error("Error paying expense:", error);
-            alert("Erro ao enviar pagamento.");
+            toast.error("Erro ao enviar pagamento.");
         }
     };
 

@@ -5,6 +5,7 @@ import FooterNav from "../../../components/layout/FooterNav";
 import { groupService, type HistoricoMembroResponse, type HistoricoItem } from "../../../services/groupService";
 import { FaArrowUp, FaArrowDown, FaMoneyBillWave, FaUser } from "react-icons/fa";
 import groupIcon from "../../../assets/group_icon.png";
+import { useToast } from "../../../contexts/ToastContext";
 
 export default function MemberHistoryPage() {
     const { groupId, memberId } = useParams<{ groupId: string; memberId: string }>();
@@ -13,6 +14,7 @@ export default function MemberHistoryPage() {
     const [memberName, setMemberName] = useState<string>("");
     const [groupName, setGroupName] = useState<string>("");
     const [loading, setLoading] = useState(true);
+    const toast = useToast();
 
     useEffect(() => {
         if (groupId && memberId) {
@@ -41,7 +43,7 @@ export default function MemberHistoryPage() {
 
         } catch (error) {
             console.error("Failed to load data", error);
-            alert("Erro ao carregar dados");
+            toast.error("Erro ao carregar dados");
         } finally {
             setLoading(false);
         }

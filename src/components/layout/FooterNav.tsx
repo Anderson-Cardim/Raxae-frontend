@@ -13,13 +13,13 @@ function FooterNav() {
   const location = useLocation();
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-white p-4 border-t border-gray-200 flex justify-around items-center text-center text-xs font-medium z-10">
+    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#18181b] p-4 border-t border-gray-200 dark:border-gray-800 flex justify-around items-center text-center text-xs font-medium z-10 transition-colors duration-300">
 
       {navItems.map((item, index) => {
         const isActive = location.pathname === item.path;
 
-        const activeColor = 'text-[#000]';
-        const defaultColor = 'text-gray-500';
+        const activeColor = 'text-[#000] dark:text-white';
+        const defaultColor = 'text-gray-500 dark:text-gray-400';
 
         return (
 

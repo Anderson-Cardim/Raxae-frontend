@@ -9,6 +9,7 @@ import { expenseService } from "../../../services/expenseService";
 import { groupService } from "../../../services/groupService";
 import DateInput from "../../../components/ui/DateInput";
 import Input from "../../../components/ui/Input";
+import { useToast } from "../../../contexts/ToastContext";
 
 export type AddExpenseFormInputs = {
   description: string;
@@ -23,6 +24,7 @@ function AddExpensePage() {
   const navigate = useNavigate();
   const { groupId } = useParams<{ groupId: string }>();
   const context = useContext(GroupContext);
+  const toast = useToast();
 
   const [members, setMembers] = useState<Member[]>([]);
   const [splitType, setSplitType] = useState<SplitType>("equally");
@@ -114,11 +116,11 @@ function AddExpensePage() {
           dataVencimentoAvulsa: recurrence === "UNICA" ? data.dueDate : undefined,
           pixBeneficiado: data.adminPix
         });
-        alert("Despesa salva com sucesso!");
+        toast.success("Despesa salva com sucesso!");
         navigate(`/editar-grupo/${groupId}`);
       } catch (error) {
         console.error("Erro ao salvar despesa:", error);
-        alert("Erro ao salvar despesa.");
+        toast.error("Erro ao salvar despesa.");
       }
     } else if (context?.group) {
       // Legacy flow
@@ -142,13 +144,13 @@ function AddExpensePage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white pb-20">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-[#18181b] pb-20 transition-colors duration-300">
       <HeaderForm title="Adicionar Despesas" onBack={handleGoBack} />
       <div className="flex-grow p-4 lg:ml-50 lg:mr-50 md:ml-40 lg:mb-10 md:mr-40">
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
+              <label className="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">
                 Recorrência
               </label>
               <div className="flex gap-4">
@@ -156,8 +158,8 @@ function AddExpensePage() {
                   type="button"
                   onClick={() => setRecurrence("UNICA")}
                   className={`flex-1 py-3 px-4 rounded-xl border-2 transition-all font-medium ${recurrence === "UNICA"
-                      ? "border-[#F34403] bg-[#F34403] text-white"
-                      : "border-gray-300 text-gray-600 hover:border-gray-400 bg-white"
+                    ? "border-[#F34403] bg-[#F34403] text-white"
+                    : "border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600 bg-white dark:bg-[#27272a]"
                     }`}
                 >
                   Única
@@ -166,8 +168,8 @@ function AddExpensePage() {
                   type="button"
                   onClick={() => setRecurrence("MENSAL")}
                   className={`flex-1 py-3 px-4 rounded-xl border-2 transition-all font-medium ${recurrence === "MENSAL"
-                      ? "border-[#F34403] bg-[#F34403] text-white"
-                      : "border-gray-300 text-gray-600 hover:border-gray-400 bg-white"
+                    ? "border-[#F34403] bg-[#F34403] text-white"
+                    : "border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600 bg-white dark:bg-[#27272a]"
                     }`}
                 >
                   Mensal
@@ -176,11 +178,11 @@ function AddExpensePage() {
             </div>
 
             <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
+              <label className="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">
                 Data de Vencimento
               </label>
               <DateInput
-                className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
+                className="w-full py-3 px-4 border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#27272a] rounded-xl text-gray-700 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
                 {...register("dueDate", {
                   required: "Data de vencimento é obrigatória",
                 })}
@@ -193,13 +195,13 @@ function AddExpensePage() {
             </div>
 
             <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
+              <label className="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">
                 Pix do Administrador
               </label>
               <Input
                 placeholder="Chave Pix"
                 type="text"
-                className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
+                className="w-full py-3 px-4 border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#27272a] rounded-xl text-gray-700 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
                 {...register("adminPix", {
                   required: "Pix do administrador é obrigatório"
                 })}

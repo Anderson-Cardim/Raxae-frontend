@@ -6,6 +6,8 @@ import HeaderForm from "../../../components/layout/HeaderForm";
 import { FaPlus } from "react-icons/fa6";
 import GroupHeaderInfo from "../components/GroupHeaderInfo";
 import { groupService } from "../../../services/groupService";
+import { useToast } from "../../../contexts/ToastContext";
+import groupIcon from "../../../assets/group_icon.png";
 
 
 interface Group {
@@ -30,6 +32,7 @@ export default function MemberAdmin() {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const currentUserId = localStorage.getItem('usuarioId');
+  const toast = useToast();
 
   useEffect(() => {
     if (groupId) {
@@ -43,9 +46,11 @@ export default function MemberAdmin() {
       setLoading(true);
       const groupData = await groupService.obterGrupo(groupId);
 
+      const imageUrl = (groupData.icone && groupData.icone !== "default-icon") ? groupData.icone : groupIcon;
+
       setGroup({
         name: groupData.nomeGrupo,
-        imageUrl: groupData.icone || "/ImagemDisney.svg",
+        imageUrl: imageUrl,
         adminId: groupData.adminId
       });
 
@@ -61,7 +66,7 @@ export default function MemberAdmin() {
       setMembers(mappedMembers);
     } catch (error) {
       console.error("Failed to load group data", error);
-      alert("Erro ao carregar dados do grupo");
+      toast.error("Erro ao carregar dados do grupo");
       navigate("/home");
     } finally {
       setLoading(false);
@@ -78,10 +83,11 @@ export default function MemberAdmin() {
       try {
         await groupService.removerMembro(groupId, memberId);
         setMembers(members.filter((m) => m.id !== memberId));
+        toast.success("Membro removido com sucesso");
         console.log(`Membro ${memberId} removido.`);
       } catch (error) {
         console.error("Failed to remove member", error);
-        alert("Erro ao remover membro");
+        toast.error("Erro ao remover membro");
       }
     }
   };
@@ -106,7 +112,7 @@ export default function MemberAdmin() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-white pb-20">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-[#18181b] pb-20 transition-colors duration-300">
       <HeaderForm title="Membros" onBack={handleGoBack} />
 
       <div className="flex-grow p-4 lg:ml-10 lg:mr-10 mb-10">
@@ -126,7 +132,7 @@ export default function MemberAdmin() {
 
         <button
           onClick={handleAddMember}
-          className="w-full flex justify-center items-center p-8 border-2 border-gray-300 rounded-xl cursor-pointer hover:bg-gray-100 hover:shadow-lg transition duration-200"
+          className="w-full flex justify-center items-center p-8 border-2 border-gray-300 dark:border-gray-700 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 hover:shadow-lg transition duration-200 text-gray-500 dark:text-gray-400"
         >
           <FaPlus />
         </button>

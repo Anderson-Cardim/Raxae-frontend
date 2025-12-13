@@ -29,32 +29,32 @@ export function GroupCard({
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+    <div className="bg-white dark:bg-[#27272a] rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-md transition-shadow">
       <img src={imageUrl} alt={name} className="w-full h-40 object-cover" />
 
       <div className="p-4">
-        <h2 className="text-2xl font-bold text-gray-800">{name}</h2>
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{name}</h2>
 
         <div className="flex justify-between items-center mt-4 text-center">
           <div className="flex flex-col">
-            <span className="font-bold text-lg">{memberCount}</span>
-            <span className="text-sm text-gray-500">Membros</span>
+            <span className="font-bold text-lg dark:text-gray-200">{memberCount}</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">Membros</span>
           </div>
 
           <div className="flex flex-col">
-            <span className="font-bold text-lg">{value}</span>
-            <span className="text-sm text-gray-500">Valor</span>
+            <span className="font-bold text-lg dark:text-gray-200">{value}</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">Valor</span>
           </div>
 
           <div className="flex flex-col">
-            <span className="font-bold text-lg">Dia {dueDate}</span>
-            <span className="text-sm text-gray-500">Vencimento</span>
+            <span className="font-bold text-lg dark:text-gray-200">Dia {dueDate}</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">Vencimento</span>
           </div>
         </div>
 
         <div className="flex items-center gap-2 mt-6">
-          <button onClick={() => onHistory(id)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-            <BsClockHistory size={20} className="text-gray-600 cursor-pointer" />
+          <button onClick={() => onHistory(id)} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+            <BsClockHistory size={20} className="text-gray-600 dark:text-gray-400 cursor-pointer" />
           </button>
 
           {isAdmin && (

@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 
 import { groupService, type GrupoRequest } from "../../../services/groupService";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../../../contexts/ToastContext";
 
 type CreateGroupFormInputs = {
   groupImage: FileList;
@@ -24,6 +25,7 @@ function CreateGroupPage() {
   const { register, handleSubmit, formState: { errors }, } = useForm<CreateGroupFormInputs>();
 
   const navigate = useNavigate();
+  const toast = useToast();
 
 
 
@@ -36,11 +38,11 @@ function CreateGroupPage() {
       };
 
       await groupService.criarGrupo(grupoRequest);
-      alert("Grupo criado com sucesso!");
+      toast.success("Grupo criado com sucesso!");
       navigate("/home");
     } catch (error) {
       console.error("Erro ao criar grupo:", error);
-      alert("Erro ao criar grupo.");
+      toast.error("Erro ao criar grupo.");
     }
   };
 
@@ -51,7 +53,7 @@ function CreateGroupPage() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col min-h-screen bg-white pb-20"
+      className="flex flex-col min-h-screen bg-white dark:bg-[#18181b] pb-20 transition-colors duration-300"
     >
       <HeaderForm title="Criar Novo Grupo" onBack={handleGoBack} />
       <div className="flex-grow p-6 lg:ml-35 lg:mr-35">
@@ -64,7 +66,7 @@ function CreateGroupPage() {
               required: "Nome do grupo é obrigatório",
             })}
             type="text"
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
+            className="w-full py-3 px-4 border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#27272a] rounded-xl text-gray-700 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
           />
           {errors.groupName && (
             <p className="text-red-500 text-sm mt-1">
@@ -78,7 +80,7 @@ function CreateGroupPage() {
             placeholder="Opcional"
             type="text"
             {...register("description")}
-            className="w-full py-3 px-4 border-2 border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
+            className="w-full py-3 px-4 border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#27272a] rounded-xl text-gray-700 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
           />
         </FormSection>
 

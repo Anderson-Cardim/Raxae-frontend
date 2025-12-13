@@ -7,7 +7,7 @@ interface FormSectionProps {
 function FormSection({ title, children }: FormSectionProps) {
   return (
     <div className="mb-6">
-      <h4 className="text-black font-semibold mb-2">{title}</h4>
+      <h4 className="text-white font-semibold tracking-wide mb-2 text-lg">{title}</h4>
       {children}
     </div>
   );
