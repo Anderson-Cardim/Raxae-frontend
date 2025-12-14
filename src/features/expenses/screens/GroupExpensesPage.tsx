@@ -1,23 +1,36 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { expenseService, type DespesaResponse } from "../../../services/expenseService";
+import { groupService } from "../../../services/groupService";
 import HeaderForm from "../../../components/layout/HeaderForm";
 import FooterNav from "../../../components/layout/FooterNav";
 import { useToast } from "../../../contexts/ToastContext";
-import { BsTrash, BsCalendarEvent, BsCashCoin } from "react-icons/bs";
+import { BsTrash, BsCalendarEvent, BsCashCoin, BsBell } from "react-icons/bs";
 
 export default function GroupExpensesPage() {
     const { groupId } = useParams<{ groupId: string }>();
     const navigate = useNavigate();
     const [expenses, setExpenses] = useState<DespesaResponse[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const currentUserId = localStorage.getItem('usuarioId');
     const toast = useToast();
 
     useEffect(() => {
         if (groupId) {
             loadExpenses();
+            checkAdminStatus();
         }
     }, [groupId]);
+
+    const checkAdminStatus = async () => {
+        try {
+            const group = await groupService.obterGrupo(groupId!);
+            setIsAdmin(group.adminId === currentUserId);
+        } catch (error) {
+            console.error("Failed to check admin status", error);
+        }
+    };
 
     const loadExpenses = async () => {
         try {
@@ -29,6 +42,16 @@ export default function GroupExpensesPage() {
             toast.error("Erro ao carregar despesas.");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleSendReminders = async (despesaId: string) => {
+        try {
+            await expenseService.enviarLembretesAutomaticos(despesaId);
+            toast.success("Lembretes enviados com sucesso!");
+        } catch (error) {
+            console.error("Failed to send reminders", error);
+            toast.error("Erro ao enviar lembretes.");
         }
     };
 
@@ -75,13 +98,24 @@ export default function GroupExpensesPage() {
                                         <span>{expense.tipoRecorrencia === 'UNICA' ? 'Única' : 'Mensal'}</span>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={() => handleDelete(expense.id)}
-                                    className="p-3 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
-                                    title="Excluir despesa"
-                                >
-                                    <BsTrash size={20} />
-                                </button>
+                                <div className="flex items-center gap-2">
+                                    {isAdmin && (
+                                        <button
+                                            onClick={() => handleSendReminders(expense.id)}
+                                            className="p-3 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                                            title="Enviar lembretes"
+                                        >
+                                            <BsBell size={20} />
+                                        </button>
+                                    )}
+                                    <button
+                                        onClick={() => handleDelete(expense.id)}
+                                        className="p-3 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
+                                        title="Excluir despesa"
+                                    >
+                                        <BsTrash size={20} />
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>

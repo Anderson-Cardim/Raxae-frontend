@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import FooterNav from "../../../components/layout/FooterNav";
 import { GroupCard } from '../components/GroupCard';
+import { JoinGroupSection } from '../components/JoinGroupSection';
 import { useNavigate } from 'react-router-dom';
 import { groupService } from "../../../services/groupService";
 import type { GrupoResponse } from "../../../services/groupService";
@@ -65,6 +66,9 @@ export function GroupsPage() {
       <div className="p-4 pb-24 lg:ml-5 lg:mr-5 md:ml-5 md:mr-5">
         <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">Grupos</h1>
 
+
+        <JoinGroupSection onJoinSuccess={loadGroups} />
+
         <div className=" grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-cols-1 justify-center gap-8 mb-5">
           {groups.map((group) => {
             const isAdmin = String(group.adminId) === String(currentUserId);
@@ -74,8 +78,8 @@ export function GroupsPage() {
                 id={group.id}
                 name={group.nomeGrupo}
                 memberCount={group.membros.length}
-                value={'R$ 0,00'} // Placeholder as API doesn't return total value yet
-                dueDate={10} // Placeholder
+                value={group.valorTotal !== undefined ? `R$ ${group.valorTotal.toFixed(2).replace('.', ',')}` : "R$ 0,00"}
+
                 imageUrl={(!group.icone || group.icone === "default-icon") ? groupIcon : group.icone}
                 onEdit={() => handleEdit(group.id, isAdmin)}
                 onDelete={() => handleDelete(group.id)}

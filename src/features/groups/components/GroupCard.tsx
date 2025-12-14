@@ -6,7 +6,7 @@ export interface GroupCardProps {
   name: string;
   memberCount: number;
   value: string;
-  dueDate: number;
+
   imageUrl: string;
   onEdit: (groupId: string) => void;
   onDelete: (groupId: string) => void;
@@ -19,7 +19,7 @@ export function GroupCard({
   name,
   memberCount,
   value,
-  dueDate,
+
   imageUrl,
   onEdit,
   onDelete,
@@ -46,10 +46,7 @@ export function GroupCard({
             <span className="text-sm text-gray-500 dark:text-gray-400">Valor</span>
           </div>
 
-          <div className="flex flex-col">
-            <span className="font-bold text-lg dark:text-gray-200">Dia {dueDate}</span>
-            <span className="text-sm text-gray-500 dark:text-gray-400">Vencimento</span>
-          </div>
+
         </div>
 
         <div className="flex items-center gap-2 mt-6">
