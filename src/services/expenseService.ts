@@ -84,5 +84,9 @@ export const expenseService = {
 
     deletarDespesa: async (grupoId: string, despesaId: string): Promise<void> => {
         await api.delete(`/v1/grupos/${grupoId}/despesas/${despesaId}`);
+    },
+
+    enviarLembretesAutomaticos: async (idDespesa: string): Promise<void> => {
+        await api.post(`/lembretes/${idDespesa}/enviar-automaticos`);
     }
 };

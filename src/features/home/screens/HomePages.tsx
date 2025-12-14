@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { groupService, type GrupoResponse } from "../../../services/groupService";
 import { authService, type UsuarioInfoResponse } from "../../../services/authService";
 import { GroupCard } from "../../groups/components/GroupCard";
+import { JoinGroupSection } from "../../groups/components/JoinGroupSection";
 import { FaPlus } from "react-icons/fa";
 import { useToast } from "../../../contexts/ToastContext";
 
@@ -21,23 +22,24 @@ function HomePage() {
   const toast = useToast();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [myGroups, myStats] = await Promise.all([
-          groupService.listarMeusGrupos(),
-          authService.getMe()
-        ]);
-        setGroups(myGroups);
-        setStats(myStats);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const [myGroups, myStats] = await Promise.all([
+        groupService.listarMeusGrupos(),
+        authService.getMe()
+      ]);
+      setGroups(myGroups);
+      setStats(myStats);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const userData = {
     name: stats?.nomeUsuario || user?.name || "Usuário",
@@ -93,6 +95,7 @@ function HomePage() {
   };
 
 
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-[#18181b] flex flex-col pb-24 transition-colors duration-300">
       <Header userName={userData.name} profilePic={userData.profilePic} />
@@ -110,6 +113,8 @@ function HomePage() {
           </button>
         </div>
 
+        <JoinGroupSection onJoinSuccess={fetchData} />
+
         {loading ? (
           <div className="flex justify-center py-10">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#14879E]"></div>
@@ -123,7 +128,7 @@ function HomePage() {
                 <ActionButton
                   text="CRIAR PRIMEIRO GRUPO"
                   onClick={handleCreateGroup}
-                  className="px-6 py-3 text-white bg-[#F34403] hover:bg-[#e44005] rounded-xl font-bold mx-auto inline-block"
+                  className="px-6 py-3 text-white bg-[#F34403] hover:bg-[#e44005] rounded-xl font-bold mx-auto inline-block mb-6"
                 />
               </div>
             ) : (
@@ -134,8 +139,8 @@ function HomePage() {
                     id={group.id}
                     name={group.nomeGrupo}
                     memberCount={group.membros.length}
-                    value={"R$ 0,00"} // Default since API doesn't provide
-                    dueDate={10} // Default
+                    value={group.valorTotal !== undefined ? `R$ ${group.valorTotal.toFixed(2).replace('.', ',')}` : "R$ 0,00"}
+
                     imageUrl={(group.icone && group.icone !== 'default-icon') ? group.icone : groupIcon}
                     onEdit={handleGroupAction}
                     onDelete={handleDeleteGroup}

@@ -44,9 +44,9 @@ function AddParticipantsPage() {
   const onGenerateInvite = async () => {
     if (groupId) {
       try {
-        const link = await groupService.gerarConvite(groupId);
-        navigator.clipboard.writeText(link);
-        toast.success("Link de convite copiado para a área de transferência!");
+        await groupService.gerarConvite(groupId); // Keep the call in case it activates the invite
+        await navigator.clipboard.writeText(groupId); // Copy ID as requested
+        toast.success("ID do grupo copiado para a área de transferência!");
       } catch (error) {
         console.error("Erro ao gerar convite:", error);
         toast.error("Erro ao gerar convite.");
