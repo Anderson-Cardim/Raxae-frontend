@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import HeaderForm from "../../../components/layout/HeaderForm";
 import FooterNav from "../../../components/layout/FooterNav";
 import { groupService, type HistoricoMembroResponse, type GrupoResponse } from "../../../services/groupService";
-import { FaArrowUp, FaArrowDown, FaMoneyBillWave, FaUser } from "react-icons/fa";
+import { FaArrowUp, FaArrowDown, FaUser } from "react-icons/fa";
 import groupIcon from "../../../assets/group_icon.png";
 import AuthenticatedImage from "../../../components/ui/AuthenticatedImage";
 import { useToast } from "../../../contexts/ToastContext";
@@ -109,7 +109,7 @@ export default function MemberHistoryPage() {
                 </div>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                     <div className="bg-red-50 dark:bg-red-900/10 p-4 rounded-xl border border-red-100 dark:border-red-900/30 shadow-sm transition-colors duration-300">
                         <div className="flex items-center gap-2 mb-2">
                             <div className="p-2 bg-red-100 dark:bg-red-900/40 rounded-full text-red-600 dark:text-red-400">
@@ -133,18 +133,6 @@ export default function MemberHistoryPage() {
                             R$ {historyData.totalCobrancasRecebidas.toFixed(2)}
                         </p>
                     </div>
-
-                    <div className="bg-blue-50 dark:bg-blue-900/10 p-4 rounded-xl border border-blue-100 dark:border-blue-900/30 shadow-sm transition-colors duration-300">
-                        <div className="flex items-center gap-2 mb-2">
-                            <div className="p-2 bg-blue-100 dark:bg-blue-900/40 rounded-full text-blue-600 dark:text-blue-400">
-                                <FaMoneyBillWave />
-                            </div>
-                            <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">Saldo Atual</span>
-                        </div>
-                        <p className={`text-2xl font-bold ${historyData.saldo >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                            R$ {historyData.saldo.toFixed(2)}
-                        </p>
-                    </div>
                 </div>
 
                 {/* History List */}
@@ -164,7 +152,12 @@ export default function MemberHistoryPage() {
                                         {new Date(item.data).toLocaleDateString('pt-BR')} - <span className="uppercase">{item.status}</span>
                                     </p>
                                 </div>
-                                <div className={`font-bold ${item.tipo === 'DESPESA' ? 'text-red-500 dark:text-red-400' : 'text-green-500 dark:text-green-400'}`}>
+                                <div className={`font-bold ${item.status === 'PENDENTE'
+                                        ? 'text-yellow-500 dark:text-yellow-400'
+                                        : item.status === 'PAGO'
+                                            ? 'text-green-500 dark:text-green-400'
+                                            : (item.tipo === 'DESPESA' ? 'text-red-500 dark:text-red-400' : 'text-green-500 dark:text-green-400')
+                                    }`}>
                                     {item.tipo === 'DESPESA' ? '-' : '+'} R$ {item.valor.toFixed(2)}
                                 </div>
                             </div>
