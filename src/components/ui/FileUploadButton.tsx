@@ -1,44 +1,21 @@
-// src/components/FileUploadButton.tsx
-import React, { useState, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import { PlusIcon } from '@heroicons/react/24/solid';
 
 interface FileUploadButtonProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  initialPreviewUrl?: string;
+  previewUrl?: string | null;
   className?: string;
 }
 
-const FileUploadButton = forwardRef<HTMLInputElement, FileUploadButtonProps>(({ initialPreviewUrl, className, ...props }, ref) => {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(initialPreviewUrl || null);
-
-  React.useEffect(() => {
-    if (initialPreviewUrl && !previewUrl) {
-      setPreviewUrl(initialPreviewUrl);
-    }
-  }, [initialPreviewUrl]);
-
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (props.onChange) {
-      props.onChange(event);
-    }
-    const file = event.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-    } else {
-      setPreviewUrl(null);
-    }
-  };
-
+const FileUploadButton = forwardRef<HTMLInputElement, FileUploadButtonProps>(({ previewUrl, className, ...props }, ref) => {
   return (
     <div className={`flex items-center justify-center cursor-pointer relative overflow-hidden ${className || "w-full bg-white border-2 border-gray-400 rounded-xl h-40 mb-6"}`}>
 
       <label
         htmlFor="file-upload"
-        className="w-full h-full flex items-center justify-center"
+        className="w-full h-full flex items-center justify-center p-2"
       >
         {previewUrl ? (
-          <img src={previewUrl} alt="Pré-visualização do grupo" className="w-full h-full object-cover" />
+          <img src={previewUrl} alt="Pré-visualização do grupo" className="w-full h-full object-contain rounded-lg" />
         ) : (
           <PlusIcon className="h-16 w-16 text-gray-400" />
         )}
@@ -47,9 +24,7 @@ const FileUploadButton = forwardRef<HTMLInputElement, FileUploadButtonProps>(({ 
       <input
         id="file-upload"
         type="file"
-        accept="image/*"
         ref={ref}
-        onChange={handleFileChange}
         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
         {...props}
       />

@@ -84,9 +84,18 @@ export default function GroupPaymentsPage() {
                                 <div className="flex justify-between items-start mb-2">
                                     <div>
                                         <h3 className="font-bold text-gray-800 dark:text-gray-100">{charge.despesaNome}</h3>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        {/* Display member name */}
+                                        <p className="text-sm text-gray-600 dark:text-gray-300 font-medium mb-1">
+                                            {charge.nome}
+                                        </p>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400">
                                             Vencimento: {new Date(charge.dataVencimento).toLocaleDateString('pt-BR')}
                                         </p>
+                                        {charge.dataPagamento && (
+                                            <p className="text-xs text-green-600 dark:text-green-400 mt-0.5">
+                                                Pago em: {new Date(charge.dataPagamento).toLocaleDateString('pt-BR')}
+                                            </p>
+                                        )}
                                     </div>
                                     <div className="text-right">
                                         <p className="font-bold text-blue-600 dark:text-blue-400">R$ {charge.valor.toFixed(2).replace('.', ',')}</p>
