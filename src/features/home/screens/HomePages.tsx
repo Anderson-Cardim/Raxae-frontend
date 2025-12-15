@@ -64,16 +64,7 @@ function HomePage() {
     navigate(`/editar-grupo/${groupId}`);
   };
 
-  const handleViewHistory = (groupId: string) => {
-    // Need memberId? GroupCard doesn't seem to pass memberId, just groupId.
-    // The onHistory prop in GroupCard expects a function (groupId).
-    // Let's assume we want to view *current user's* history in that group.
-    // We need to know current user ID.
-    const currentUserId = user?.id || localStorage.getItem('usuarioId');
-    if (currentUserId) {
-      navigate(`/grupo/${groupId}/historico/${currentUserId}`);
-    }
-  };
+
 
   const handleDeleteGroup = async (groupId: string) => {
     // We probably shouldn't allow delete directly from Home without confirmation, 
@@ -139,12 +130,12 @@ function HomePage() {
                     id={group.id}
                     name={group.nomeGrupo}
                     memberCount={group.membros.length}
-                    value={group.valorTotal !== undefined ? `R$ ${group.valorTotal.toFixed(2).replace('.', ',')}` : "R$ 0,00"}
+                    value={group.valorTotalDespesas !== undefined ? `R$ ${group.valorTotalDespesas.toFixed(2).replace('.', ',')}` : "R$ 0,00"}
 
                     imageUrl={(group.icone && group.icone !== 'default-icon') ? group.icone : groupIcon}
                     onEdit={handleGroupAction}
                     onDelete={handleDeleteGroup}
-                    onHistory={handleViewHistory}
+
                     isAdmin={group.adminId === (user?.id || localStorage.getItem('usuarioId'))}
                   />
                 ))}
