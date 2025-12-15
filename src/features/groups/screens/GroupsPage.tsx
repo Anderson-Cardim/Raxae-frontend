@@ -53,9 +53,7 @@ export function GroupsPage() {
     }
   };
 
-  const handleHistory = (groupId: string) => {
-    navigate(`/grupo/${groupId}/historico`);
-  };
+
 
   if (loading) {
     return <div className="p-4 text-center">Carregando grupos...</div>;
@@ -78,12 +76,12 @@ export function GroupsPage() {
                 id={group.id}
                 name={group.nomeGrupo}
                 memberCount={group.membros.length}
-                value={group.valorTotal !== undefined ? `R$ ${group.valorTotal.toFixed(2).replace('.', ',')}` : "R$ 0,00"}
+                value={group.valorTotalDespesas !== undefined ? `R$ ${group.valorTotalDespesas.toFixed(2).replace('.', ',')}` : "R$ 0,00"}
 
                 imageUrl={(!group.icone || group.icone === "default-icon") ? groupIcon : group.icone}
                 onEdit={() => handleEdit(group.id, isAdmin)}
                 onDelete={() => handleDelete(group.id)}
-                onHistory={() => handleHistory(group.id)}
+
                 isAdmin={isAdmin}
               />
             );

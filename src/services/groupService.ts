@@ -16,6 +16,7 @@ export interface GrupoResponse {
     dataCriacao: string;
     membros: MembroGrupo[];
     valorTotal: number;
+    valorTotalDespesas: number;
 }
 
 export interface MembroRequest {
