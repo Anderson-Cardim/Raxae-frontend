@@ -109,5 +109,11 @@ export const groupService = {
     buscarHistoricoMembro: async (idDoGrupo: string, idDoMembro: string): Promise<HistoricoMembroResponse> => {
         const response = await api.get<HistoricoMembroResponse>(`/v1/grupo/${idDoGrupo}/historico/${idDoMembro}`);
         return response.data;
+    },
+
+    getGroupIcon: async (idDoGrupo: string): Promise<string> => {
+        const response = await api.get(`/v1/grupo/${idDoGrupo}/icone`, { responseType: 'blob' });
+        return URL.createObjectURL(response.data);
     }
+
 };
