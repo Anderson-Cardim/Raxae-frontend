@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AuthenticatedImage from "../../../components/ui/AuthenticatedImage";
+
 import HeaderForm from "../../../components/layout/HeaderForm";
 import FooterNav from "../../../components/layout/FooterNav";
 import { useParams, useNavigate } from "react-router-dom";
@@ -22,10 +22,18 @@ export default function ViewGroupPage() {
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
     const [selectedExpense, setSelectedExpense] = useState<{ id: string, name: string, value: string } | null>(null);
 
+    const [iconUrl, setIconUrl] = useState<string | null>(null);
+
     useEffect(() => {
         if (groupId) {
             loadData();
         }
+        // Cleanup blob URL on unmount
+        return () => {
+            if (iconUrl) {
+                URL.revokeObjectURL(iconUrl);
+            }
+        };
     }, [groupId]);
 
     const loadData = async () => {
@@ -37,6 +45,15 @@ export default function ViewGroupPage() {
             ]);
 
             setGroup(groupData);
+
+            // Fetch icon separately
+            try {
+                const icon = await groupService.getGroupIcon(groupId!);
+                setIconUrl(icon);
+            } catch (error) {
+                // If icon fetch fails (e.g. 404), just ignore and use default
+                console.log("No custom icon found or failed to fetch");
+            }
 
             // Filter charges for this group
             const groupCharges = chargesData.filter(c => c.grupoId === groupId);
@@ -86,11 +103,10 @@ export default function ViewGroupPage() {
 
             <div className="flex-grow p-6 lg:ml-35 lg:mr-35 mb-10">
                 <div className="flex flex-col items-center justify-center bg-gray-50 dark:bg-[#27272a] rounded-2xl p-6 mb-8 shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-300">
-                    <AuthenticatedImage
-                        url={(!group.icone || group.icone === 'default-icon') ? '' : `/v1/grupo/${group.id}/icone`}
+                    <img
+                        src={iconUrl || groupIcon}
                         alt="Grupo"
                         className="w-32 h-32 rounded-full border-4 border-white dark:border-gray-600 shadow-lg bg-gray-200 dark:bg-gray-800 mb-4 object-cover"
-                        fallbackIcon={groupIcon}
                     />
                     <h2 className="text-2xl font-bold text-gray-800 dark:text-white text-center">
                         {group.nomeGrupo}
