@@ -122,7 +122,7 @@ export default function MemberAdmin() {
       <HeaderForm title="Membros" onBack={handleGoBack} />
 
       <div className="flex-grow p-4 lg:ml-10 lg:mr-10 mb-10">
-        <GroupHeaderInfo groupName={group.name} imageUrl={group.imageUrl} />
+        <GroupHeaderInfo groupName={group.name} />
 
         <div className="flex space-y-3 mb-8 gap-5 flex-col">
           {members.map((member) => (
