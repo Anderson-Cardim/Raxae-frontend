@@ -115,11 +115,18 @@ function CreateGroupPage() {
 
         <FormSection title="Descrição do grupo">
           <Input
-            placeholder="Opcional"
+            placeholder="Descrição do grupo"
             type="text"
-            {...register("description")}
+            {...register("description", {
+              required: "Descrição é obrigatória",
+            })}
             className="w-full py-3 px-4 border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#27272a] rounded-xl text-gray-700 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-gray-500 hover:translate-y-[1px] hover:shadow-lg"
           />
+          {errors.description && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.description.message}
+            </p>
+          )}
         </FormSection>
 
 

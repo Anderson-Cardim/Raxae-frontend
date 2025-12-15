@@ -22,12 +22,20 @@ function RegisterPage() {
   const toast = useToast();
 
   const onSubmit = async (data: RegisterFormInputs) => {
+    const normalizePhone = (phone: string) => {
+      let numericPhone = phone.replace(/\D/g, "");
+      if (numericPhone.length === 10 || numericPhone.length === 11) {
+        return `55${numericPhone}`;
+      }
+      return numericPhone;
+    };
+
     setRegisterError(null);
     try {
       await registerUser({
         nomeCompleto: data.fullName,
         email: data.email,
-        whatsapp: data.phone || "",
+        whatsapp: data.phone ? normalizePhone(data.phone) : "",
         senha: data.password
       });
       toast.success("Usuário registrado com sucesso! Faça login para continuar.");
