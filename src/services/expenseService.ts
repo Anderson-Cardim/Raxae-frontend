@@ -31,6 +31,7 @@ export interface CobrancaResponse {
     despesaNome: string;
     grupoId: string;
     grupoNome: string;
+    nome: string; // Member name associated with the charge
     valor: number;
     status: 'PENDENTE' | 'PAGA' | 'VENCIDA' | 'CANCELADA';
     dataVencimento: string;

@@ -32,7 +32,7 @@ export interface ConfiguracaoGrupo {
 export interface GrupoRequest {
     nomeGrupo: string;
     descricao: string;
-    icone: string;
+    icone?: string;
 }
 
 export interface MembroSimples {
@@ -59,8 +59,12 @@ export interface HistoricoMembroResponse {
 }
 
 export const groupService = {
-    criarGrupo: async (data: GrupoRequest): Promise<GrupoResponse> => {
-        const response = await api.post<GrupoResponse>('/v1/grupo', data);
+    criarGrupo: async (data: FormData): Promise<GrupoResponse> => {
+        const response = await api.post<GrupoResponse>('/v1/grupo', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
         return response.data;
     },
 

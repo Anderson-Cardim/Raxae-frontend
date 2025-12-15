@@ -6,14 +6,14 @@ import { MembersLink } from '../components/linkMembros';
 import Input from "../../../components/ui/Input";
 import FooterNav from "../../../components/layout/FooterNav";
 import ActionButton from "../../../components/ui/ActionButton";
-import FileUploadButton from "../../../components/ui/FileUploadButton";
+import AuthenticatedImage from "../../../components/ui/AuthenticatedImage";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { groupService, type GrupoRequest } from "../../../services/groupService";
 import { useToast } from "../../../contexts/ToastContext";
 
 type CreateGroupFormInputs = {
-  groupImage: FileList;
+  // groupImage: FileList; // Removed image editing
   groupName: string;
   description: string;
 };
@@ -33,7 +33,7 @@ function EditGroupPage() {
   const { groupId } = useParams<{ groupId: string }>();
   const [loading, setLoading] = useState(false);
   const [memberCount, setMemberCount] = useState(0);
-  const [mockImageUrl, setMockImageUrl] = useState<string | null>(null);
+  const [currentGroupIcon, setCurrentGroupIcon] = useState<string | null>(null); // To store icon state (default or custom)
   const toast = useToast();
 
   useEffect(() => {
@@ -53,7 +53,7 @@ function EditGroupPage() {
           }
 
           setMemberCount(groupData.membros?.length || 0);
-          setMockImageUrl(groupIcon);
+          setCurrentGroupIcon(groupData.icone);
         })
         .catch(err => console.error("Failed to load group:", err))
         .finally(() => setLoading(false));
@@ -79,7 +79,7 @@ function EditGroupPage() {
       const updateData: GrupoRequest = {
         nomeGrupo: data.groupName,
         descricao: data.description,
-        icone: "default-icon", // Keeping the mock icon as requested
+        // icone removed to prevent alteration
       };
 
       await groupService.editarGrupo(groupId, updateData);
@@ -107,10 +107,11 @@ function EditGroupPage() {
       <HeaderForm title="Editar Grupo" onBack={handleGoBack} />
       <div className="flex-grow p-6 lg:ml-35 lg:mr-35 mb-10">
         <div className="flex flex-col items-center justify-center bg-gray-50 dark:bg-[#27272a] rounded-2xl p-6 mb-8 shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-300">
-          <FileUploadButton
-            initialPreviewUrl={mockImageUrl || undefined}
-            {...register("groupImage")}
-            className="w-32 h-32 rounded-full border-4 border-white dark:border-gray-600 shadow-lg bg-gray-200 dark:bg-gray-800 mb-4"
+          <AuthenticatedImage
+            url={(currentGroupIcon && currentGroupIcon !== 'default-icon') ? `/v1/grupo/${groupId}/icone` : ''}
+            alt="Grupo"
+            className="w-32 h-32 rounded-full border-4 border-white dark:border-gray-600 shadow-lg bg-gray-200 dark:bg-gray-800 mb-4 object-cover"
+            fallbackIcon={groupIcon}
           />
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white text-center">
             {currentGroupName || "Nome do Grupo"}

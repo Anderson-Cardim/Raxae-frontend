@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useState, useEffect } from "react";
 import HeaderForm from "../../../components/layout/HeaderForm";
 import FormSection from "../components/FormSection";
 import Input from "../../../components/ui/Input";
@@ -8,7 +8,7 @@ import ActionButton from "../../../components/ui/ActionButton";
 import FileUploadButton from "../../../components/ui/FileUploadButton";
 import { useForm } from "react-hook-form";
 
-import { groupService, type GrupoRequest } from "../../../services/groupService";
+import { groupService } from "../../../services/groupService";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../../../contexts/ToastContext";
 
@@ -16,28 +16,61 @@ type CreateGroupFormInputs = {
   groupImage: FileList;
   groupName: string;
   description: string;
-
 };
 
-
-
 function CreateGroupPage() {
-  const { register, handleSubmit, formState: { errors }, } = useForm<CreateGroupFormInputs>();
+  const { register, handleSubmit, formState: { errors }, watch } = useForm<CreateGroupFormInputs>();
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const navigate = useNavigate();
   const toast = useToast();
 
+  const groupImage = watch("groupImage");
 
+  useEffect(() => {
+    if (groupImage && groupImage.length > 0) {
+      const file = groupImage[0];
+      const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+      if (!validTypes.includes(file.type)) {
+        toast.error("Formato de imagem inválido. Use JPG, JPEG ou PNG.");
+        // Reset or just ignore? Ideally reset input, but complicating.
+        // For now just show toast and user has to re-select.
+        return;
+      }
+
+      const url = URL.createObjectURL(file);
+      setPreviewImage(url);
+
+      return () => URL.revokeObjectURL(url);
+    }
+  }, [groupImage, toast]);
 
   const onSubmit = async (data: CreateGroupFormInputs) => {
     try {
-      const grupoRequest: GrupoRequest = {
+      const formData = new FormData();
+
+      const grupoData = {
         nomeGrupo: data.groupName,
-        descricao: data.description || "",
-        icone: "default-icon",
+        descricao: data.description || ""
       };
 
-      await groupService.criarGrupo(grupoRequest);
+      formData.append("grupo", JSON.stringify(grupoData));
+
+      if (data.groupImage && data.groupImage.length > 0) {
+        const file = data.groupImage[0];
+        console.log("File type:", file.type);
+        const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        if (validTypes.includes(file.type)) {
+          formData.append("icone", file);
+        } else {
+          toast.error("Imagem inválida ignorada (apenas JPG/PNG).");
+          // Continue? User might want to stop.
+          // But let's proceed without image if invalid.
+        }
+      }
+
+      await groupService.criarGrupo(formData);
       toast.success("Grupo criado com sucesso!");
       navigate("/home");
     } catch (error) {
@@ -57,7 +90,12 @@ function CreateGroupPage() {
     >
       <HeaderForm title="Criar Novo Grupo" onBack={handleGoBack} />
       <div className="flex-grow p-6 lg:ml-35 lg:mr-35">
-        <FileUploadButton  {...register("groupImage")} />
+
+        <FileUploadButton
+          previewUrl={previewImage}
+          accept="image/png, image/jpeg, image/jpg"
+          {...register("groupImage")}
+        />
 
         <FormSection title="Nome do grupo">
           <Input

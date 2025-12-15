@@ -1,5 +1,7 @@
-import { BsClockHistory, BsTrash, BsPencilSquare, BsEye, BsWallet2 } from 'react-icons/bs';
+import { BsTrash, BsPencilSquare, BsEye, BsWallet2 } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
+import AuthenticatedImage from '../../../components/ui/AuthenticatedImage';
+import defaultGroupIcon from '../../../assets/group_icon.png';
 
 export interface GroupCardProps {
   id: string;
@@ -10,7 +12,6 @@ export interface GroupCardProps {
   imageUrl: string;
   onEdit: (groupId: string) => void;
   onDelete: (groupId: string) => void;
-  onHistory: (groupId: string) => void;
   isAdmin?: boolean;
 }
 
@@ -23,14 +24,24 @@ export function GroupCard({
   imageUrl,
   onEdit,
   onDelete,
-  onHistory,
   isAdmin = false,
 }: GroupCardProps) {
   const navigate = useNavigate();
 
+  // Decide whether to fetch the real image or show default
+  // Assuming 'default-icon' or null/empty means no custom image.
+  // We can also just try to fetch if we are not sure, but 'default-icon' check is safer.
+  const shouldFetch = imageUrl && imageUrl !== 'default-icon';
+  const targetUrl = shouldFetch ? `/v1/grupo/${id}/icone` : '';
+
   return (
     <div className="bg-white dark:bg-[#27272a] rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-md transition-shadow">
-      <img src={imageUrl} alt={name} className="w-full h-40 object-cover" />
+      <AuthenticatedImage
+        url={targetUrl}
+        alt={name}
+        className="w-full h-40 object-cover"
+        fallbackIcon={defaultGroupIcon}
+      />
 
       <div className="p-4">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{name}</h2>
@@ -50,9 +61,7 @@ export function GroupCard({
         </div>
 
         <div className="flex items-center gap-2 mt-6">
-          <button onClick={() => onHistory(id)} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-            <BsClockHistory size={20} className="text-gray-600 dark:text-gray-400 cursor-pointer" />
-          </button>
+
 
           {isAdmin && (
             <>

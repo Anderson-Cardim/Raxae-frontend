@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import FooterNav from "../../../components/layout/FooterNav";
 import MemberItem from "../components/MemberItem";
 import HeaderForm from "../../../components/layout/HeaderForm";
-import { FaPlus } from "react-icons/fa6";
+import { FaCopy } from "react-icons/fa6";
 import GroupHeaderInfo from "../components/GroupHeaderInfo";
 import { groupService } from "../../../services/groupService";
 import { useToast } from "../../../contexts/ToastContext";
@@ -97,9 +97,15 @@ export default function MemberAdmin() {
     // Implement chat logic here if needed
   };
 
-  const handleAddMember = () => {
+  const handleCopyGroupId = async () => {
     if (groupId) {
-      navigate(`/grupo/${groupId}/convite`); // Or whatever route for adding members
+      try {
+        await navigator.clipboard.writeText(groupId);
+        toast.success("Código do grupo copiado!");
+      } catch (err) {
+        console.error("Failed to copy:", err);
+        toast.error("Erro ao copiar código");
+      }
     }
   };
 
@@ -132,10 +138,11 @@ export default function MemberAdmin() {
         </div>
 
         <button
-          onClick={handleAddMember}
-          className="w-full flex justify-center items-center p-8 border-2 border-gray-300 dark:border-gray-700 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 hover:shadow-lg transition duration-200 text-gray-500 dark:text-gray-400"
+          onClick={handleCopyGroupId}
+          className="w-full flex justify-center items-center gap-2 p-4 border-2 border-gray-300 dark:border-gray-700 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 hover:shadow-lg transition duration-200 text-gray-500 dark:text-gray-400 font-bold"
         >
-          <FaPlus />
+          <FaCopy />
+          <span>Copiar código do grupo</span>
         </button>
 
       </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BsFillTrashFill, BsJournalText } from "react-icons/bs";
 import { FaCrown } from 'react-icons/fa';
-import { BsClockFill } from "react-icons/bs";
+
 import { Link } from 'react-router-dom';
 
 interface MemberItemProps {
@@ -38,7 +38,7 @@ const MemberItem: React.FC<MemberItemProps> = ({ member, groupId, onRemove, view
       </div>
 
       <div className="flex items-center space-x-3">
-        <input type='checkbox' className="w-5 h-5 text-green-800" />
+
         {member.isManager && (
           <FaCrown className="text-[#FECB00]" size={20} title="Gerente do Grupo" />
 
@@ -46,8 +46,6 @@ const MemberItem: React.FC<MemberItemProps> = ({ member, groupId, onRemove, view
         {!member.isManager && (
           <FaCrown className="text-[#D9D9D9]" size={20} title="Gerente do Grupo" />
         )}
-
-        <BsClockFill size={20} color='#14879E' />
 
         {viewerIsAdmin && (
           <Link to={`/grupo/${groupId}/historico/${member.id}`} title="Ver Histórico">
